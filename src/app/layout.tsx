@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Ayush Kunjadia",
   description: "create by Ayush Kunjadia",
+  icons: {
+    icon: "/logo.png", // <-- Your logo file in /public/logo.png
+  },
 };
 
 export default function RootLayout({

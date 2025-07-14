@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-
+// Typewriter effect
 const WORDS = ["Software Engineer", "Builder", "Collaborator"];
 function Typewriter({ words, speed = 100, pause = 1200 }: { words: string[], speed?: number, pause?: number }) {
   const [index, setIndex] = useState(0);
@@ -37,7 +37,7 @@ function Typewriter({ words, speed = 100, pause = 1200 }: { words: string[], spe
   );
 }
 
-
+// --- DATA ---
 const projects = [
   {
     title: "Manga Animator",
@@ -64,9 +64,10 @@ const experience = [
     company: "Loshi Technologies, LLC",
     title: "Software Engineer Intern",
     link: "https://loshitech.com",
-    period: "Present",
-    tech: ["TypeScript", "Python", "React"],
-    description: "Worked as a software engineer intern building and maintaining core web products.",
+    period: "June 2025 – Present",
+    tech: ["React", "Node.js", "PostgreSQL"],
+    description:
+      "Built and maintained full-stack web applications using React, Node.js, and PostgreSQL. Collaborated with design and product teams to deliver new features, and optimized backend APIs and database queries for better performance.",
   },
 ];
 
@@ -77,14 +78,14 @@ const skills = [
 ];
 
 const interests = [
-  "Wrestling",
+  "Multiple-time all-state wrestler",
   "Weightlifting",
   "Fishing",
   "Hiking & exploring",
   "Chess"
 ];
 
-
+// --- MAIN COMPONENT ---
 export default function Home() {
   return (
     <div className="bg-[#0A0C12] text-white min-h-screen font-sans">

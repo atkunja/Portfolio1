@@ -97,6 +97,7 @@ export default function Home() {
           <a href="#experience" className="hover:text-cyan-300 transition">Experience</a>
           <a href="#skills" className="hover:text-cyan-300 transition">Skills</a>
           <a href="#interests" className="hover:text-cyan-300 transition">Interests</a>
+          <a href="#contact" className="hover:text-cyan-300 transition">Contact</a>
           <a href="https://github.com/atkunja" target="_blank" rel="noopener" className="hover:text-cyan-400 transition">GitHub</a>
           <a href="https://www.linkedin.com/in/ayushkunjadia/" target="_blank" rel="noopener" className="hover:text-cyan-400 transition">LinkedIn</a>
         </div>
@@ -208,6 +209,79 @@ export default function Home() {
             </li>
           ))}
         </ul>
+      </section>
+      {/* CONTACT */}
+      <section id="contact" className="max-w-6xl mx-auto px-4 py-20">
+        <h2 className="text-2xl font-bold mb-4 text-cyan-300">Contact</h2>
+        <p className="mb-6 text-lg text-gray-300">
+          Have a project idea in mind or want to collaborate? Let’s connect!
+        </p>
+        <div className="flex flex-col sm:flex-row items-center gap-6 mb-10">
+          <a
+            href="mailto:your.email@example.com"
+            className="px-5 py-3 bg-cyan-700 hover:bg-cyan-800 text-white rounded-lg shadow font-medium transition"
+          >
+            Email Me
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ayushkunjadia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-3 bg-gray-900 hover:bg-cyan-700 text-white rounded-lg shadow font-medium transition"
+          >
+            Connect on LinkedIn
+          </a>
+          <a
+            href="https://github.com/atkunja"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-3 bg-gray-900 hover:bg-cyan-700 text-white rounded-lg shadow font-medium transition"
+          >
+            GitHub
+          </a>
+        </div>
+        {/* Contact Form */}
+        <form
+          action="https://formspree.io/f/xeozjzzr"
+          method="POST"
+          className="bg-gray-900 rounded-2xl p-8 shadow-md max-w-lg mx-auto flex flex-col gap-5"
+        >
+          <label className="flex flex-col gap-2 text-gray-300">
+            Name
+            <input
+              type="text"
+              name="name"
+              required
+              className="rounded-lg px-4 py-2 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              autoComplete="off"
+            />
+          </label>
+          <label className="flex flex-col gap-2 text-gray-300">
+            Email
+            <input
+              type="email"
+              name="email"
+              required
+              className="rounded-lg px-4 py-2 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              autoComplete="off"
+            />
+          </label>
+          <label className="flex flex-col gap-2 text-gray-300">
+            Message
+            <textarea
+              name="message"
+              rows={4}
+              required
+              className="rounded-lg px-4 py-2 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            />
+          </label>
+          <button
+            type="submit"
+            className="mt-2 px-5 py-3 bg-cyan-700 hover:bg-cyan-800 text-white rounded-lg shadow font-medium transition"
+          >
+            Send Message
+          </button>
+        </form>
       </section>
       {/* FOOTER */}
       <footer className="max-w-6xl mx-auto px-4 py-8 text-center text-gray-700 text-sm border-t border-gray-800">

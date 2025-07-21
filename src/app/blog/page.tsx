@@ -1,4 +1,3 @@
-// src/app/blog/page.tsx
 "use client";
 export const dynamic = "force-dynamic";
 
@@ -29,9 +28,14 @@ export default function BlogPage() {
 
   const loadPosts = async () => {
     const res = await fetch("/api/posts");
-    setPosts(await res.json());
+    let data = await res.json();
+    // Defensive: force empty array if not an array!
+    setPosts(Array.isArray(data) ? data : []);
   };
-  useEffect(() => { loadPosts(); }, []);
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
 
   const handleLogin = () => {
     if (password === ADMIN_TOKEN) {
@@ -50,10 +54,14 @@ export default function BlogPage() {
     if (media) {
       const filePath = `${Date.now()}_${media.name}`;
       const { error: upErr } = await supabase
-        .storage.from("blog-media").upload(filePath, media);
+        .storage.from("blog-media")
+        .upload(filePath, media);
       if (upErr) return alert(upErr.message);
+
       const { data } = await supabase
-        .storage.from("blog-media").getPublicUrl(filePath);
+        .storage.from("blog-media")
+        .getPublicUrl(filePath);
+
       url = data.publicUrl;
       type = media.type.startsWith("video") ? "video" : "image";
     }
@@ -70,7 +78,9 @@ export default function BlogPage() {
       body: JSON.stringify(body),
     });
 
-    setCaption(""); setMedia(null); setEditId(null);
+    setCaption("");
+    setMedia(null);
+    setEditId(null);
     loadPosts();
   };
 
@@ -89,18 +99,16 @@ export default function BlogPage() {
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString("en-US", {
-      year: "numeric", month: "long", day: "numeric",
-      hour: "numeric", minute: "2-digit",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
     });
 
   return (
-    <div className="relative min-h-screen px-4 pt-24 pb-10 bg-[#0A0C12] text-white">
-      {/* Header */}
-      <h1 className="text-5xl font-extrabold text-cyan-400 text-center mb-10 animate-fade-in">
-        My Blog
-      </h1>
-
-      {/* Login / Logout */}
+    <div className="relative min-h-screen bg-[#0A0C12] text-white">
+      {/* Admin Login / Logout */}
       {isAdmin ? (
         <button
           onClick={() => setIsAdmin(false)}
@@ -130,7 +138,7 @@ export default function BlogPage() {
             </Dialog.Title>
             <button
               onClick={() => setShowLogin(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-white text-2xl"
+              className="absolute top-2 right-2 text-gray-400 hover:text-white"
             >
               &times;
             </button>
@@ -151,83 +159,93 @@ export default function BlogPage() {
         </Dialog>
       </Transition>
 
-      {/* Admin post form */}
-      {isAdmin && (
-        <div className="mb-10 bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
-          <input
-            type="file"
-            accept="image/*,video/*"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setMedia(e.target.files?.[0] || null)
-            }
-            className="mb-3 block w-full text-sm text-white"
-          />
-          <textarea
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            placeholder="Write your post here..."
-            className="w-full mb-4 h-24 p-2 bg-gray-800 rounded resize-none outline-none"
-          />
-          <button
-            onClick={handleSubmit}
-            className="bg-cyan-600 hover:bg-cyan-700 px-5 py-2 rounded"
-          >
-            {editId != null ? "Update" : "Post"}
-          </button>
-        </div>
-      )}
+      <section className="mx-auto max-w-3xl px-4 pt-24 pb-10">
+        {/* Animated Title */}
+        <h1 className="text-5xl font-extrabold text-cyan-400 text-center mb-10 animate-fade-in">
+          My Blog
+        </h1>
 
-      {/* Posts */}
-      <div className="space-y-8">
-        {posts.map((p) => (
-          <article
-            key={p.id}
-            className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"
-          >
-            <div className="flex justify-between items-center mb-2 text-gray-400 text-sm">
-              <span>🗓️ {formatDate(p.inserted_at)}</span>
-              {isAdmin && (
-                <>
-                  <button
-                    onClick={() => {
-                      setEditId(p.id);
-                      setCaption(p.caption);
-                    }}
-                    className="text-yellow-400 hover:underline text-sm mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(p.id)}
-                    className="text-red-400 hover:underline text-sm"
-                  >
-                    Delete
-                  </button>
-                </>
+        {/* Post Form (admin only) */}
+        {isAdmin && (
+          <div className="mb-10 bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setMedia(e.target.files?.[0] || null)
+              }
+              className="mb-3 block w-full text-sm text-white"
+            />
+            <textarea
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="Write your post here..."
+              className="w-full mb-4 h-24 p-2 bg-gray-800 rounded resize-none outline-none"
+            />
+            <button
+              onClick={handleSubmit}
+              className="bg-cyan-600 hover:bg-cyan-700 px-5 py-2 rounded"
+            >
+              {editId != null ? "Update Post" : "Post"}
+            </button>
+          </div>
+        )}
+
+        {/* Posts List */}
+        <div className="space-y-8">
+          {(Array.isArray(posts) ? posts : []).map((p) => (
+            <article
+              key={p.id}
+              className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"
+            >
+              <div className="flex justify-between items-center mb-2 text-gray-400 text-sm">
+                <span>🗓️ {formatDate(p.inserted_at)}</span>
+                {isAdmin && (
+                  <span>
+                    <button
+                      onClick={() => {
+                        setEditId(p.id);
+                        setCaption(p.caption);
+                      }}
+                      className="text-yellow-400 hover:underline mr-2 text-sm"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(p.id)}
+                      className="text-red-400 hover:underline text-sm"
+                    >
+                      Delete
+                    </button>
+                  </span>
+                )}
+              </div>
+
+              {p.type === "image" && p.media_url && (
+                <Image
+                  src={p.media_url}
+                  alt={p.caption || ""}
+                  width={800}
+                  height={600}
+                  className="mb-3 w-full max-h-64 object-cover rounded cursor-pointer"
+                  onClick={() => setLightbox(p)}
+                />
               )}
-            </div>
-            {p.type === "image" && p.media_url && (
-              <Image
-                src={p.media_url}
-                alt={p.caption}
-                width={800}
-                height={600}
-                className="mb-3 w-full max-h-64 object-cover rounded cursor-pointer"
-                onClick={() => setLightbox(p)}
-              />
-            )}
-            {p.type === "video" && p.media_url && (
-              <video
-                src={p.media_url}
-                controls
-                className="mb-3 w-full max-h-64 rounded cursor-pointer"
-                onClick={() => setLightbox(p)}
-              />
-            )}
-            {p.type === "text" && <p className="text-gray-300">{p.caption}</p>}
-          </article>
-        ))}
-      </div>
+
+              {p.type === "video" && p.media_url && (
+                <video
+                  src={p.media_url}
+                  controls
+                  className="mb-3 w-full max-h-64 rounded cursor-pointer"
+                  onClick={() => setLightbox(p)}
+                />
+              )}
+
+              {p.type === "text" && <p className="text-gray-300">{p.caption}</p>}
+            </article>
+          ))}
+        </div>
+      </section>
 
       {/* Lightbox */}
       <Transition show={!!lightbox} as={Fragment}>
@@ -243,6 +261,7 @@ export default function BlogPage() {
             >
               &times;
             </button>
+
             {lightbox?.type === "image" && lightbox.media_url && (
               <Image
                 src={lightbox.media_url}

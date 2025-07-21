@@ -3,7 +3,7 @@
 import { useState, useEffect, Fragment, ChangeEvent } from "react";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN!;
 

@@ -2,9 +2,17 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-// --- Typewriter effect (unchanged) ---
+// --- Typewriter effect ---
 const WORDS = ["Software Engineer", "Builder", "Collaborator"];
-function Typewriter({ words, speed = 100, pause = 1200 }: { words: string[], speed?: number, pause?: number }) {
+function Typewriter({
+  words,
+  speed = 100,
+  pause = 1200,
+}: {
+  words: string[];
+  speed?: number;
+  pause?: number;
+}) {
   const [index, setIndex] = useState(0);
   const [sub, setSub] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -12,7 +20,10 @@ function Typewriter({ words, speed = 100, pause = 1200 }: { words: string[], spe
   useEffect(() => {
     const word = words[index % words.length];
     if (!deleting && sub.length < word.length) {
-      const timeout = setTimeout(() => setSub(word.slice(0, sub.length + 1)), speed);
+      const timeout = setTimeout(
+        () => setSub(word.slice(0, sub.length + 1)),
+        speed
+      );
       return () => clearTimeout(timeout);
     }
     if (!deleting && sub.length === word.length) {
@@ -20,7 +31,10 @@ function Typewriter({ words, speed = 100, pause = 1200 }: { words: string[], spe
       return () => clearTimeout(timeout);
     }
     if (deleting && sub.length > 0) {
-      const timeout = setTimeout(() => setSub(word.slice(0, sub.length - 1)), speed / 2);
+      const timeout = setTimeout(
+        () => setSub(word.slice(0, sub.length - 1)),
+        speed / 2
+      );
       return () => clearTimeout(timeout);
     }
     if (deleting && sub.length === 0) {
@@ -33,11 +47,15 @@ function Typewriter({ words, speed = 100, pause = 1200 }: { words: string[], spe
   }, [sub, deleting, index, words, speed, pause]);
 
   return (
-    <span className="text-cyan-400">{sub}&nbsp;<span className="border-r-2 border-cyan-400 animate-pulse"></span></span>
+    <span className="text-cyan-400">
+      {sub}
+      &nbsp;
+      <span className="border-r-2 border-cyan-400 animate-pulse"></span>
+    </span>
   );
 }
 
-// --- DATA (unchanged) ---
+// --- DATA ---
 const projects = [
   {
     title: "Manga Animator",
@@ -72,9 +90,23 @@ const experience = [
 ];
 
 const skills = [
-  "TypeScript", "Java", "Python", "C/C++", "JavaScript", "HTML/CSS", "SQL",
-  "Next.js", "NestJS", "React", "Node.js", "Tailwind CSS",
-  "Supabase", "Docker", "Socket.io", "MoviePy", "Streamlit"
+  "TypeScript",
+  "Java",
+  "Python",
+  "C/C++",
+  "JavaScript",
+  "HTML/CSS",
+  "SQL",
+  "Next.js",
+  "NestJS",
+  "React",
+  "Node.js",
+  "Tailwind CSS",
+  "Supabase",
+  "Docker",
+  "Socket.io",
+  "MoviePy",
+  "Streamlit",
 ];
 
 const interests = [
@@ -82,11 +114,17 @@ const interests = [
   "Weightlifting",
   "Fishing",
   "Hiking & exploring",
-  "Chess"
+  "Chess",
 ];
 
 // --- MOBILE NAV ---
-function MobileNav({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
+function MobileNav({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (v: boolean) => void;
+}) {
   return (
     <div
       className={`
@@ -100,14 +138,43 @@ function MobileNav({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => 
         onClick={() => setOpen(false)}
         className="absolute top-6 right-8 text-4xl text-cyan-400"
         aria-label="Close menu"
-      >×</button>
-      <a href="#projects" onClick={() => setOpen(false)}>Projects</a>
-      <a href="#experience" onClick={() => setOpen(false)}>Experience</a>
-      <a href="#skills" onClick={() => setOpen(false)}>Skills</a>
-      <a href="#interests" onClick={() => setOpen(false)}>Interests</a>
-      <a href="#contact" onClick={() => setOpen(false)}>Contact</a>
-      <a href="https://github.com/atkunja" target="_blank" rel="noopener" onClick={() => setOpen(false)}>GitHub</a>
-      <a href="https://www.linkedin.com/in/ayushkunjadia/" target="_blank" rel="noopener" onClick={() => setOpen(false)}>LinkedIn</a>
+      >
+        ×
+      </button>
+      <a href="#projects" onClick={() => setOpen(false)}>
+        Projects
+      </a>
+      <a href="#experience" onClick={() => setOpen(false)}>
+        Experience
+      </a>
+      <a href="#skills" onClick={() => setOpen(false)}>
+        Skills
+      </a>
+      <a href="#interests" onClick={() => setOpen(false)}>
+        Interests
+      </a>
+      <a href="#contact" onClick={() => setOpen(false)}>
+        Contact
+      </a>
+      <a href="/blog" onClick={() => setOpen(false)}>
+        Blog
+      </a>
+      <a
+        href="https://github.com/atkunja"
+        target="_blank"
+        rel="noopener"
+        onClick={() => setOpen(false)}
+      >
+        GitHub
+      </a>
+      <a
+        href="https://www.linkedin.com/in/ayushkunjadia/"
+        target="_blank"
+        rel="noopener"
+        onClick={() => setOpen(false)}
+      >
+        LinkedIn
+      </a>
     </div>
   );
 }
@@ -120,82 +187,171 @@ export default function Home() {
     <div className="bg-[#0A0C12] text-white min-h-screen font-sans">
       {/* NAV */}
       <nav className="w-full max-w-6xl mx-auto flex items-center justify-between py-4 px-2 sm:px-4 sticky top-0 z-50 bg-[#0A0C12]/80 backdrop-blur border-b border-gray-900">
-        <div className="text-lg sm:text-2xl font-bold tracking-tighter">Ayush Kunjadia</div>
+        <div className="text-lg sm:text-2xl font-bold tracking-tighter">
+          Ayush Kunjadia
+        </div>
         {/* Desktop Nav */}
         <div className="hidden md:flex gap-4">
-          <a href="#projects" className="hover:text-cyan-300 transition">Projects</a>
-          <a href="#experience" className="hover:text-cyan-300 transition">Experience</a>
-          <a href="#skills" className="hover:text-cyan-300 transition">Skills</a>
-          <a href="#interests" className="hover:text-cyan-300 transition">Interests</a>
-          <a href="#contact" className="hover:text-cyan-300 transition">Contact</a>
-          <a href="https://github.com/atkunja" target="_blank" rel="noopener" className="hover:text-cyan-400 transition">GitHub</a>
-          <a href="https://www.linkedin.com/in/ayushkunjadia/" target="_blank" rel="noopener" className="hover:text-cyan-400 transition">LinkedIn</a>
+          <a href="#projects" className="hover:text-cyan-300 transition">
+            Projects
+          </a>
+          <a href="#experience" className="hover:text-cyan-300 transition">
+            Experience
+          </a>
+          <a href="#skills" className="hover:text-cyan-300 transition">
+            Skills
+          </a>
+          <a href="#interests" className="hover:text-cyan-300 transition">
+            Interests
+          </a>
+          <a href="#contact" className="hover:text-cyan-300 transition">
+            Contact
+          </a>
+          <a href="/blog" className="hover:text-cyan-300 transition">
+            Blog
+          </a>
+          <a
+            href="https://github.com/atkunja"
+            target="_blank"
+            rel="noopener"
+            className="hover:text-cyan-400 transition"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ayushkunjadia/"
+            target="_blank"
+            rel="noopener"
+            className="hover:text-cyan-400 transition"
+          >
+            LinkedIn
+          </a>
         </div>
-        {/* Hamburger button for mobile */}
+        {/* Hamburger button */}
         <button
           className="md:hidden flex items-center text-3xl text-cyan-400"
           onClick={() => setMobileNav(true)}
           aria-label="Open menu"
-        >≡</button>
+        >
+          ≡
+        </button>
       </nav>
-      {/* Mobile Nav */}
+
+      {/* Mobile Nav Overlay */}
       <MobileNav open={mobileNav} setOpen={setMobileNav} />
+
       {/* HERO */}
       <header className="flex flex-col items-center justify-center min-h-[40vh] text-center pb-6 px-2">
-        <h1 className="text-3xl sm:text-5xl font-extrabold mb-2 sm:mb-3 tracking-tight drop-shadow-lg">Ayush Kunjadia</h1>
+        <h1 className="text-3xl sm:text-5xl font-extrabold mb-2 sm:mb-3 tracking-tight drop-shadow-lg">
+          Ayush Kunjadia
+        </h1>
         <div className="text-base sm:text-2xl mb-1 sm:mb-2 text-cyan-300">
           <Typewriter words={WORDS} />
         </div>
         <p className="text-gray-400 max-w-xl mt-2 mb-4 sm:mb-6 text-base sm:text-lg">
-          Aspiring software engineer passionate about building, learning, and sharing knowledge. Always open to new collaborations and exciting challenges.
+          Aspiring software engineer passionate about building, learning, and
+          sharing knowledge. Always open to new collaborations and exciting
+          challenges.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 mt-2">
-          <a href="https://github.com/atkunja" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded bg-gray-900 hover:bg-cyan-700 text-white shadow transition">GitHub</a>
-          <a href="https://www.linkedin.com/in/ayushkunjadia/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded bg-gray-900 hover:bg-cyan-700 text-white shadow transition">LinkedIn</a>
+          <a
+            href="https://github.com/atkunja"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded bg-gray-900 hover:bg-cyan-700 text-white shadow transition"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ayushkunjadia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded bg-gray-900 hover:bg-cyan-700 text-white shadow transition"
+          >
+            LinkedIn
+          </a>
         </div>
       </header>
+
       {/* PROJECTS */}
-      <section id="projects" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-cyan-300">Projects</h2>
+      <section
+        id="projects"
+        className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20"
+      >
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-cyan-300">
+          Projects
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {projects.map((p) => (
-            <div key={p.title}
+            <div
+              key={p.title}
               className="rounded-2xl shadow-lg bg-gradient-to-b from-gray-900/90 to-gray-900/60 border border-gray-800 hover:border-cyan-400 hover:shadow-cyan-800/30 transition overflow-hidden flex flex-col"
             >
-              <a href={p.live} target="_blank" rel="noopener noreferrer" className="block">
+              <a
+                href={p.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
                 <div className="w-full aspect-video bg-gray-800 relative">
                   <Image
                     src={p.image}
                     alt={p.title + " screenshot"}
                     fill
-                    style={{objectFit: "cover"}}
+                    style={{ objectFit: "cover" }}
                     className="transition-transform duration-300 hover:scale-105"
-                    priority={false}
                   />
                 </div>
               </a>
               <div className="p-4 sm:p-6 flex-1 flex flex-col">
                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <h3 className="text-base sm:text-xl font-bold text-white">{p.title}</h3>
-                  <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-gray-400 underline text-xs">GitHub</a>
-                  <a href={p.live} target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline text-xs">Live</a>
+                  <h3 className="text-base sm:text-xl font-bold text-white">
+                    {p.title}
+                  </h3>
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 underline text-xs"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href={p.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-cyan-400 underline text-xs"
+                  >
+                    Live
+                  </a>
                 </div>
                 <div className="flex flex-wrap gap-2 mb-3 mt-1">
                   {p.tech.map((tech) => (
-                    <span key={tech} className="bg-cyan-900/40 text-cyan-300 text-xs px-2 py-1 rounded">
+                    <span
+                      key={tech}
+                      className="bg-cyan-900/40 text-cyan-300 text-xs px-2 py-1 rounded"
+                    >
                       {tech}
                     </span>
                   ))}
                 </div>
-                <div className="text-gray-300 text-xs sm:text-sm mt-1">{p.description}</div>
+                <div className="text-gray-300 text-xs sm:text-sm mt-1">
+                  {p.description}
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
+
       {/* EXPERIENCE */}
-      <section id="experience" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-cyan-300">Experience</h2>
+      <section
+        id="experience"
+        className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20"
+      >
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-cyan-300">
+          Experience
+        </h2>
         <div className="grid grid-cols-1 gap-6 sm:gap-8">
           {experience.map((exp) => (
             <a
@@ -206,25 +362,42 @@ export default function Home() {
               className="rounded-2xl shadow-lg bg-gradient-to-b from-gray-900/90 to-gray-900/60 border border-gray-800 hover:border-cyan-400 hover:shadow-cyan-800/30 transition flex flex-col p-4 sm:p-6"
             >
               <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                <h3 className="text-base sm:text-xl font-bold text-white">{exp.title}</h3>
-                <span className="text-cyan-400 text-xs sm:text-base">{exp.period}</span>
+                <h3 className="text-base sm:text-xl font-bold text-white">
+                  {exp.title}
+                </h3>
+                <span className="text-cyan-400 text-xs sm:text-base">
+                  {exp.period}
+                </span>
               </div>
-              <span className="text-gray-400 font-semibold mb-2">{exp.company}</span>
+              <span className="text-gray-400 font-semibold mb-2">
+                {exp.company}
+              </span>
               <div className="flex flex-wrap gap-2 mb-3">
                 {exp.tech.map((tech) => (
-                  <span key={tech} className="bg-cyan-900/40 text-cyan-300 text-xs px-2 py-1 rounded">
+                  <span
+                    key={tech}
+                    className="bg-cyan-900/40 text-cyan-300 text-xs px-2 py-1 rounded"
+                  >
                     {tech}
                   </span>
                 ))}
               </div>
-              <div className="text-gray-300 text-xs sm:text-sm">{exp.description}</div>
+              <div className="text-gray-300 text-xs sm:text-sm">
+                {exp.description}
+              </div>
             </a>
           ))}
         </div>
       </section>
+
       {/* SKILLS */}
-      <section id="skills" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-cyan-300">Skills & Technologies</h2>
+      <section
+        id="skills"
+        className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20"
+      >
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-cyan-300">
+          Skills & Technologies
+        </h2>
         <ul className="flex flex-wrap gap-2 sm:gap-3">
           {skills.map((skill) => (
             <li
@@ -236,20 +409,35 @@ export default function Home() {
           ))}
         </ul>
       </section>
+
       {/* INTERESTS */}
-      <section id="interests" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-cyan-300">Interests</h2>
+      <section
+        id="interests"
+        className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20"
+      >
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-cyan-300">
+          Interests
+        </h2>
         <ul className="flex flex-wrap gap-3 sm:gap-4 text-gray-400">
           {interests.map((interest) => (
-            <li key={interest} className="bg-gray-900 px-3 py-2 rounded-lg text-sm sm:text-base">
+            <li
+              key={interest}
+              className="bg-gray-900 px-3 py-2 rounded-lg text-sm sm:text-base"
+            >
               {interest}
             </li>
           ))}
         </ul>
       </section>
+
       {/* CONTACT */}
-      <section id="contact" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-cyan-300">Contact</h2>
+      <section
+        id="contact"
+        className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20"
+      >
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-cyan-300">
+          Contact
+        </h2>
         <p className="mb-4 sm:mb-6 text-base sm:text-lg text-gray-300">
           Have a project idea in mind or want to collaborate? Let’s connect!
         </p>
@@ -277,7 +465,6 @@ export default function Home() {
             GitHub
           </a>
         </div>
-        {/* Contact Form */}
         <form
           action="https://formspree.io/f/xeozjzzr"
           method="POST"
@@ -320,6 +507,7 @@ export default function Home() {
           </button>
         </form>
       </section>
+
       {/* FOOTER */}
       <footer className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-8 text-center text-gray-700 text-xs sm:text-sm border-t border-gray-800">
         © {new Date().getFullYear()} Ayush Kunjadia. All rights reserved.

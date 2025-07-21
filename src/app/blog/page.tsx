@@ -1,70 +1,98 @@
+// src/app/blog/page.tsx
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, Fragment } from "react";
 import Image from "next/image";
+import { Dialog, Transition } from "@headlessui/react";
 
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN!;
 
 type Post = {
   id: number;
-  content: string;
+  caption: string;
   mediaURL?: string;
   type?: "image" | "video";
-  timestamp: Date;
+  timestamp: string;
 };
 
 export default function BlogPage() {
+  // state
   const [posts, setPosts] = useState<Post[]>([]);
   const [media, setMedia] = useState<File | null>(null);
-  const [content, setContent] = useState("");
+  const [caption, setCaption] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-
-  const [loginOpen, setLoginOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [pwInput, setPwInput] = useState("");
+  const [lightbox, setLightbox] = useState<Post | null>(null);
+  const [editingId, setEditingId] = useState<number| null>(null);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
+  // load posts & admin from localStorage
   useEffect(() => {
+    const saved = localStorage.getItem("blogPosts");
+    if (saved) setPosts(JSON.parse(saved));
     if (localStorage.getItem("isAdmin") === "true") {
       setIsAdmin(true);
     }
   }, []);
 
-  function login() {
+  // persist posts
+  useEffect(() => {
+    localStorage.setItem("blogPosts", JSON.stringify(posts));
+  }, [posts]);
+
+  // handlers
+  function tryLogin() {
     if (pwInput === ADMIN_TOKEN) {
       setIsAdmin(true);
       localStorage.setItem("isAdmin", "true");
-      setLoginOpen(false);
+      setShowLogin(false);
       setPwInput("");
     } else {
-      alert("Incorrect password");
+      alert("Bad password");
     }
   }
-
   function logout() {
     setIsAdmin(false);
     localStorage.removeItem("isAdmin");
   }
 
-  function handlePost() {
-    if (!media && !content.trim()) return;
+  function handleSubmit() {
+    const id = editingId ?? Date.now();
     const newPost: Post = {
-      id: Date.now(),
-      content,
-      timestamp: new Date(),
+      id,
+      caption,
+      mediaURL: media ? URL.createObjectURL(media) : undefined,
+      type: media
+        ? media.type.startsWith("video")
+          ? "video"
+          : "image"
+        : undefined,
+      timestamp: new Date().toISOString(),
     };
-    if (media) {
-      const url = URL.createObjectURL(media);
-      newPost.mediaURL = url;
-      newPost.type = media.type.startsWith("video") ? "video" : "image";
-    }
-    setPosts([newPost, ...posts]);
+    setPosts(prev =>
+      editingId
+        ? prev.map(p => (p.id === id ? newPost : p))
+        : [newPost, ...prev]
+    );
+    setCaption("");
     setMedia(null);
-    setContent("");
+    setEditingId(null);
   }
 
-  const formatDate = (d: Date) =>
-    d.toLocaleString("en-US", {
+  function deletePost(id: number) {
+    if (confirm("Delete this post?")) {
+      setPosts(posts.filter(p => p.id !== id));
+    }
+  }
+
+  function startEdit(p: Post) {
+    setEditingId(p.id);
+    setCaption(p.caption);
+    // we can’t rehydrate File so skip media
+  }
+
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -72,110 +100,188 @@ export default function BlogPage() {
       minute: "2-digit",
     });
 
+  // UI
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* admin UI */}
-      <div className="fixed top-4 left-4 z-50 flex items-center space-x-2">
+    <div className="min-h-screen bg-gradient-to-b from-gray-800 via-gray-900 to-black text-gray-100 p-4">
+      {/* Admin Button */}
+      <div className="fixed top-4 left-4 z-20">
         {isAdmin ? (
-          <button onClick={logout} className="text-xs bg-red-600 px-2 py-1 rounded">
+          <button
+            onClick={logout}
+            className="bg-red-600 px-3 py-1 rounded hover:bg-red-500 text-sm"
+          >
             Logout
           </button>
         ) : (
-          <>
-            <button
-              onClick={() => setLoginOpen(!loginOpen)}
-              className="text-xs bg-blue-600 px-2 py-1 rounded"
-            >
-              Admin Login
-            </button>
-            {loginOpen && (
-              <div className="ml-2 p-2 bg-gray-800 rounded shadow border border-gray-700">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={pwInput}
-                  onChange={(e) => setPwInput(e.target.value)}
-                  className="w-32 mb-2 p-1 bg-gray-700 rounded text-xs"
-                />
-                <button onClick={login} className="w-full bg-green-600 py-1 rounded text-xs">
-                  Login
-                </button>
-              </div>
-            )}
-          </>
+          <button
+            onClick={() => setShowLogin(true)}
+            className="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 text-sm"
+          >
+            Admin
+          </button>
         )}
       </div>
 
-      <section className="max-w-3xl mx-auto mt-16 mb-20 px-4">
-        <h1 className="text-4xl font-bold text-cyan-400 text-center mb-8">Blog</h1>
-
-        {isAdmin && (
-          <div className="bg-gray-800 p-6 rounded-xl mb-10 border border-gray-700 space-y-4">
-            {/* file chooser */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="bg-gray-700 px-4 py-2 rounded text-sm"
-              >
-                Choose File
-              </button>
-              <span className="text-sm text-gray-300">
-                {media?.name || "No file chosen"}
-              </span>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*,video/*"
-                onChange={(e) => setMedia(e.target.files?.[0] || null)}
-                className="hidden"
-              />
-            </div>
-
-            {/* text area */}
-            <textarea
-              placeholder="Write your post here…"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full p-2 bg-gray-700 text-white rounded h-24 resize-none border border-gray-600"
+      {/* Login Modal */}
+      <Transition show={showLogin} as={Fragment}>
+        <Dialog
+          onClose={() => setShowLogin(false)}
+          className="fixed inset-0 z-30 flex items-center justify-center"
+        >
+          <Dialog.Overlay className="fixed inset-0 bg-black/60" />
+          <div className="relative bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+            <Dialog.Title className="text-lg font-semibold mb-4">
+              Enter Password
+            </Dialog.Title>
+            <input
+              type="password"
+              value={pwInput}
+              onChange={(e) => setPwInput(e.target.value)}
+              className="w-full p-2 rounded bg-gray-800 border border-gray-700 mb-4 focus:outline-none"
+              placeholder="Password…"
             />
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setShowLogin(false)}
+                className="px-4 py-1 bg-gray-700 hover:bg-gray-600 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={tryLogin}
+                className="px-4 py-1 bg-green-600 hover:bg-green-500 rounded"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
 
+      {/* Header */}
+      <h1 className="text-5xl font-bold text-center mb-8 tracking-tight drop-shadow-md text-cyan-400">
+        ✨ My Aesthetic Blog ✨
+      </h1>
+
+      {/* Post Form */}
+      {isAdmin && (
+        <div className="max-w-xl mx-auto mb-8 bg-gray-900 bg-opacity-70 p-6 rounded-lg">
+          <label className="block mb-2">
+            <span className="text-gray-300">Media (opt):</span>
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={(e) => setMedia(e.target.files?.[0] ?? null)}
+              className="mt-1 block w-full text-sm text-gray-100 bg-gray-800 border border-gray-700 rounded focus:ring-cyan-400"
+            />
+          </label>
+          <label className="block mb-4">
+            <span className="text-gray-300">Write your post:</span>
+            <textarea
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              rows={4}
+              className="mt-1 block w-full p-2 bg-gray-800 border border-gray-700 rounded text-gray-100 focus:ring-cyan-400"
+            />
+          </label>
+          <button
+            onClick={handleSubmit}
+            className="bg-cyan-600 hover:bg-cyan-500 px-6 py-2 rounded"
+          >
+            {editingId ? "Update" : "Post"}
+          </button>
+        </div>
+      )}
+
+      {/* Posts */}
+      <div className="space-y-6 max-w-2xl mx-auto">
+        {posts.map((p) => (
+          <div
+            key={p.id}
+            className="bg-gray-900 bg-opacity-70 p-4 rounded-lg shadow"
+          >
+            <div className="flex justify-between items-center mb-2">
+              <time className="text-xs text-gray-400">
+                📅 {formatDate(p.timestamp)}
+              </time>
+              {isAdmin && (
+                <div className="space-x-2">
+                  <button
+                    onClick={() => startEdit(p)}
+                    className="text-sm text-yellow-400 hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deletePost(p.id)}
+                    className="text-sm text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+            {p.mediaURL && (
+              <div
+                className="cursor-pointer mb-2 mx-auto max-w-full"
+                onClick={() => setLightbox(p)}
+              >
+                {p.type === "video" ? (
+                  <video
+                    src={p.mediaURL}
+                    className="rounded max-h-48 w-auto"
+                    controls={false}
+                  />
+                ) : (
+                  <Image
+                    src={p.mediaURL}
+                    alt=""
+                    width={400}
+                    height={225}
+                    className="rounded object-cover"
+                  />
+                )}
+              </div>
+            )}
+            <p className="text-gray-200">{p.caption}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Lightbox */}
+      <Transition show={!!lightbox} as={Fragment}>
+        <Dialog
+          onClose={() => setLightbox(null)}
+          className="fixed inset-0 z-40 flex items-center justify-center p-4"
+        >
+          <Dialog.Overlay className="fixed inset-0 bg-black/80" />
+          <div className="relative max-h-full max-w-full">
+            {lightbox?.type === "video" ? (
+              <video
+                src={lightbox.mediaURL}
+                controls
+                autoPlay
+                className="max-h-screen max-w-screen"
+              />
+            ) : (
+              <Image
+                src={lightbox!.mediaURL!}
+                alt=""
+                width={800}
+                height={450}
+                className="max-h-screen max-w-screen"
+              />
+            )}
             <button
-              onClick={handlePost}
-              disabled={!media && !content.trim()}
-              className="bg-cyan-600 px-5 py-2 rounded text-sm font-semibold disabled:opacity-50"
+              onClick={() => setLightbox(null)}
+              className="absolute top-2 right-2 text-white text-2xl"
             >
-              Post
+              ✕
             </button>
           </div>
-        )}
-
-        {/* posts */}
-        <div className="space-y-8">
-          {posts.map((p) => (
-            <article key={p.id} className="bg-gray-900 p-4 rounded-xl shadow-md border border-gray-800">
-              <div className="text-gray-500 text-sm mb-2 flex items-center">
-                <span className="mr-2">🗓️</span>
-                <time dateTime={p.timestamp.toISOString()}>{formatDate(p.timestamp)}</time>
-              </div>
-
-              {p.mediaURL && p.type === "image" && (
-                <Image
-                  src={p.mediaURL}
-                  alt=""
-                  width={800}
-                  height={450}
-                  className="rounded mb-3 object-cover w-full max-h-[450px]"
-                />
-              )}
-              {p.mediaURL && p.type === "video" && (
-                <video src={p.mediaURL} controls className="rounded mb-3 w-full max-h-[450px]" />
-              )}
-
-              {p.content && <p className="text-gray-300 whitespace-pre-wrap">{p.content}</p>}
-            </article>
-          ))}
-        </div>
-      </section>
+        </Dialog>
+      </Transition>
     </div>
   );
 }
+

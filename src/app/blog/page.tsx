@@ -1,43 +1,37 @@
 "use client";
-
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect, Fragment, ChangeEvent } from "react";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
+import { supabase } from "../../lib/supabaseClient";
 
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN!;
 
 type Post = {
   id: number;
   caption: string;
-  mediaURL?: string;
-  type: "image" | "video" | "text";
-  timestamp: string;
+  media_url: string | null;
+  type: "text" | "image" | "video";
+  inserted_at: string;
 };
 
 export default function BlogPage() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [password, setPassword] = useState("");
-  const [media, setMedia] = useState<File | null>(null);
-  const [caption, setCaption] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
+  const [caption, setCaption] = useState("");
+  const [media, setMedia] = useState<File | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<Post | null>(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // hydrate from localStorage
+  const load = async () => {
+    const res = await fetch("/api/posts");
+    setPosts(await res.json());
+  };
+
   useEffect(() => {
-    setIsAdmin(localStorage.getItem("isAdmin") === "true");
-    const stored = localStorage.getItem("blog_posts");
-    if (stored) setPosts(JSON.parse(stored));
+    load();
   }, []);
-
-  // persist posts & admin flag
-  useEffect(() => {
-    localStorage.setItem("blog_posts", JSON.stringify(posts));
-  }, [posts]);
-  useEffect(() => {
-    localStorage.setItem("isAdmin", isAdmin ? "true" : "false");
-  }, [isAdmin]);
 
   const handleLogin = () => {
     if (password === ADMIN_TOKEN) {
@@ -48,74 +42,76 @@ export default function BlogPage() {
       alert("Wrong password");
     }
   };
-  const handleLogout = () => {
-    setIsAdmin(false);
-    localStorage.removeItem("isAdmin");
-  };
 
-  const handleSubmit = () => {
-    if (!media && !caption.trim()) return;
-    const url = media ? URL.createObjectURL(media) : undefined;
-    const type: Post["type"] = media
-      ? media.type.startsWith("video")
-        ? "video"
-        : "image"
-      : "text";
-    const newPost: Post = {
-      id: editId ?? Date.now(),
-      caption,
-      mediaURL: url,
-      type,
-      timestamp: new Date().toISOString(),
-    };
-    setPosts((prev) =>
-      editId != null
-        ? prev.map((p) => (p.id === editId ? newPost : p))
-        : [newPost, ...prev]
-    );
-    setMedia(null);
-    setCaption("");
-    setEditId(null);
-  };
+  const handleSubmit = async () => {
+    let url: string | null = null;
+    let type: Post["type"] = "text";
+    if (media) {
+      const filePath = `${Date.now()}_${media.name}`;
+      const { error: upErr } = await supabase
+        .storage.from("blog-media")
+        .upload(filePath, media);
+      if (upErr) return alert(upErr.message);
+      const { data } = await supabase
+        .storage.from("blog-media")
+        .getPublicUrl(filePath);
+      url = data.publicUrl;
+      type = media.type.startsWith("video") ? "video" : "image";
+    }
 
-  const handleDelete = (id: number) =>
-    setPosts((prev) => prev.filter((p) => p.id !== id));
-
-  const formatDate = (iso: string) =>
-    new Date(iso).toLocaleString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
+    const body = { id: editId, caption, media_url: url, type };
+    const method = editId ? "PUT" : "POST";
+    await fetch("/api/posts", {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "x-admin-token": ADMIN_TOKEN,
+      },
+      body: JSON.stringify(body),
     });
 
+    setCaption("");
+    setMedia(null);
+    setEditId(null);
+    load();
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Delete this post?")) return;
+    await fetch("/api/posts", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-admin-token": ADMIN_TOKEN,
+      },
+      body: JSON.stringify({ id }),
+    });
+    load();
+  };
+
   return (
-    <div className="relative bg-[#0A0C12] min-h-screen text-white">
-      {/* Login / Logout */}
+    <div className="relative min-h-screen bg-[#0A0C12] text-white">
       {isAdmin ? (
         <button
-          onClick={handleLogout}
-          className="absolute top-4 left-4 bg-red-600 hover:bg-red-500 text-sm px-3 py-1 rounded"
+          onClick={() => setIsAdmin(false)}
+          className="absolute top-4 left-4 bg-red-600 px-3 py-1 rounded text-sm"
         >
           Logout
         </button>
       ) : (
         <button
           onClick={() => setShowLogin(true)}
-          className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-500 text-sm px-3 py-1 rounded"
+          className="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded text-sm"
         >
           Admin Login
         </button>
       )}
 
-      {/* Login Modal */}
       <Transition show={showLogin} as={Fragment}>
         <Dialog
           onClose={() => setShowLogin(false)}
           className="fixed inset-0 z-40 flex items-center justify-center p-4"
         >
-          {/* backdrop */}
           <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
           <div className="relative bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-sm">
             <Dialog.Title className="mb-4 text-xl font-semibold">
@@ -126,11 +122,11 @@ export default function BlogPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full px-3 py-2 mb-4 bg-gray-800 rounded outline-none"
+              className="w-full mb-4 px-3 py-2 bg-gray-800 rounded outline-none"
             />
             <button
               onClick={handleLogin}
-              className="w-full bg-green-600 hover:bg-green-500 py-2 rounded"
+              className="w-full bg-green-600 py-2 rounded"
             >
               Login
             </button>
@@ -139,7 +135,7 @@ export default function BlogPage() {
       </Transition>
 
       <section className="mx-auto max-w-3xl px-4 pt-24 pb-10">
-        <h1 className="text-4xl text-cyan-400 font-bold text-center mb-8">
+        <h1 className="text-4xl font-bold text-cyan-400 text-center mb-8">
           Blog
         </h1>
 
@@ -148,7 +144,9 @@ export default function BlogPage() {
             <input
               type="file"
               accept="image/*,video/*"
-              onChange={(e) => setMedia(e.target.files?.[0] ?? null)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setMedia(e.target.files?.[0] || null)
+              }
               className="mb-3 block w-full text-sm text-white"
             />
             <textarea
@@ -167,65 +165,58 @@ export default function BlogPage() {
         )}
 
         <div className="space-y-8">
-          {posts.map((post) => (
+          {posts.map((p) => (
             <article
-              key={post.id}
+              key={p.id}
               className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"
             >
-              <div className="flex justify-between items-center mb-2">
-                <div className="flex items-center space-x-2 text-gray-400 text-sm">
-                  <span>🗓️</span>
-                  <time dateTime={post.timestamp}>
-                    {formatDate(post.timestamp)}
-                  </time>
-                </div>
+              <div className="flex justify-between items-center mb-2 text-gray-400 text-sm">
+                <span>🗓️ {new Date(p.inserted_at).toLocaleString()}</span>
                 {isAdmin && (
-                  <div className="space-x-2">
+                  <span>
                     <button
                       onClick={() => {
-                        setEditId(post.id);
-                        setCaption(post.caption);
+                        setEditId(p.id);
+                        setCaption(p.caption);
                       }}
-                      className="text-yellow-400 hover:underline text-sm"
+                      className="text-yellow-400 hover:underline mr-2 text-sm"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(post.id)}
+                      onClick={() => handleDelete(p.id)}
                       className="text-red-400 hover:underline text-sm"
                     >
                       Delete
                     </button>
-                  </div>
+                  </span>
                 )}
               </div>
 
-              {/* media or text */}
-              {post.type === "image" && post.mediaURL && (
+              {p.type === "image" && p.media_url && (
                 <img
-                  src={post.mediaURL}
+                  src={p.media_url}
                   alt=""
                   className="mb-3 w-full max-h-64 object-cover rounded cursor-pointer"
-                  onClick={() => setLightbox(post)}
+                  onClick={() => setLightbox(p)}
                 />
               )}
-              {post.type === "video" && post.mediaURL && (
+              {p.type === "video" && p.media_url && (
                 <video
-                  src={post.mediaURL}
+                  src={p.media_url}
                   controls
                   className="mb-3 w-full max-h-64 rounded cursor-pointer"
-                  onClick={() => setLightbox(post)}
+                  onClick={() => setLightbox(p)}
                 />
               )}
-              {post.type === "text" && (
-                <p className="text-gray-300">{post.caption}</p>
+              {p.type === "text" && (
+                <p className="text-gray-300">{p.caption}</p>
               )}
             </article>
           ))}
         </div>
       </section>
 
-      {/* Lightbox */}
       <Transition show={!!lightbox} as={Fragment}>
         <Dialog
           onClose={() => setLightbox(null)}
@@ -233,9 +224,9 @@ export default function BlogPage() {
         >
           <div className="fixed inset-0 bg-black/80" aria-hidden="true" />
           <div className="relative max-w-full max-h-full">
-            {lightbox?.type === "image" && lightbox.mediaURL && (
+            {lightbox?.type === "image" && lightbox.media_url && (
               <Image
-                src={lightbox.mediaURL}
+                src={lightbox.media_url}
                 alt=""
                 width={800}
                 height={600}
@@ -243,9 +234,9 @@ export default function BlogPage() {
                 className="max-h-screen max-w-screen"
               />
             )}
-            {lightbox?.type === "video" && lightbox.mediaURL && (
+            {lightbox?.type === "video" && lightbox.media_url && (
               <video
-                src={lightbox.mediaURL}
+                src={lightbox.media_url}
                 controls
                 autoPlay
                 className="max-h-screen max-w-screen"

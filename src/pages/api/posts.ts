@@ -1,7 +1,7 @@
 // src/pages/api/posts.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "../../../lib/supabaseClient";
-
+import { supabase } from "../../lib/supabaseClient";
+ 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const ADMIN = process.env.NEXT_PUBLIC_ADMIN_TOKEN;

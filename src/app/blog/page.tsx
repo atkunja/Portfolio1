@@ -2,7 +2,7 @@
 export const dynamic = "force-dynamic";
 
 import { Fragment, useState, useEffect, ChangeEvent } from "react";
-import Link from "next/link"; // <--- THIS LINE IS NEEDED
+import Link from "next/link";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { supabase } from "@/lib/supabaseClient";
@@ -56,8 +56,14 @@ export default function BlogPage() {
 
     if (media) {
       const filePath = `${Date.now()}_${media.name}`;
-      const { error: upErr } = await supabase.storage.from("blog-media").upload(filePath, media);
-      if (upErr) return alert(upErr.message);
+      const { data: uploadData, error: upErr } = await supabase
+        .storage.from("blog-media")
+        .upload(filePath, media);
+
+      if (upErr) {
+        alert("Upload error: " + upErr.message); // <-- Error message for debugging
+        return;
+      }
 
       const { data } = await supabase.storage.from("blog-media").getPublicUrl(filePath);
 
@@ -110,7 +116,7 @@ export default function BlogPage() {
   return (
     <div className="relative min-h-screen bg-[#0A0C12] text-white">
 
-      {/* NAVIGATION BACK TO HOME - use Link, NOT <a> */}
+      {/* NAVIGATION BACK TO HOME */}
       <nav className="absolute top-4 right-4 z-50">
         <Link
           href="/"

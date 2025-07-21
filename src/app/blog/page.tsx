@@ -1,59 +1,122 @@
+// src/app/blog/page.tsx
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
-export default function Blog() {
-  const [posts, setPosts] = useState<
-    { id: number; caption: string; mediaURL: string; type: "image" | "video" }[]
-  >([]);
+const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN!;
+
+type Post = {
+  id: number;
+  caption: string;
+  mediaURL: string;
+  type: "image" | "video";
+  timestamp: Date;
+};
+
+export default function BlogPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
   const [media, setMedia] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // If you previously logged in, keep you admin
+  useEffect(() => {
+    if (localStorage.getItem("isAdmin") === "true") {
+      setIsAdmin(true);
+    }
+  }, []);
+
+  // Prompt for password
+  const handleLogin = () => {
+    const pw = prompt("Enter admin token:");
+    if (pw === ADMIN_TOKEN) {
+      setIsAdmin(true);
+      localStorage.setItem("isAdmin", "true");
+    } else {
+      alert("❌ Incorrect token");
+    }
+  };
 
   const handleSubmit = () => {
     if (!media) return;
     const url = URL.createObjectURL(media);
     const type = media.type.startsWith("video") ? "video" : "image";
-    setPosts([{ id: Date.now(), caption, mediaURL: url, type }, ...posts]);
+    setPosts([
+      { id: Date.now(), caption, mediaURL: url, type, timestamp: new Date() },
+      ...posts,
+    ]);
     setMedia(null);
     setCaption("");
   };
 
+  const formatDate = (d: Date) =>
+    d.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+
   return (
     <section className="max-w-3xl mx-auto mt-16 mb-20 px-4">
-      <h1 className="text-4xl font-bold text-cyan-400 text-center mb-6">Blog</h1>
+      <h1 className="text-4xl font-bold text-cyan-400 text-center mb-6">
+        Blog
+      </h1>
 
-      <div className="bg-gray-900 p-6 rounded-2xl shadow-lg mb-10 border border-gray-700">
-        <input
-          type="file"
-          accept="image/*,video/*"
-          onChange={(e) => setMedia(e.target.files?.[0] || null)}
-          className="mb-3 block w-full text-sm text-white"
-        />
-        <input
-          type="text"
-          placeholder="Write a caption..."
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          className="w-full p-2 mb-4 bg-gray-800 text-white rounded border border-gray-700"
-        />
-        <button
-          onClick={handleSubmit}
-          className="bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2 rounded transition font-semibold"
-        >
-          Post
-        </button>
-      </div>
+      {!isAdmin && (
+        <div className="text-center mb-8">
+          <button
+            onClick={handleLogin}
+            className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full transition"
+          >
+            Admin Login
+          </button>
+        </div>
+      )}
+
+      {isAdmin && (
+        <div className="bg-gray-900 p-6 rounded-2xl shadow-lg mb-10 border border-gray-700">
+          <input
+            type="file"
+            accept="image/*,video/*"
+            onChange={(e) => setMedia(e.target.files?.[0] || null)}
+            className="mb-3 block w-full text-sm text-white"
+          />
+          <input
+            type="text"
+            placeholder="Write a caption..."
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            className="w-full p-2 mb-4 bg-gray-800 text-white rounded border border-gray-700"
+          />
+          <button
+            onClick={handleSubmit}
+            className="bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2 rounded transition font-semibold"
+          >
+            Post
+          </button>
+        </div>
+      )}
 
       <div className="space-y-6">
         {posts.map((post) => (
-          <div
+          <article
             key={post.id}
             className="bg-gray-900 p-4 rounded-xl shadow-md border border-gray-800"
           >
+            <div className="text-gray-500 text-sm mb-2 flex items-center">
+              <span className="mr-2">🗓️</span>
+              <time dateTime={post.timestamp.toISOString()}>
+                {formatDate(post.timestamp)}
+              </time>
+            </div>
+
             {post.type === "image" ? (
               <Image
                 src={post.mediaURL}
-                alt="uploaded image"
+                alt={post.caption}
                 width={800}
                 height={450}
                 className="rounded mb-3 object-cover w-full max-h-[450px]"
@@ -65,8 +128,9 @@ export default function Blog() {
                 className="rounded mb-3 w-full max-h-[450px]"
               />
             )}
+
             <p className="text-gray-300">{post.caption}</p>
-          </div>
+          </article>
         ))}
       </div>
     </section>

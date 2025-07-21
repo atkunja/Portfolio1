@@ -1,8 +1,9 @@
 "use client";
+
 import { useState, useEffect, Fragment, ChangeEvent } from "react";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN!;
 
@@ -24,6 +25,7 @@ export default function BlogPage() {
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
+  // fetch posts from API
   const load = async () => {
     const res = await fetch("/api/posts");
     setPosts(await res.json());
@@ -33,6 +35,7 @@ export default function BlogPage() {
     load();
   }, []);
 
+  // handle admin login
   const handleLogin = () => {
     if (password === ADMIN_TOKEN) {
       setIsAdmin(true);
@@ -43,39 +46,46 @@ export default function BlogPage() {
     }
   };
 
+  // create or update a post
   const handleSubmit = async () => {
     let url: string | null = null;
     let type: Post["type"] = "text";
+
     if (media) {
+      // upload to Supabase storage
       const filePath = `${Date.now()}_${media.name}`;
       const { error: upErr } = await supabase
-        .storage.from("blog-media")
+        .storage
+        .from("blog-media")
         .upload(filePath, media);
       if (upErr) return alert(upErr.message);
+
       const { data } = await supabase
-        .storage.from("blog-media")
+        .storage
+        .from("blog-media")
         .getPublicUrl(filePath);
       url = data.publicUrl;
       type = media.type.startsWith("video") ? "video" : "image";
     }
 
-    const body = { id: editId, caption, media_url: url, type };
-    const method = editId ? "PUT" : "POST";
+    // call our API route
     await fetch("/api/posts", {
-      method,
+      method: editId ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
         "x-admin-token": ADMIN_TOKEN,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ id: editId, caption, media_url: url, type }),
     });
 
+    // reset form & refresh
     setCaption("");
     setMedia(null);
     setEditId(null);
     load();
   };
 
+  // delete a post
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this post?")) return;
     await fetch("/api/posts", {
@@ -91,6 +101,7 @@ export default function BlogPage() {
 
   return (
     <div className="relative min-h-screen bg-[#0A0C12] text-white">
+      {/* Admin Login / Logout */}
       {isAdmin ? (
         <button
           onClick={() => setIsAdmin(false)}
@@ -107,16 +118,29 @@ export default function BlogPage() {
         </button>
       )}
 
+      {/* Login Modal */}
       <Transition show={showLogin} as={Fragment}>
         <Dialog
           onClose={() => setShowLogin(false)}
           className="fixed inset-0 z-40 flex items-center justify-center p-4"
         >
+          {/* backdrop */}
           <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
+
           <div className="relative bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-sm">
+            {/* close button */}
+            <button
+              aria-label="Close login"
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-200"
+              onClick={() => setShowLogin(false)}
+            >
+              ×
+            </button>
+
             <Dialog.Title className="mb-4 text-xl font-semibold">
               Enter Admin Password
             </Dialog.Title>
+
             <input
               type="password"
               value={password}
@@ -124,6 +148,7 @@ export default function BlogPage() {
               placeholder="Password"
               className="w-full mb-4 px-3 py-2 bg-gray-800 rounded outline-none"
             />
+
             <button
               onClick={handleLogin}
               className="w-full bg-green-600 py-2 rounded"
@@ -134,18 +159,20 @@ export default function BlogPage() {
         </Dialog>
       </Transition>
 
+      {/* Blog Section */}
       <section className="mx-auto max-w-3xl px-4 pt-24 pb-10">
-        <h1 className="text-4xl font-bold text-cyan-400 text-center mb-8">
-          Blog
+        <h1 className="text-5xl font-extrabold text-center text-cyan-400 mb-12 animate-pulse">
+          My Blog
         </h1>
 
+        {/* Admin Post Form */}
         {isAdmin && (
           <div className="mb-10 bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
             <input
               type="file"
               accept="image/*,video/*"
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setMedia(e.target.files?.[0] || null)
+                setMedia(e.target.files?.[0] ?? null)
               }
               className="mb-3 block w-full text-sm text-white"
             />
@@ -164,6 +191,7 @@ export default function BlogPage() {
           </div>
         )}
 
+        {/* Posts List */}
         <div className="space-y-8">
           {posts.map((p) => (
             <article
@@ -171,7 +199,9 @@ export default function BlogPage() {
               className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"
             >
               <div className="flex justify-between items-center mb-2 text-gray-400 text-sm">
-                <span>🗓️ {new Date(p.inserted_at).toLocaleString()}</span>
+                <span>
+                  🗓️ {new Date(p.inserted_at).toLocaleString()}
+                </span>
                 {isAdmin && (
                   <span>
                     <button
@@ -217,12 +247,14 @@ export default function BlogPage() {
         </div>
       </section>
 
+      {/* Lightbox */}
       <Transition show={!!lightbox} as={Fragment}>
         <Dialog
           onClose={() => setLightbox(null)}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
           <div className="fixed inset-0 bg-black/80" aria-hidden="true" />
+
           <div className="relative max-w-full max-h-full">
             {lightbox?.type === "image" && lightbox.media_url && (
               <Image

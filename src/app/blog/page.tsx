@@ -162,7 +162,7 @@ export default function BlogPage() {
       {/* Blog Section */}
       <section className="mx-auto max-w-3xl px-4 pt-24 pb-10">
         <h1 className="text-5xl font-extrabold text-center text-cyan-400 mb-12 animate-pulse">
-          My Blog
+          Ayush Kunjadia's Blog
         </h1>
 
         {/* Admin Post Form */}

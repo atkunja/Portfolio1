@@ -21,6 +21,10 @@ export default function BlogPage() {
   const [caption, setCaption] = useState("");
   const [media, setMedia] = useState<File | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
+  // New: to track media in edit mode
+  const [editMediaUrl, setEditMediaUrl] = useState<string | null>(null);
+  const [editMediaType, setEditMediaType] = useState<"text" | "image" | "video">("text");
+
   const [lightbox, setLightbox] = useState<Post | null>(null);
   const [showLogin, setShowLogin] = useState(false);
   const [password, setPassword] = useState("");
@@ -28,7 +32,7 @@ export default function BlogPage() {
 
   const loadPosts = async () => {
     const res = await fetch("/api/posts");
-    const data = await res.json(); // <---- fixed!
+    const data = await res.json();
     setPosts(Array.isArray(data) ? data : []);
   };
 
@@ -47,24 +51,22 @@ export default function BlogPage() {
   };
 
   const handleSubmit = async () => {
-    let url: string | null = null;
-    let type: Post["type"] = "text";
+    // If editing, retain old media unless a new file is picked
+    let url: string | null = editId ? editMediaUrl : null;
+    let type: Post["type"] = editId ? editMediaType : "text";
 
     if (media) {
       const filePath = `${Date.now()}_${media.name}`;
-      const { error: upErr } = await supabase
-        .storage.from("blog-media")
-        .upload(filePath, media);
+      const { error: upErr } = await supabase.storage.from("blog-media").upload(filePath, media);
       if (upErr) return alert(upErr.message);
 
-      const { data } = await supabase
-        .storage.from("blog-media")
-        .getPublicUrl(filePath);
+      const { data } = await supabase.storage.from("blog-media").getPublicUrl(filePath);
 
       url = data.publicUrl;
       type = media.type.startsWith("video") ? "video" : "image";
     }
 
+    // If "remove media" is pressed, url/type is reset
     const body = { id: editId, caption, media_url: url, type };
     const method = editId ? "PUT" : "POST";
 
@@ -80,6 +82,8 @@ export default function BlogPage() {
     setCaption("");
     setMedia(null);
     setEditId(null);
+    setEditMediaUrl(null);
+    setEditMediaType("text");
     loadPosts();
   };
 
@@ -107,6 +111,17 @@ export default function BlogPage() {
 
   return (
     <div className="relative min-h-screen bg-[#0A0C12] text-white">
+
+      {/* Nav back to Home */}
+      <nav className="absolute top-4 right-4 z-50">
+        <a
+          href="/"
+          className="bg-gray-800 hover:bg-cyan-600 text-white px-3 py-1 rounded text-sm shadow transition"
+        >
+          ← Back to Home
+        </a>
+      </nav>
+
       {/* Admin Login / Logout */}
       {isAdmin ? (
         <button
@@ -175,6 +190,25 @@ export default function BlogPage() {
               }
               className="mb-3 block w-full text-sm text-white"
             />
+
+            {/* Show current media when editing */}
+            {editMediaUrl && (
+              <div className="mb-2">
+                {editMediaType === "image" ? (
+                  <Image src={editMediaUrl} alt="Current media" width={250} height={180} className="rounded mb-2" />
+                ) : editMediaType === "video" ? (
+                  <video src={editMediaUrl} controls className="rounded mb-2 max-w-xs max-h-48" />
+                ) : null}
+                <button
+                  onClick={() => { setEditMediaUrl(null); setEditMediaType("text"); }}
+                  className="ml-2 text-red-400 underline text-xs"
+                  type="button"
+                >
+                  Remove Media
+                </button>
+              </div>
+            )}
+
             <textarea
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
@@ -205,6 +239,8 @@ export default function BlogPage() {
                       onClick={() => {
                         setEditId(p.id);
                         setCaption(p.caption);
+                        setEditMediaUrl(p.media_url);
+                        setEditMediaType(p.type);
                       }}
                       className="text-yellow-400 hover:underline mr-2 text-sm"
                     >

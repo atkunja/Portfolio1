@@ -1,10 +1,11 @@
+// src/app/blog/page.tsx
 "use client";
 export const dynamic = "force-dynamic";
 
 import { Fragment, useState, useEffect, ChangeEvent } from "react";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN!;
 
@@ -105,7 +106,7 @@ export default function BlogPage() {
     });
 
   return (
-    <div className="relative min-h-screen bg-[#0A0C12] text-white">
+    <div className="relative min-h-screen">
       {/* Admin Login / Logout */}
       {isAdmin ? (
         <button
@@ -131,15 +132,15 @@ export default function BlogPage() {
         >
           <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
           <div className="relative bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-sm">
-            <Dialog.Title className="mb-4 text-xl font-semibold">
-              Enter Admin Password
-            </Dialog.Title>
             <button
               onClick={() => setShowLogin(false)}
               className="absolute top-2 right-2 text-gray-400 hover:text-white"
             >
               &times;
             </button>
+            <Dialog.Title className="mb-4 text-xl font-semibold">
+              Enter Admin Password
+            </Dialog.Title>
             <input
               type="password"
               value={password}
@@ -157,7 +158,7 @@ export default function BlogPage() {
         </Dialog>
       </Transition>
 
-      <section className="mx-auto max-w-3xl px-4 pt-24 pb-10">
+      <section className="mx-auto max-w-3xl px-4 pt-24 pb-10 text-white">
         {/* Animated Title */}
         <h1 className="text-5xl font-extrabold text-cyan-400 text-center mb-10 animate-fade-in">
           My Blog
@@ -239,7 +240,9 @@ export default function BlogPage() {
                 />
               )}
 
-              {p.type === "text" && <p className="text-gray-300">{p.caption}</p>}
+              {p.type === "text" && (
+                <p className="text-gray-300">{p.caption}</p>
+              )}
             </article>
           ))}
         </div>

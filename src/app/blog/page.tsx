@@ -9,9 +9,9 @@ const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN!;
 type Post = {
   id: number;
   caption: string;
-  mediaURL: string;
+  mediaURL?: string;
   type: "image" | "video" | "text";
-  timestamp: Date;
+  timestamp: string;
 };
 
 export default function BlogPage() {
@@ -24,16 +24,17 @@ export default function BlogPage() {
   const [editId, setEditId] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<Post | null>(null);
 
+  // hydrate from localStorage
   useEffect(() => {
-    if (localStorage.getItem("isAdmin") === "true") setIsAdmin(true);
-    const saved = localStorage.getItem("posts");
-    if (saved) setPosts(JSON.parse(saved));
+    setIsAdmin(localStorage.getItem("isAdmin") === "true");
+    const stored = localStorage.getItem("blog_posts");
+    if (stored) setPosts(JSON.parse(stored));
   }, []);
 
+  // persist posts & admin flag
   useEffect(() => {
-    localStorage.setItem("posts", JSON.stringify(posts));
+    localStorage.setItem("blog_posts", JSON.stringify(posts));
   }, [posts]);
-
   useEffect(() => {
     localStorage.setItem("isAdmin", isAdmin ? "true" : "false");
   }, [isAdmin]);
@@ -44,17 +45,18 @@ export default function BlogPage() {
       setShowLogin(false);
       setPassword("");
     } else {
-      alert("Incorrect password");
+      alert("Wrong password");
     }
   };
   const handleLogout = () => {
     setIsAdmin(false);
     localStorage.removeItem("isAdmin");
   };
+
   const handleSubmit = () => {
     if (!media && !caption.trim()) return;
-    const url = media ? URL.createObjectURL(media) : "";
-    const type = media
+    const url = media ? URL.createObjectURL(media) : undefined;
+    const type: Post["type"] = media
       ? media.type.startsWith("video")
         ? "video"
         : "image"
@@ -64,10 +66,10 @@ export default function BlogPage() {
       caption,
       mediaURL: url,
       type,
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     };
     setPosts((prev) =>
-      editId
+      editId != null
         ? prev.map((p) => (p.id === editId ? newPost : p))
         : [newPost, ...prev]
     );
@@ -75,11 +77,12 @@ export default function BlogPage() {
     setCaption("");
     setEditId(null);
   };
+
   const handleDelete = (id: number) =>
     setPosts((prev) => prev.filter((p) => p.id !== id));
 
-  const formatDate = (d: Date) =>
-    new Date(d).toLocaleString("en-US", {
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -89,17 +92,18 @@ export default function BlogPage() {
 
   return (
     <div className="relative bg-[#0A0C12] min-h-screen text-white">
+      {/* Login / Logout */}
       {isAdmin ? (
         <button
           onClick={handleLogout}
-          className="absolute top-4 left-4 bg-red-600 hover:bg-red-500 px-3 py-1 rounded"
+          className="absolute top-4 left-4 bg-red-600 hover:bg-red-500 text-sm px-3 py-1 rounded"
         >
           Logout
         </button>
       ) : (
         <button
           onClick={() => setShowLogin(true)}
-          className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded"
+          className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-500 text-sm px-3 py-1 rounded"
         >
           Admin Login
         </button>
@@ -111,19 +115,18 @@ export default function BlogPage() {
           onClose={() => setShowLogin(false)}
           className="fixed inset-0 z-40 flex items-center justify-center p-4"
         >
-          {/* plain div backdrop */}
+          {/* backdrop */}
           <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
-
           <div className="relative bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-sm">
             <Dialog.Title className="mb-4 text-xl font-semibold">
-              Enter Password
+              Enter Admin Password
             </Dialog.Title>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full mb-4 px-3 py-2 bg-gray-800 rounded focus:outline-none"
               placeholder="Password"
+              className="w-full px-3 py-2 mb-4 bg-gray-800 rounded outline-none"
             />
             <button
               onClick={handleLogin}
@@ -145,22 +148,20 @@ export default function BlogPage() {
             <input
               type="file"
               accept="image/*,video/*"
-              onChange={(e) =>
-                setMedia(e.target.files ? e.target.files[0] : null)
-              }
+              onChange={(e) => setMedia(e.target.files?.[0] ?? null)}
               className="mb-3 block w-full text-sm text-white"
             />
             <textarea
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Write your post here..."
-              className="w-full mb-4 h-24 p-2 bg-gray-800 rounded resize-none"
+              className="w-full mb-4 h-24 p-2 bg-gray-800 rounded resize-none outline-none"
             />
             <button
               onClick={handleSubmit}
               className="bg-cyan-600 hover:bg-cyan-700 px-5 py-2 rounded"
             >
-              {editId ? "Update" : "Post"}
+              {editId != null ? "Update Post" : "Post"}
             </button>
           </div>
         )}
@@ -174,7 +175,7 @@ export default function BlogPage() {
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center space-x-2 text-gray-400 text-sm">
                   <span>🗓️</span>
-                  <time dateTime={post.timestamp.toISOString()}>
+                  <time dateTime={post.timestamp}>
                     {formatDate(post.timestamp)}
                   </time>
                 </div>
@@ -199,7 +200,8 @@ export default function BlogPage() {
                 )}
               </div>
 
-              {post.type === "image" && (
+              {/* media or text */}
+              {post.type === "image" && post.mediaURL && (
                 <img
                   src={post.mediaURL}
                   alt=""
@@ -207,7 +209,7 @@ export default function BlogPage() {
                   onClick={() => setLightbox(post)}
                 />
               )}
-              {post.type === "video" && (
+              {post.type === "video" && post.mediaURL && (
                 <video
                   src={post.mediaURL}
                   controls
@@ -231,7 +233,7 @@ export default function BlogPage() {
         >
           <div className="fixed inset-0 bg-black/80" aria-hidden="true" />
           <div className="relative max-w-full max-h-full">
-            {lightbox?.type === "image" ? (
+            {lightbox?.type === "image" && lightbox.mediaURL && (
               <Image
                 src={lightbox.mediaURL}
                 alt=""
@@ -240,9 +242,10 @@ export default function BlogPage() {
                 style={{ objectFit: "contain" }}
                 className="max-h-screen max-w-screen"
               />
-            ) : (
+            )}
+            {lightbox?.type === "video" && lightbox.mediaURL && (
               <video
-                src={lightbox!.mediaURL}
+                src={lightbox.mediaURL}
                 controls
                 autoPlay
                 className="max-h-screen max-w-screen"

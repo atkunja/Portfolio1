@@ -27,6 +27,7 @@ export default function BlogPage() {
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
+  // fetch posts from your API
   const loadPosts = async () => {
     const res = await fetch("/api/posts");
     setPosts(await res.json());
@@ -60,6 +61,7 @@ export default function BlogPage() {
       const { data } = await supabase
         .storage.from("blog-media")
         .getPublicUrl(filePath);
+
       url = data.publicUrl;
       type = media.type.startsWith("video") ? "video" : "image";
     }
@@ -103,18 +105,18 @@ export default function BlogPage() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Login/Logout */}
+      {/* Login / Logout */}
       {isAdmin ? (
         <button
           onClick={() => setIsAdmin(false)}
-          className="absolute top-4 left-4 bg-red-600 px-3 py-1 rounded"
+          className="absolute top-4 left-4 bg-red-600 px-3 py-1 rounded text-sm"
         >
           Logout
         </button>
       ) : (
         <button
           onClick={() => setShowLogin(true)}
-          className="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded"
+          className="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded text-sm"
         >
           Admin Login
         </button>
@@ -133,9 +135,9 @@ export default function BlogPage() {
             </Dialog.Title>
             <button
               onClick={() => setShowLogin(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-white"
+              className="absolute top-2 right-2 text-gray-400 hover:text-white text-2xl"
             >
-              ×
+              &times;
             </button>
             <input
               type="password"
@@ -160,7 +162,7 @@ export default function BlogPage() {
           My Blog
         </h1>
 
-        {/* Admin Form */}
+        {/* Post Form (admin only) */}
         {isAdmin && (
           <div className="mb-10 bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
             <input
@@ -194,7 +196,7 @@ export default function BlogPage() {
               className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"
             >
               <div className="flex justify-between items-center mb-2 text-gray-400 text-sm">
-                <span>🗓️ {formatDate(p.inserted_at)}</span>
+                <span>🗓️ {formatDate(p.inserted_at)}</span>
                 {isAdmin && (
                   <span>
                     <button
@@ -219,14 +221,13 @@ export default function BlogPage() {
               {p.type === "image" && p.media_url && (
                 <Image
                   src={p.media_url}
-                  alt={p.caption}
+                  alt={p.caption || ""}
                   width={800}
                   height={600}
                   className="mb-3 w-full max-h-64 object-cover rounded cursor-pointer"
                   onClick={() => setLightbox(p)}
                 />
               )}
-
               {p.type === "video" && p.media_url && (
                 <video
                   src={p.media_url}
@@ -235,10 +236,7 @@ export default function BlogPage() {
                   onClick={() => setLightbox(p)}
                 />
               )}
-
-              {p.type === "text" && (
-                <p className="text-gray-300">{p.caption}</p>
-              )}
+              {p.type === "text" && <p className="text-gray-300">{p.caption}</p>}
             </article>
           ))}
         </div>
@@ -256,21 +254,21 @@ export default function BlogPage() {
               onClick={() => setLightbox(null)}
               className="absolute top-2 right-2 text-white text-2xl"
             >
-              ×
+              &times;
             </button>
-            {lightbox?.type === "image" && lightbox.media_url && (
+            {lightbox?.type === "image" && (
               <Image
-                src={lightbox.media_url}
-                alt={lightbox.caption}
+                src={lightbox.media_url!}
+                alt={lightbox.caption || ""}
                 width={800}
                 height={600}
                 style={{ objectFit: "contain" }}
                 className="max-h-screen max-w-screen"
               />
             )}
-            {lightbox?.type === "video" && lightbox.media_url && (
+            {lightbox?.type === "video" && (
               <video
-                src={lightbox.media_url}
+                src={lightbox.media_url!}
                 controls
                 autoPlay
                 className="max-h-screen max-w-screen"

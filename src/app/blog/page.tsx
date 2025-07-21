@@ -28,8 +28,7 @@ export default function BlogPage() {
 
   const loadPosts = async () => {
     const res = await fetch("/api/posts");
-    let data = await res.json();
-    // Defensive: force empty array if not an array!
+    const data = await res.json(); // <---- fixed!
     setPosts(Array.isArray(data) ? data : []);
   };
 
@@ -193,7 +192,7 @@ export default function BlogPage() {
 
         {/* Posts List */}
         <div className="space-y-8">
-          {(Array.isArray(posts) ? posts : []).map((p) => (
+          {posts.map((p) => (
             <article
               key={p.id}
               className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"

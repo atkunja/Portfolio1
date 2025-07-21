@@ -2,6 +2,7 @@
 export const dynamic = "force-dynamic";
 
 import { Fragment, useState, useEffect, ChangeEvent } from "react";
+import Link from "next/link"; // <--- THIS LINE IS NEEDED
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { supabase } from "@/lib/supabaseClient";
@@ -21,7 +22,6 @@ export default function BlogPage() {
   const [caption, setCaption] = useState("");
   const [media, setMedia] = useState<File | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
-  // New: to track media in edit mode
   const [editMediaUrl, setEditMediaUrl] = useState<string | null>(null);
   const [editMediaType, setEditMediaType] = useState<"text" | "image" | "video">("text");
 
@@ -51,7 +51,6 @@ export default function BlogPage() {
   };
 
   const handleSubmit = async () => {
-    // If editing, retain old media unless a new file is picked
     let url: string | null = editId ? editMediaUrl : null;
     let type: Post["type"] = editId ? editMediaType : "text";
 
@@ -66,7 +65,6 @@ export default function BlogPage() {
       type = media.type.startsWith("video") ? "video" : "image";
     }
 
-    // If "remove media" is pressed, url/type is reset
     const body = { id: editId, caption, media_url: url, type };
     const method = editId ? "PUT" : "POST";
 
@@ -112,14 +110,14 @@ export default function BlogPage() {
   return (
     <div className="relative min-h-screen bg-[#0A0C12] text-white">
 
-      {/* Nav back to Home */}
+      {/* NAVIGATION BACK TO HOME - use Link, NOT <a> */}
       <nav className="absolute top-4 right-4 z-50">
-        <a
+        <Link
           href="/"
           className="bg-gray-800 hover:bg-cyan-600 text-white px-3 py-1 rounded text-sm shadow transition"
         >
           ← Back to Home
-        </a>
+        </Link>
       </nav>
 
       {/* Admin Login / Logout */}

@@ -60,21 +60,17 @@ export default function BlogPage() {
       const { data } = await supabase
         .storage.from("blog-media")
         .getPublicUrl(filePath);
-
       url = data.publicUrl;
       type = media.type.startsWith("video") ? "video" : "image";
     }
 
-    const body = { id: editId, caption, media_url: url, type };
-    const method = editId ? "PUT" : "POST";
-
     await fetch("/api/posts", {
-      method,
+      method: editId ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
         "x-admin-token": ADMIN_TOKEN,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ id: editId, caption, media_url: url, type }),
     });
 
     setCaption("");
@@ -107,18 +103,18 @@ export default function BlogPage() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Admin Login / Logout */}
+      {/* Login/Logout */}
       {isAdmin ? (
         <button
           onClick={() => setIsAdmin(false)}
-          className="absolute top-4 left-4 bg-red-600 px-3 py-1 rounded text-sm"
+          className="absolute top-4 left-4 bg-red-600 px-3 py-1 rounded"
         >
           Logout
         </button>
       ) : (
         <button
           onClick={() => setShowLogin(true)}
-          className="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded text-sm"
+          className="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded"
         >
           Admin Login
         </button>
@@ -132,15 +128,15 @@ export default function BlogPage() {
         >
           <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
           <div className="relative bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-sm">
+            <Dialog.Title className="mb-4 text-xl font-semibold">
+              Enter Admin Password
+            </Dialog.Title>
             <button
               onClick={() => setShowLogin(false)}
               className="absolute top-2 right-2 text-gray-400 hover:text-white"
             >
-              &times;
+              ×
             </button>
-            <Dialog.Title className="mb-4 text-xl font-semibold">
-              Enter Admin Password
-            </Dialog.Title>
             <input
               type="password"
               value={password}
@@ -158,13 +154,13 @@ export default function BlogPage() {
         </Dialog>
       </Transition>
 
-      <section className="mx-auto max-w-3xl px-4 pt-24 pb-10 text-white">
+      <section className="mx-auto max-w-3xl px-4 pt-24 pb-10">
         {/* Animated Title */}
         <h1 className="text-5xl font-extrabold text-cyan-400 text-center mb-10 animate-fade-in">
           My Blog
         </h1>
 
-        {/* Post Form (admin only) */}
+        {/* Admin Form */}
         {isAdmin && (
           <div className="mb-10 bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
             <input
@@ -190,7 +186,7 @@ export default function BlogPage() {
           </div>
         )}
 
-        {/* Posts List */}
+        {/* Posts */}
         <div className="space-y-8">
           {posts.map((p) => (
             <article
@@ -198,7 +194,7 @@ export default function BlogPage() {
               className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"
             >
               <div className="flex justify-between items-center mb-2 text-gray-400 text-sm">
-                <span>🗓️ {formatDate(p.inserted_at)}</span>
+                <span>🗓️ {formatDate(p.inserted_at)}</span>
                 {isAdmin && (
                   <span>
                     <button
@@ -223,7 +219,7 @@ export default function BlogPage() {
               {p.type === "image" && p.media_url && (
                 <Image
                   src={p.media_url}
-                  alt={p.caption || ""}
+                  alt={p.caption}
                   width={800}
                   height={600}
                   className="mb-3 w-full max-h-64 object-cover rounded cursor-pointer"
@@ -260,13 +256,12 @@ export default function BlogPage() {
               onClick={() => setLightbox(null)}
               className="absolute top-2 right-2 text-white text-2xl"
             >
-              &times;
+              ×
             </button>
-
             {lightbox?.type === "image" && lightbox.media_url && (
               <Image
                 src={lightbox.media_url}
-                alt={lightbox.caption || ""}
+                alt={lightbox.caption}
                 width={800}
                 height={600}
                 style={{ objectFit: "contain" }}

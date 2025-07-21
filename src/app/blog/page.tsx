@@ -20,14 +20,13 @@ export default function BlogPage() {
   const [caption, setCaption] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // If you previously logged in, keep you admin
+  // restore admin state on load
   useEffect(() => {
     if (localStorage.getItem("isAdmin") === "true") {
       setIsAdmin(true);
     }
   }, []);
 
-  // Prompt for password
   const handleLogin = () => {
     const pw = prompt("Enter admin token:");
     if (pw === ADMIN_TOKEN) {
@@ -36,6 +35,11 @@ export default function BlogPage() {
     } else {
       alert("❌ Incorrect token");
     }
+  };
+
+  const handleLogout = () => {
+    setIsAdmin(false);
+    localStorage.removeItem("isAdmin");
   };
 
   const handleSubmit = () => {
@@ -60,40 +64,49 @@ export default function BlogPage() {
     });
 
   return (
-    <section className="max-w-3xl mx-auto mt-16 mb-20 px-4">
-      <h1 className="text-4xl font-bold text-cyan-400 text-center mb-6">
-        Blog
-      </h1>
-
-      {!isAdmin && (
-        <div className="text-center mb-8">
+    <section className="relative max-w-3xl mx-auto mt-16 mb-20 px-4">
+      {/* top-left login/logout */}
+      <div className="absolute top-4 left-4">
+        {isAdmin ? (
+          <button
+            onClick={handleLogout}
+            className="text-xs bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded"
+          >
+            Logout
+          </button>
+        ) : (
           <button
             onClick={handleLogin}
-            className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full transition"
+            className="text-xs bg-red-600 hover:bg-red-500 text-white px-2 py-1 rounded"
           >
             Admin Login
           </button>
-        </div>
-      )}
+        )}
+      </div>
+
+      <h1 className="text-4xl font-bold text-cyan-400 text-center mb-6">Blog</h1>
 
       {isAdmin && (
-        <div className="bg-gray-900 p-6 rounded-2xl shadow-lg mb-10 border border-gray-700">
-          <input
-            type="file"
-            accept="image/*,video/*"
-            onChange={(e) => setMedia(e.target.files?.[0] || null)}
-            className="mb-3 block w-full text-sm text-white"
-          />
+        <div className="flex flex-wrap items-center gap-3 justify-center bg-gray-900 p-4 rounded-2xl shadow-lg mb-10 border border-gray-700">
+          <label className="cursor-pointer bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm">
+            Choose File
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={(e) => setMedia(e.target.files?.[0] || null)}
+              className="hidden"
+            />
+          </label>
           <input
             type="text"
-            placeholder="Write a caption..."
+            placeholder="Caption…"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="w-full p-2 mb-4 bg-gray-800 text-white rounded border border-gray-700"
+            className="flex-1 min-w-[150px] p-2 bg-gray-800 text-white rounded text-sm border border-gray-700"
           />
           <button
             onClick={handleSubmit}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2 rounded transition font-semibold"
+            className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded text-sm font-semibold"
           >
             Post
           </button>

@@ -60,6 +60,24 @@ function Typewriter({
 // --- DATA ---
 const projects = [
   {
+    title: "ToxicFilter",
+    link: "https://github.com/atkunja/toxicfilter",
+    live: "https://toxicfilter.vercel.app/",
+    image: "/projects/toxicfilter.png",
+    tech: [
+      "Next.js",
+      "Tailwind CSS",
+      "Flask",
+      "Python",
+      "C++",
+      "Machine Learning",
+      "scikit-learn",
+      "React"
+    ],
+    description:
+      "Real-time toxicity detection web app. Fast, private, updatable AI content filter built with Python (Flask, scikit-learn), C++ (offline model runner), Next.js, React, and Tailwind CSS. Frontend and backend communicate via REST API.",
+  },
+  {
     title: "Manga Animator",
     link: "https://github.com/atkunja/Manga",
     live: "https://mangavideo.streamlit.app/",

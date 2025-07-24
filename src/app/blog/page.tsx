@@ -56,7 +56,7 @@ export default function BlogPage() {
 
     if (media) {
       const filePath = `${Date.now()}_${media.name}`;
-      const { data: uploadData, error: upErr } = await supabase
+      const { error: upErr } = await supabase
         .storage.from("blog-media")
         .upload(filePath, media);
 

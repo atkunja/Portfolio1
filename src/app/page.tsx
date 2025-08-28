@@ -60,6 +60,23 @@ function Typewriter({
 // --- DATA ---
 const projects = [
   {
+    title: "Clinic Finder",
+    link: "https://github.com/atkunja/ClinicFinder",
+    live: "https://clinic-finder-6krk1j4hv-atkunjas-projects.vercel.app/",
+    image: "/projects/clinicfinder.png",
+    tech: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Leaflet",
+      "Supabase",
+      "PostgreSQL",
+      "Vercel"
+    ],
+    description:
+      "Health-for-All clinic locator. Map-based search with filters, admin dashboard for adding/editing clinics, and a clean UX to help uninsured patients find free care.",
+  },
+  {
     title: "ToxicFilter",
     link: "https://github.com/atkunja/toxicfilter",
     live: "https://toxicfilter.vercel.app/",
@@ -276,7 +293,7 @@ export default function Home() {
       {/* CONTACT */}
       <section id="contact" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-cyan-300">Contact</h2>
-        <p className="mb-6 text-gray-300">Have a project idea in mind or want to collaborate? Let’s connect!</p>
+        <p className="mb-6 text-gray-300">Have a project idea in mind or want to collaborate? Let&apos;s connect!</p>
         <form action="https://formspree.io/f/xeozjzzr" method="POST" className="bg-gray-900 rounded-2xl p-6 shadow-md flex flex-col gap-4">
           <input name="name" type="text" placeholder="Name" required className="bg-gray-800 text-white rounded px-3 py-2 focus:ring-2 focus:ring-cyan-400" />
           <input name="email" type="email" placeholder="Email" required className="bg-gray-800 text-white rounded px-3 py-2 focus:ring-2 focus:ring-cyan-400" />

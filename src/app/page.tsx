@@ -122,10 +122,10 @@ const experience = [
     company: "Loshi Technologies, LLC",
     title: "Software Engineer Intern",
     link: "https://loshitech.com",
-    period: "June 2025 – Present",
-    tech: ["React", "Node.js", "PostgreSQL"],
+    period: "June 2025 – August 2025",
+    tech: ["React", "Node.js", "PostgreSQL", "Supabase"],
     description:
-      "Shipping production-grade features across the stack, tuning Postgres queries, and pairing with design to deliver polished UX.",
+      "Delivered production-ready features across React + Node, tuned Postgres queries, and paired weekly with design to ship high-polish UX.",
   },
 ];
 
@@ -160,16 +160,22 @@ const interests = [
   "Tactical chess battles",
 ];
 
-const heroStats = [
-  { label: "TypeScript projects", value: "12+" },
-  { label: "Production deploys", value: "18" },
-  { label: "Hackathon podiums", value: "3" },
-];
-
 const heroHighlights = [
   "End-to-end builder who can architect APIs and craft pixel-perfect UI",
   "Obsessed with realtime collaboration, data viz, and accessible design",
   "Comfortable wrangling Supabase, sockets, and Docker in one sprint",
+];
+
+const heroFocus = [
+  "Leveling up CodeCollab.chat with multiplayer recording + replay",
+  "Dialing in blazing-fast DX workflows with pnpm + Turbo + Supabase",
+  "Designing motion systems that feel like a playable UI, not a static page",
+];
+
+const heroCombos = [
+  "Next.js × tRPC × Supabase",
+  "Leaflet × TypeScript × edge caching",
+  "Socket.io × Prisma × React Server Components",
 ];
 
 type OrbConfig = {
@@ -457,61 +463,37 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <div className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
-              {heroStats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="glass-panel flex flex-col items-center gap-1 rounded-3xl px-6 py-5 text-center transition duration-500 hover:-translate-y-1 hover:bg-white/10"
-                >
-                  <span className="text-3xl font-bold text-cyan-300">
-                    {stat.value}
-                  </span>
-                  <span className="text-xs uppercase tracking-[0.3em] text-white/60">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className="hidden flex-col items-center gap-6 md:flex">
-            <div className="floating-stack w-full max-w-sm">
-              <div>
-                <div className="glass-panel relative overflow-hidden rounded-[2rem]">
-                  <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/20 to-transparent" />
-                  <Image
-                    src={projects[0].image}
-                    alt="Clinic Finder"
-                    width={720}
-                    height={900}
-                    className="h-full w-full object-cover transition duration-[1200ms] ease-out hover:scale-105"
-                    priority
-                  />
-                  <div className="absolute inset-x-5 bottom-5 flex items-center justify-between rounded-2xl border border-white/10 bg-black/50 px-4 py-3 text-xs uppercase tracking-[0.3em] text-white/70 backdrop-blur">
-                    <span>Clinic Finder</span>
-                    <span className="text-cyan-300">Geospatial UX</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="glass-panel flex w-full max-w-sm flex-col gap-4 rounded-[2rem] px-6 py-6">
+          <div className="hidden w-full max-w-sm flex-col gap-6 md:flex">
+            <div className="glass-panel flex flex-col gap-4 rounded-[2rem] px-6 py-7">
               <span className="text-xs uppercase tracking-[0.4em] text-white/50">
-                Currently hacking on
+                Current focus
               </span>
-              <div className="grid grid-cols-1 gap-3 text-sm text-white/70">
-                {projects.slice(1, 3).map((project) => (
-                  <a
-                    key={project.title}
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="badge-item relative flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur transition hover:border-cyan-300/60 hover:text-cyan-200"
+              <ul className="flex flex-col gap-3 text-sm text-white/70">
+                {heroFocus.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-cyan-300/60 hover:text-cyan-100"
                   >
-                    <span>{project.title}</span>
-                    <span className="text-xs uppercase tracking-[0.3em] text-white/60">
-                      Launch
-                    </span>
-                  </a>
+                    <span className="mt-[4px] h-2 w-2 rounded-full bg-cyan-300" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="glass-panel flex flex-col gap-4 rounded-[2rem] px-6 py-7">
+              <span className="text-xs uppercase tracking-[0.4em] text-white/50">
+                Favorite tech combos
+              </span>
+              <div className="flex flex-col gap-2 text-sm text-white/70">
+                {heroCombos.map((combo) => (
+                  <span
+                    key={combo}
+                    className="badge-item relative inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 uppercase tracking-[0.3em] text-xs transition hover:border-cyan-300/60 hover:text-cyan-100"
+                  >
+                    {combo}
+                  </span>
                 ))}
               </div>
             </div>
@@ -714,11 +696,11 @@ export default function Home() {
               </p>
               <div className="mt-8 grid gap-4 text-white/70">
                 <a
-                  href="mailto:ayushkunjadia@gmail.com"
+                  href="mailto:ayushkun@umich.edu"
                   className="badge-item relative inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 uppercase tracking-[0.3em] text-xs transition hover:border-cyan-300/50 hover:text-cyan-100"
                 >
                   <span className="h-2 w-2 rounded-full bg-cyan-300" />
-                  ayushkunjadia@gmail.com
+                  ayushkun@umich.edu
                 </a>
                 <a
                   href="https://github.com/atkunja"

@@ -1,15 +1,17 @@
 // src/app/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 
 // --- Typewriter effect ---
-const WORDS = ["Software Engineer", "Builder", "Collaborator"];
+const WORDS = ["TypeScript Fiend", "Full-Stack Builder", "Collaborative Engineer"];
+
 function Typewriter({
   words,
-  speed = 100,
-  pause = 1200,
+  speed = 85,
+  pause = 900,
 }: {
   words: string[];
   speed?: number;
@@ -49,10 +51,11 @@ function Typewriter({
   }, [sub, deleting, index, words, speed, pause]);
 
   return (
-    <span className="text-cyan-400">
-      {sub}
-      &nbsp;
-      <span className="border-r-2 border-cyan-400 animate-pulse"></span>
+    <span className="relative">
+      <span className="text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.5)]">
+        {sub}
+      </span>
+      <span className="absolute right-[-12px] top-0 h-full w-[10px] bg-cyan-400/80 animate-pulse"></span>
     </span>
   );
 }
@@ -71,10 +74,10 @@ const projects = [
       "Leaflet",
       "Supabase",
       "PostgreSQL",
-      "Vercel"
+      "Vercel",
     ],
     description:
-      "Health-for-All clinic locator. Map-based search with filters, admin dashboard for adding/editing clinics, and a clean UX to help uninsured patients find free care.",
+      "Geospatial clinic discovery engine with live map filters, admin portal, and Supabase-backed CRUD for healthcare accessibility.",
   },
   {
     title: "ToxicFilter",
@@ -89,10 +92,10 @@ const projects = [
       "C++",
       "Machine Learning",
       "scikit-learn",
-      "React"
+      "React",
     ],
     description:
-      "Real-time toxicity detection web app. Fast, private, updatable AI content filter built with Python (Flask, scikit-learn), C++ (offline model runner), Next.js, React, and Tailwind CSS. Frontend and backend communicate via REST API.",
+      "Real-time toxicity classifier that streams predictions via REST, fuses Flask + C++ inference, and delivers a silky React UI.",
   },
   {
     title: "Manga Animator",
@@ -101,16 +104,16 @@ const projects = [
     image: "/projects/manga-animator.png",
     tech: ["Python", "Streamlit", "MoviePy", "Docker"],
     description:
-      "Transforms static manga panels into anime-style video sequences with seamless transitions. Python, MoviePy, Streamlit, Docker.",
+      "Takes static manga panels and remixes them into cinematic sequences with motion layers, dynamic captions, and auto-editing.",
   },
   {
     title: "CodeCollab",
     link: "https://github.com/atkunja/codecollab",
-    live: "https://codecollabak.vercel.app/",
+    live: "https://codecollab.chat",
     image: "/projects/codecollab.png",
     tech: ["Next.js", "NestJS", "TypeScript", "Tailwind CSS", "Supabase", "Socket.io"],
     description:
-      "Full-stack collaborative code editing platform. Next.js, NestJS, Monaco, Supabase, Socket.io.",
+      "Collaborative IDE in the browser with presence indicators, Supabase auth, NestJS APIs, and low-latency Socket.io sessions.",
   },
 ];
 
@@ -122,37 +125,144 @@ const experience = [
     period: "June 2025 – Present",
     tech: ["React", "Node.js", "PostgreSQL"],
     description:
-      "Built and maintained full-stack web applications using React, Node.js, and PostgreSQL. Collaborated with design and product teams to deliver new features, and optimized backend APIs and database queries for better performance.",
+      "Shipping production-grade features across the stack, tuning Postgres queries, and pairing with design to deliver polished UX.",
   },
 ];
 
-const skills = [
-  "TypeScript",
-  "Java",
-  "Python",
-  "C/C++",
-  "JavaScript",
-  "HTML/CSS",
-  "SQL",
-  "Next.js",
-  "NestJS",
-  "React",
-  "Node.js",
-  "Tailwind CSS",
-  "Supabase",
-  "Docker",
-  "Socket.io",
-  "MoviePy",
-  "Streamlit",
+const skillCategories = [
+  {
+    title: "Languages & Core",
+    items: ["TypeScript", "JavaScript", "Java", "Python", "C/C++", "SQL"],
+  },
+  {
+    title: "Web & Frontend",
+    items: ["Next.js", "React", "Tailwind CSS", "HTML/CSS", "Headless UI", "React Router"],
+  },
+  {
+    title: "Backend & Cloud",
+    items: ["Node.js", "NestJS", "Supabase", "PostgreSQL", "Socket.io", "Docker"],
+  },
+  {
+    title: "ML, Media & Tools",
+    items: ["Machine Learning", "scikit-learn", "MoviePy", "Streamlit", "REST APIs", "Git"],
+  },
 ];
+
+const marqueeSkillLoop = Array.from(
+  new Set(skillCategories.flatMap((category) => category.items))
+);
 
 const interests = [
   "Multiple-time all-state wrestler",
-  "Weightlifting",
-  "Fishing",
-  "Hiking & exploring",
-  "Chess",
+  "Strength training & Olympic lifts",
+  "Fishing adventures",
+  "Trail hiking & exploration",
+  "Tactical chess battles",
 ];
+
+const heroStats = [
+  { label: "TypeScript projects", value: "12+" },
+  { label: "Production deploys", value: "18" },
+  { label: "Hackathon podiums", value: "3" },
+];
+
+const heroHighlights = [
+  "End-to-end builder who can architect APIs and craft pixel-perfect UI",
+  "Obsessed with realtime collaboration, data viz, and accessible design",
+  "Comfortable wrangling Supabase, sockets, and Docker in one sprint",
+];
+
+type OrbConfig = {
+  size: number;
+  top: string;
+  left: string;
+  color: string;
+  delay?: string;
+  duration?: string;
+  blur?: number;
+};
+
+const ORBS: OrbConfig[] = [
+  {
+    size: 520,
+    top: "-12%",
+    left: "-8%",
+    color: "radial-gradient(circle, rgba(6,182,212,0.45), transparent 60%)",
+    duration: "20s",
+  },
+  {
+    size: 420,
+    top: "14%",
+    left: "72%",
+    color: "radial-gradient(circle, rgba(217,70,239,0.45), transparent 62%)",
+    delay: "-6s",
+    duration: "24s",
+  },
+  {
+    size: 380,
+    top: "55%",
+    left: "8%",
+    color: "radial-gradient(circle, rgba(59,130,246,0.38), transparent 65%)",
+    delay: "-4s",
+  },
+  {
+    size: 320,
+    top: "78%",
+    left: "60%",
+    color: "radial-gradient(circle, rgba(250,204,21,0.22), transparent 70%)",
+    delay: "-10s",
+    duration: "26s",
+    blur: 8,
+  },
+];
+
+function FloatingOrbs() {
+  return (
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-[1]">
+      {ORBS.map((orb, idx) => (
+        <span
+          key={idx}
+          className="orb"
+          style={{
+            width: orb.size,
+            height: orb.size,
+            top: orb.top,
+            left: orb.left,
+            background: orb.color,
+            animationDelay: orb.delay,
+            animationDuration: orb.duration,
+            filter: orb.blur ? `blur(${orb.blur}px)` : undefined,
+          } as CSSProperties}
+        />
+      ))}
+    </div>
+  );
+}
+
+function SectionHeading({
+  label,
+  title,
+  description,
+}: {
+  label: string;
+  title: string;
+  description?: string;
+}) {
+  return (
+    <div className="mb-12 flex flex-col gap-4 text-center md:text-left">
+      <span className="accent-gradient self-center md:self-start">{label}</span>
+      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+        {title}
+      </h2>
+      {description ? (
+        <p className="text-white/60 max-w-2xl md:text-base text-sm md:leading-relaxed leading-relaxed self-center md:self-start">
+          {description}
+        </p>
+      ) : null}
+      <div className="gradient-divider" />
+    </div>
+  );
+}
 
 // --- MOBILE NAV ---
 function MobileNav({
@@ -160,32 +270,54 @@ function MobileNav({
   setOpen,
 }: {
   open: boolean;
-  setOpen: (v: boolean) => void;
+  setOpen: (value: boolean) => void;
 }) {
   return (
     <div
-      className={`
-        fixed inset-0 z-50 bg-[#0A0C12]/95 backdrop-blur
-        transition-transform duration-200
-        ${open ? "translate-x-0" : "-translate-x-full"}
-        flex md:hidden flex-col items-center justify-center gap-7 text-xl
-      `}
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center gap-7 bg-[#05070f]/95 px-8 text-lg uppercase tracking-[0.18em] text-white/85 backdrop-blur-xl transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"}`}
     >
       <button
         onClick={() => setOpen(false)}
-        className="absolute top-6 right-8 text-4xl text-cyan-400"
+        className="absolute right-8 top-6 text-4xl text-cyan-300"
         aria-label="Close menu"
       >
         ×
       </button>
-      <a href="#projects" onClick={() => setOpen(false)}>Projects</a>
-      <a href="#experience" onClick={() => setOpen(false)}>Experience</a>
-      <a href="#skills" onClick={() => setOpen(false)}>Skills</a>
-      <a href="#interests" onClick={() => setOpen(false)}>Interests</a>
-      <a href="#contact" onClick={() => setOpen(false)}>Contact</a>
-      <a href="/blog" onClick={() => setOpen(false)}>Blog</a>
-      <a href="https://github.com/atkunja" target="_blank" rel="noopener" onClick={() => setOpen(false)}>GitHub</a>
-      <a href="https://www.linkedin.com/in/ayushkunjadia/" target="_blank" rel="noopener" onClick={() => setOpen(false)}>LinkedIn</a>
+      {[
+        { label: "Projects", href: "#projects" },
+        { label: "Experience", href: "#experience" },
+        { label: "Skills", href: "#skills" },
+        { label: "Interests", href: "#interests" },
+        { label: "Contact", href: "#contact" },
+        { label: "Blog", href: "/blog" },
+      ].map((item) => (
+        <a
+          key={item.label}
+          href={item.href}
+          className="tracking-[0.3em] transition hover:text-cyan-300"
+          onClick={() => setOpen(false)}
+        >
+          {item.label}
+        </a>
+      ))}
+      <a
+        href="https://github.com/atkunja"
+        target="_blank"
+        rel="noopener"
+        className="tracking-[0.3em] text-cyan-200 transition hover:text-white"
+        onClick={() => setOpen(false)}
+      >
+        GitHub
+      </a>
+      <a
+        href="https://www.linkedin.com/in/ayushkunjadia/"
+        target="_blank"
+        rel="noopener"
+        className="tracking-[0.3em] text-cyan-200 transition hover:text-white"
+        onClick={() => setOpen(false)}
+      >
+        LinkedIn
+      </a>
     </div>
   );
 }
@@ -193,118 +325,467 @@ function MobileNav({
 // --- MAIN COMPONENT ---
 export default function Home() {
   const [mobileNav, setMobileNav] = useState(false);
+  const [spotlightPos, setSpotlightPos] = useState({ x: 50, y: 50 });
+
+  const marqueeItems = useMemo(
+    () => [...marqueeSkillLoop, ...marqueeSkillLoop],
+    []
+  );
+
+  const spotlightStyle = useMemo(
+    () => ({
+      "--x": `${spotlightPos.x}%`,
+      "--y": `${spotlightPos.y}%`,
+    }) as CSSProperties,
+    [spotlightPos]
+  );
 
   return (
-    <div className="bg-[#0A0C12] text-white min-h-screen font-sans">
+    <div className="relative min-h-screen overflow-hidden bg-[#05070f] text-white">
+      <div className="bg-grid-overlay" />
+      <FloatingOrbs />
+
       {/* NAV */}
-      <nav className="w-full max-w-6xl mx-auto flex items-center justify-between py-4 px-2 sm:px-4 sticky top-0 z-50 bg-[#0A0C12]/80 backdrop-blur border-b border-gray-900">
-        <div className="text-lg sm:text-2xl font-bold tracking-tighter">Ayush Kunjadia</div>
-        <div className="hidden md:flex gap-4">
-          <a href="#projects" className="hover:text-cyan-300 transition">Projects</a>
-          <a href="#experience" className="hover:text-cyan-300 transition">Experience</a>
-          <a href="#skills" className="hover:text-cyan-300 transition">Skills</a>
-          <a href="#interests" className="hover:text-cyan-300 transition">Interests</a>
-          <a href="#contact" className="hover:text-cyan-300 transition">Contact</a>
-          <a href="/blog" className="hover:text-cyan-300 transition">Blog</a>
-          <a href="https://github.com/atkunja" target="_blank" rel="noopener" className="hover:text-cyan-400 transition">GitHub</a>
-          <a href="https://www.linkedin.com/in/ayushkunjadia/" target="_blank" rel="noopener" className="hover:text-cyan-400 transition">LinkedIn</a>
+      <nav className="sticky top-4 z-40 mx-auto flex w-[calc(100%-1.5rem)] max-w-6xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-xl shadow-[0_8px_40px_rgba(7,89,133,0.35)]">
+        <div className="flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-white/70">
+          <span className="pulse-ring relative inline-flex h-3 w-3 items-center justify-center">
+            <span className="h-[6px] w-[6px] rounded-full bg-cyan-400"></span>
+          </span>
+          <span>Ayush Kunjadia</span>
         </div>
-        <button className="md:hidden text-3xl text-cyan-400" onClick={() => setMobileNav(true)} aria-label="Open menu">≡</button>
+        <div className="hidden items-center gap-6 text-sm font-medium text-white/70 md:flex">
+          {[
+            { label: "Projects", href: "#projects" },
+            { label: "Experience", href: "#experience" },
+            { label: "Skills", href: "#skills" },
+            { label: "Interests", href: "#interests" },
+            { label: "Contact", href: "#contact" },
+            { label: "Blog", href: "/blog" },
+          ].map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="transition hover:text-cyan-300"
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="https://github.com/atkunja"
+            target="_blank"
+            rel="noopener"
+            className="transition hover:text-cyan-300"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ayushkunjadia/"
+            target="_blank"
+            rel="noopener"
+            className="transition hover:text-cyan-300"
+          >
+            LinkedIn
+          </a>
+        </div>
+        <button
+          className="md:hidden text-3xl text-cyan-300"
+          onClick={() => setMobileNav(true)}
+          aria-label="Open navigation"
+        >
+          ≡
+        </button>
       </nav>
 
       {/* Mobile Nav Overlay */}
       <MobileNav open={mobileNav} setOpen={setMobileNav} />
 
-      {/* HERO */}
-      <header className="flex flex-col items-center justify-center min-h-[40vh] text-center pb-6 px-2">
-        <h1 className="text-3xl sm:text-5xl font-extrabold mb-2 drop-shadow-lg">Ayush Kunjadia</h1>
-        <div className="text-base sm:text-2xl mb-1 text-cyan-300"><Typewriter words={WORDS} /></div>
-        <p className="text-gray-400 max-w-xl mt-2 mb-4 text-base sm:text-lg">
-          Aspiring software engineer passionate about building, learning, and sharing knowledge. Always open to new collaborations and exciting challenges.
-        </p>
-        <div className="flex gap-3">
-          <a href="https://github.com/atkunja" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-900 rounded hover:bg-cyan-700">GitHub</a>
-          <a href="https://www.linkedin.com/in/ayushkunjadia/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-900 rounded hover:bg-cyan-700">LinkedIn</a>
-        </div>
-      </header>
+      <main className="relative z-10">
+        {/* HERO */}
+        <header
+          className="relative mx-auto grid w-[calc(100%-1.5rem)] max-w-6xl grid-cols-1 gap-12 px-4 pt-24 pb-16 sm:px-6 md:grid-cols-[1.2fr_0.9fr]"
+          onMouseMove={(event) => {
+            const rect = event.currentTarget.getBoundingClientRect();
+            setSpotlightPos({
+              x: ((event.clientX - rect.left) / rect.width) * 100,
+              y: ((event.clientY - rect.top) / rect.height) * 100,
+            });
+          }}
+          onMouseLeave={() => {
+            setSpotlightPos({ x: 50, y: 50 });
+          }}
+        >
+          <div className="absolute inset-0 -z-[1] rounded-[2.5rem] bg-white/3 blur-3xl" />
+          <div className="spotlight" style={spotlightStyle} />
 
-      {/* PROJECTS */}
-      <section id="projects" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-cyan-300">Projects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {projects.map((p) => (
-            <div key={p.title} className="rounded-2xl shadow-lg bg-gradient-to-b from-gray-900/90 to-gray-900/60 border border-gray-800 hover:border-cyan-400 overflow-hidden flex flex-col">
-              <a href={p.live} target="_blank" rel="noopener noreferrer" className="block">
-                <div className="w-full aspect-video bg-gray-800 relative">
-                  <Image src={p.image} alt={p.title} fill style={{objectFit: "cover"}} className="hover:scale-105 transition" />
-                </div>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <span className="accent-gradient">Full-stack TypeScript engineer</span>
+            <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_0_48px_rgba(6,182,212,0.2)] sm:text-6xl">
+              Shipping immersive web experiences with TypeScript energy.
+            </h1>
+            <div className="mt-6 text-lg text-white/75 sm:text-xl">
+              <Typewriter words={WORDS} />
+            </div>
+            <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base sm:leading-relaxed">
+              I build ambitious interfaces and resilient backend systems, weaving real-time features, clever animations, and thoughtful DX into every product. Let&apos;s craft something wildly interactive.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4 md:justify-start">
+              <a
+                href="https://github.com/atkunja"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="neon-button px-6 py-2 text-sm"
+              >
+                View GitHub
               </a>
-              <div className="p-4 flex-1 flex flex-col">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-xl font-semibold text-white">{p.title}</h3>
-                  <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-gray-400 underline text-xs">GitHub</a>
+              <a
+                href="https://www.linkedin.com/in/ayushkunjadia/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-white/15 px-6 py-2 text-sm font-semibold text-white/80 transition hover:border-cyan-300/70 hover:text-cyan-200"
+              >
+                Let&apos;s Connect
+              </a>
+            </div>
+            <ul className="mt-10 flex flex-col gap-3 text-left text-sm text-white/60">
+              {heroHighlights.map((highlight) => (
+                <li
+                  key={highlight}
+                  className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-md transition hover:border-cyan-300/50 hover:text-cyan-100"
+                >
+                  <span className="mt-[4px] h-2 w-2 rounded-full bg-cyan-300" />
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
+              {heroStats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="glass-panel flex flex-col items-center gap-1 rounded-3xl px-6 py-5 text-center transition duration-500 hover:-translate-y-1 hover:bg-white/10"
+                >
+                  <span className="text-3xl font-bold text-cyan-300">
+                    {stat.value}
+                  </span>
+                  <span className="text-xs uppercase tracking-[0.3em] text-white/60">
+                    {stat.label}
+                  </span>
                 </div>
-                <p className="text-gray-300 flex-1">{p.description}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p.tech.map((t) => <span key={t} className="bg-cyan-900/40 text-cyan-300 text-xs px-2 py-1 rounded">{t}</span>)}
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden flex-col items-center gap-6 md:flex">
+            <div className="floating-stack w-full max-w-sm">
+              <div>
+                <div className="glass-panel relative overflow-hidden rounded-[2rem]">
+                  <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/20 to-transparent" />
+                  <Image
+                    src={projects[0].image}
+                    alt="Clinic Finder"
+                    width={720}
+                    height={900}
+                    className="h-full w-full object-cover transition duration-[1200ms] ease-out hover:scale-105"
+                    priority
+                  />
+                  <div className="absolute inset-x-5 bottom-5 flex items-center justify-between rounded-2xl border border-white/10 bg-black/50 px-4 py-3 text-xs uppercase tracking-[0.3em] text-white/70 backdrop-blur">
+                    <span>Clinic Finder</span>
+                    <span className="text-cyan-300">Geospatial UX</span>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* EXPERIENCE */}
-      <section id="experience" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-cyan-300">Experience</h2>
-        <div className="grid grid-cols-1 gap-8">
-          {experience.map((exp) => (
-            <a key={exp.title} href={exp.link} target="_blank" rel="noopener noreferrer" className="rounded-2xl shadow-lg bg-gradient-to-b from-gray-900/90 to-gray-900/60 border border-gray-800 hover:border-cyan-400 p-6 flex flex-col">
-              <div className="flex justify-between mb-2">
-                <h3 className="text-xl font-semibold text-white">{exp.title}</h3>
-                <span className="text-cyan-400">{exp.period}</span>
+            <div className="glass-panel flex w-full max-w-sm flex-col gap-4 rounded-[2rem] px-6 py-6">
+              <span className="text-xs uppercase tracking-[0.4em] text-white/50">
+                Currently hacking on
+              </span>
+              <div className="grid grid-cols-1 gap-3 text-sm text-white/70">
+                {projects.slice(1, 3).map((project) => (
+                  <a
+                    key={project.title}
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="badge-item relative flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur transition hover:border-cyan-300/60 hover:text-cyan-200"
+                  >
+                    <span>{project.title}</span>
+                    <span className="text-xs uppercase tracking-[0.3em] text-white/60">
+                      Launch
+                    </span>
+                  </a>
+                ))}
               </div>
-              <span className="text-gray-400 font-medium mb-2">{exp.company}</span>
-              <p className="text-gray-300 flex-1">{exp.description}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {exp.tech.map((t) => <span key={t} className="bg-cyan-900/40 text-cyan-300 text-xs px-2 py-1 rounded">{t}</span>)}
+            </div>
+          </div>
+        </header>
+
+        {/* SKILL MARQUEE */}
+        <section className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-12 sm:px-6">
+          <div className="marquee rounded-full border border-white/10 bg-white/5 px-6 py-4">
+            <div className="marquee-track text-xs uppercase tracking-[0.4em] text-white/60">
+              {marqueeItems.map((item, idx) => (
+                <span key={`${item}-${idx}`} className="accent-gradient">
+                  #{item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* PROJECTS */}
+        <section id="projects" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
+          <SectionHeading
+            label="Build log"
+            title="Projects engineered with ridiculous attention to detail"
+            description="Every project is a playground for advanced TypeScript patterns, resilient architectures, and bold UX moments."
+          />
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+            {projects.map((project) => (
+              <div
+                key={project.title}
+                className="group glass-panel flex h-full flex-col overflow-hidden rounded-[2.25rem] border border-white/10 transition duration-500 hover:-translate-y-2 hover:border-cyan-300/60"
+              >
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative block"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition duration-[1200ms] ease-out group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-90 transition group-hover:opacity-100" />
+                    <div className="absolute bottom-5 left-5 flex items-center gap-2">
+                      <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-white/70">
+                        Live
+                      </span>
+                      <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-cyan-200">
+                        {project.tech[0]}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+                <div className="flex flex-1 flex-col gap-5 px-6 pb-6 pt-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-xl font-semibold text-white">
+                        {project.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-white/65">
+                        {project.description}
+                      </p>
+                    </div>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs uppercase tracking-[0.35em] text-white/50 transition hover:text-cyan-200"
+                    >
+                      Repo
+                    </a>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <span
+                        key={`${project.title}-${tech}`}
+                        className="badge-item relative rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-white/60"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </a>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
 
-      {/* SKILLS */}
-      <section id="skills" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-cyan-300">Skills</h2>
-        <div className="flex flex-wrap gap-3">
-          {skills.map((s) => <span key={s} className="bg-gray-800 text-cyan-200 px-3 py-1 rounded-full text-xs">{s}</span>)}
-        </div>
-      </section>
+        {/* EXPERIENCE */}
+        <section id="experience" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
+          <SectionHeading
+            label="Timeline"
+            title="Experience sharpening resilience and velocity"
+            description="I thrive in teams where experimentation, feedback loops, and developer empathy lead to shipping value faster."
+          />
+          <ul className="timeline relative space-y-10">
+            {experience.map((exp) => (
+              <li key={exp.title} className="glass-panel rounded-[2rem] border border-white/10 px-6 py-8">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <h3 className="text-2xl font-semibold text-white">
+                    {exp.title}
+                  </h3>
+                  <span className="rounded-full border border-cyan-400/50 bg-cyan-500/10 px-3 py-1 text-xs uppercase tracking-[0.3em] text-cyan-200">
+                    {exp.period}
+                  </span>
+                </div>
+                <a
+                  href={exp.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex text-sm uppercase tracking-[0.3em] text-white/60 transition hover:text-cyan-200"
+                >
+                  {exp.company}
+                </a>
+                <p className="mt-4 text-sm leading-relaxed text-white/65">
+                  {exp.description}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {exp.tech.map((tech) => (
+                    <span
+                      key={`${exp.title}-${tech}`}
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-white/60"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      {/* INTERESTS */}
-      <section id="interests" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-cyan-300">Interests</h2>
-        <div className="flex flex-wrap gap-4 text-gray-400">
-          {interests.map((i) => <span key={i} className="bg-gray-900 px-3 py-2 rounded-lg text-sm">{i}</span>)}
-        </div>
-      </section>
+        {/* SKILLS */}
+        <section id="skills" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
+          <SectionHeading
+            label="Stack"
+            title="Skills, tools, and tech that keep the ship fast"
+            description="TypeScript anchors everything, with a supporting cast that scales from front-facing experiences to backend orchestration."
+          />
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {skillCategories.map((category) => (
+              <div
+                key={category.title}
+                className="glass-panel flex flex-col gap-4 rounded-[2rem] border border-white/10 px-6 py-8 transition duration-500 hover:-translate-y-2 hover:border-cyan-300/60"
+              >
+                <span className="text-xs uppercase tracking-[0.4em] text-white/60">
+                  {category.title}
+                </span>
+                <div className="flex flex-wrap gap-3">
+                  {category.items.map((item) => (
+                    <span
+                      key={`${category.title}-${item}`}
+                      className="badge-item relative rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/65"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      {/* CONTACT */}
-      <section id="contact" className="max-w-6xl mx-auto px-2 sm:px-4 py-10 sm:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-cyan-300">Contact</h2>
-        <p className="mb-6 text-gray-300">Have a project idea in mind or want to collaborate? Let&apos;s connect!</p>
-        <form action="https://formspree.io/f/xeozjzzr" method="POST" className="bg-gray-900 rounded-2xl p-6 shadow-md flex flex-col gap-4">
-          <input name="name" type="text" placeholder="Name" required className="bg-gray-800 text-white rounded px-3 py-2 focus:ring-2 focus:ring-cyan-400" />
-          <input name="email" type="email" placeholder="Email" required className="bg-gray-800 text-white rounded px-3 py-2 focus:ring-2 focus:ring-cyan-400" />
-          <textarea name="message" rows={4} placeholder="Message" required className="bg-gray-800 text-white rounded px-3 py-2 focus:ring-2 focus:ring-cyan-400" />
-          <button type="submit" className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-full px-6 py-2 font-semibold">Send Message</button>
-        </form>
-      </section>
+        {/* INTERESTS */}
+        <section id="interests" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
+          <SectionHeading
+            label="Beyond code"
+            title="Momentum from the mat to the trail"
+            description="Competition, resilience, and curiosity power how I build and how I recharge."
+          />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {interests.map((interest) => (
+              <div
+                key={interest}
+                className="glass-panel flex items-center gap-4 rounded-[2rem] border border-white/10 px-6 py-5 text-sm text-white/70 transition hover:-translate-y-1 hover:border-cyan-300/60"
+              >
+                <span className="h-2 w-2 rounded-full bg-cyan-300" />
+                <span>{interest}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CONTACT */}
+        <section id="contact" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-24 sm:px-6">
+          <SectionHeading
+            label="Collab"
+            title="Pitch a project, invite me to a squad, or drop a hello"
+            description="I&apos;m game to iterate on ambitious ideas, join high-velocity teams, or collaborate on experimental prototypes."
+          />
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1fr]">
+            <div className="glass-panel rounded-[2.5rem] border border-white/10 px-8 py-10 text-sm leading-relaxed text-white/65">
+              <h3 className="text-2xl font-semibold text-white">Let&apos;s build something unignorable.</h3>
+              <p className="mt-6">
+                Whether you need TypeScript leadership, a UI that slaps, or backend systems that don&apos;t crumble under load, I&apos;m down to collaborate. Send a note—I reply fast.
+              </p>
+              <div className="mt-8 grid gap-4 text-white/70">
+                <a
+                  href="mailto:ayushkunjadia@gmail.com"
+                  className="badge-item relative inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 uppercase tracking-[0.3em] text-xs transition hover:border-cyan-300/50 hover:text-cyan-100"
+                >
+                  <span className="h-2 w-2 rounded-full bg-cyan-300" />
+                  ayushkunjadia@gmail.com
+                </a>
+                <a
+                  href="https://github.com/atkunja"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="badge-item relative inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 uppercase tracking-[0.3em] text-xs transition hover:border-cyan-300/50 hover:text-cyan-100"
+                >
+                  <span className="h-2 w-2 rounded-full bg-cyan-300" />
+                  GitHub
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/ayushkunjadia/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="badge-item relative inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 uppercase tracking-[0.3em] text-xs transition hover:border-cyan-300/50 hover:text-cyan-100"
+                >
+                  <span className="h-2 w-2 rounded-full bg-cyan-300" />
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+            <form
+              action="https://formspree.io/f/xeozjzzr"
+              method="POST"
+              className="glass-panel rounded-[2.5rem] border border-white/10 px-8 py-10"
+            >
+              <div className="grid gap-5">
+                <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-white/60">
+                  Name
+                  <input
+                    name="name"
+                    type="text"
+                    required
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-cyan-300/60 focus:outline-none focus:ring-2 focus:ring-cyan-400/40"
+                  />
+                </label>
+                <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-white/60">
+                  Email
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-cyan-300/60 focus:outline-none focus:ring-2 focus:ring-cyan-400/40"
+                  />
+                </label>
+                <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-white/60">
+                  Message
+                  <textarea
+                    name="message"
+                    rows={5}
+                    placeholder="Tell me about the project, stack, or dream."
+                    required
+                    className="min-h-[140px] rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-cyan-300/60 focus:outline-none focus:ring-2 focus:ring-cyan-400/40"
+                  />
+                </label>
+                <button type="submit" className="neon-button px-6 py-3 text-sm uppercase tracking-[0.35em]">
+                  Send it
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
 
       {/* FOOTER */}
-      <footer className="max-w-6xl mx-auto px-2 sm:px-4 py-6 text-center text-gray-700 text-xs border-t border-gray-800">
-        © {new Date().getFullYear()} Ayush Kunjadia
+      <footer className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-10 text-center text-xs uppercase tracking-[0.4em] text-white/40 sm:px-6">
+        © {new Date().getFullYear()} Ayush Kunjadia · Crafted in TypeScript
       </footer>
     </div>
   );

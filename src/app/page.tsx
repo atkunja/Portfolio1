@@ -65,7 +65,7 @@ const projects = [
   {
     title: "Clinic Finder",
     link: "https://github.com/atkunja/ClinicFinder",
-    live: "https://clinic-finder-6krk1j4hv-atkunjas-projects.vercel.app/",
+    live: "https://clinic-finder-pi.vercel.app/",
     image: "/projects/clinicfinder.png",
     tech: [
       "Next.js",
@@ -161,6 +161,7 @@ const interests = [
 ];
 
 const heroHighlights = [
+  "Currently building features for a freelancer platform to help founders find collaborators fast",
   "End-to-end builder who can architect APIs and craft pixel-perfect UI",
   "Obsessed with realtime collaboration, data viz, and accessible design",
   "Comfortable wrangling Supabase, sockets, and Docker in one sprint",
@@ -172,11 +173,6 @@ const heroFocus = [
   "Designing motion systems that feel like a playable UI, not a static page",
 ];
 
-const heroCombos = [
-  "Next.js × tRPC × Supabase",
-  "Leaflet × TypeScript × edge caching",
-  "Socket.io × Prisma × React Server Components",
-];
 
 type OrbConfig = {
   size: number;
@@ -424,9 +420,9 @@ export default function Home() {
           <div className="spotlight" style={spotlightStyle} />
 
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <span className="accent-gradient">Full-stack TypeScript engineer</span>
+            <span className="accent-gradient">Software engineer</span>
             <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_0_48px_rgba(6,182,212,0.2)] sm:text-6xl">
-              Shipping immersive web experiences with TypeScript energy.
+              Software engineer building collaborative, motion-rich web experiences.
             </h1>
             <div className="mt-6 text-lg text-white/75 sm:text-xl">
               <Typewriter words={WORDS} />
@@ -481,21 +477,6 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="glass-panel flex flex-col gap-4 rounded-[2rem] px-6 py-7">
-              <span className="text-xs uppercase tracking-[0.4em] text-white/50">
-                Favorite tech combos
-              </span>
-              <div className="flex flex-col gap-2 text-sm text-white/70">
-                {heroCombos.map((combo) => (
-                  <span
-                    key={combo}
-                    className="badge-item relative inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 uppercase tracking-[0.3em] text-xs transition hover:border-cyan-300/60 hover:text-cyan-100"
-                  >
-                    {combo}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
         </header>

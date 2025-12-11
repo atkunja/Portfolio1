@@ -167,13 +167,6 @@ const heroHighlights = [
   "Comfortable wrangling Supabase, sockets, and Docker in one sprint",
 ];
 
-const heroFocus = [
-  "Leveling up CodeCollab.chat with multiplayer recording + replay",
-  "Dialing in blazing-fast DX workflows with pnpm + Turbo + Supabase",
-  "Designing motion systems that feel like a playable UI, not a static page",
-];
-
-
 type OrbConfig = {
   size: number;
   top: string;

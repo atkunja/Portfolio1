@@ -1,9 +1,21 @@
 // src/app/layout.tsx
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Ayush Kunjadia",
+  description:
+    "Software engineer building collaborative, motion-rich web experiences with thoughtful polish.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

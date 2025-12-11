@@ -6,7 +6,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 
 // --- Typewriter effect ---
-const WORDS = ["TypeScript Fiend", "Full-Stack Builder", "Collaborative Engineer"];
+const WORDS = ["Software Engineer", "Full-Stack Builder", "Curious Collaborator"];
 
 function Typewriter({
   words,
@@ -461,24 +461,6 @@ export default function Home() {
             </ul>
           </div>
 
-          <div className="hidden w-full max-w-sm flex-col gap-6 md:flex">
-            <div className="glass-panel flex flex-col gap-4 rounded-[2rem] px-6 py-7">
-              <span className="text-xs uppercase tracking-[0.4em] text-white/50">
-                Current focus
-              </span>
-              <ul className="flex flex-col gap-3 text-sm text-white/70">
-                {heroFocus.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-cyan-300/60 hover:text-cyan-100"
-                  >
-                    <span className="mt-[4px] h-2 w-2 rounded-full bg-cyan-300" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
         </header>
 
         {/* SKILL MARQUEE */}
@@ -748,7 +730,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-10 text-center text-xs uppercase tracking-[0.4em] text-white/40 sm:px-6">
-        © {new Date().getFullYear()} Ayush Kunjadia · Crafted in TypeScript
+        © {new Date().getFullYear()} Ayush Kunjadia · Thanks for stopping by
       </footer>
     </div>
   );

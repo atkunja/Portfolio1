@@ -6,7 +6,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 
 // --- Typewriter effect ---
-const WORDS = ["Software Engineer", "Full-Stack Builder", "Curious Collaborator"];
+const WORDS = ["Software Engineer", "Full-stack developer", "Team collaborator"];
 
 function Typewriter({
   words,
@@ -77,7 +77,7 @@ const projects = [
       "Vercel",
     ],
     description:
-      "Geospatial clinic discovery engine with live map filters, admin portal, and Supabase-backed CRUD for healthcare accessibility.",
+      "Find nearby clinics with map filters, admin tools, and Supabase data.",
   },
   {
     title: "ToxicFilter",
@@ -95,7 +95,7 @@ const projects = [
       "React",
     ],
     description:
-      "Real-time toxicity classifier that streams predictions via REST, fuses Flask + C++ inference, and delivers a silky React UI.",
+      "Classifies toxic text in real time using Flask, C++, and a simple React UI.",
   },
   {
     title: "Manga Animator",
@@ -104,7 +104,7 @@ const projects = [
     image: "/projects/manga-animator.png",
     tech: ["Python", "Streamlit", "MoviePy", "Docker"],
     description:
-      "Takes static manga panels and remixes them into cinematic sequences with motion layers, dynamic captions, and auto-editing.",
+      "Turns manga panels into short videos with motion, captions, and auto-editing.",
   },
   {
     title: "CodeCollab",
@@ -113,7 +113,7 @@ const projects = [
     image: "/projects/codecollab.png",
     tech: ["Next.js", "NestJS", "TypeScript", "Tailwind CSS", "Supabase", "Socket.io"],
     description:
-      "Collaborative IDE in the browser with presence indicators, Supabase auth, NestJS APIs, and low-latency Socket.io sessions.",
+      "Browser-based collaborative editor with auth, NestJS APIs, and low-latency sessions.",
   },
 ];
 
@@ -125,7 +125,7 @@ const experience = [
     period: "June 2025 – August 2025",
     tech: ["React", "Node.js", "PostgreSQL", "Supabase"],
     description:
-      "Delivered production-ready features across React + Node, tuned Postgres queries, and paired weekly with design to ship high-polish UX.",
+      "Shipped features in React and Node, improved Postgres queries, and worked with design to refine UX.",
   },
 ];
 
@@ -161,10 +161,10 @@ const interests = [
 ];
 
 const heroHighlights = [
-  "Currently building features for a freelancer platform to help founders find collaborators fast",
-  "End-to-end builder who can architect APIs and craft pixel-perfect UI",
-  "Obsessed with realtime collaboration, data viz, and accessible design",
-  "Comfortable wrangling Supabase, sockets, and Docker in one sprint",
+  "Building tools people actually use",
+  "Comfortable across frontend and backend",
+  "Enjoy pairing with teammates and shipping often",
+  "Happy to keep things simple and readable",
 ];
 
 type OrbConfig = {
@@ -342,7 +342,7 @@ export default function Home() {
 
       {/* NAV */}
       <nav className="sticky top-4 z-40 mx-auto flex w-[calc(100%-1.5rem)] max-w-6xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-xl shadow-[0_8px_40px_rgba(7,89,133,0.35)]">
-        <div className="flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-white/70">
+        <div className="flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-white/70">
           <span className="pulse-ring relative inline-flex h-3 w-3 items-center justify-center">
             <span className="h-[6px] w-[6px] rounded-full bg-cyan-400"></span>
           </span>
@@ -412,25 +412,25 @@ export default function Home() {
           <div className="absolute inset-0 -z-[1] rounded-[2.5rem] bg-white/3 blur-3xl" />
           <div className="spotlight" style={spotlightStyle} />
 
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="flex flex-col items-center text-center">
             <span className="accent-gradient">Software engineer</span>
-            <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_0_48px_rgba(6,182,212,0.2)] sm:text-6xl">
-              Software engineer building collaborative, motion-rich web experiences.
+            <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_0_48px_rgba(6,182,212,0.2)] sm:text-5xl">
+              I build reliable software for the web and backend.
             </h1>
             <div className="mt-6 text-lg text-white/75 sm:text-xl">
               <Typewriter words={WORDS} />
             </div>
             <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base sm:leading-relaxed">
-              I build ambitious interfaces and resilient backend systems, weaving real-time features, clever animations, and thoughtful DX into every product. Let&apos;s craft something wildly interactive.
+              I like working with teams, shipping clear features, and keeping things easy to use. If you need someone who can move between frontend and backend, I can help.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4 md:justify-start">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <a
                 href="https://github.com/atkunja"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="neon-button px-6 py-2 text-sm"
               >
-                View GitHub
+                GitHub
               </a>
               <a
                 href="https://www.linkedin.com/in/ayushkunjadia/"
@@ -438,7 +438,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="rounded-full border border-white/15 px-6 py-2 text-sm font-semibold text-white/80 transition hover:border-cyan-300/70 hover:text-cyan-200"
               >
-                Let&apos;s Connect
+                Say hello
               </a>
             </div>
             <ul className="mt-10 flex flex-col gap-3 text-left text-sm text-white/60">
@@ -472,9 +472,9 @@ export default function Home() {
         {/* PROJECTS */}
         <section id="projects" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
           <SectionHeading
-            label="Build log"
-            title="Projects engineered with ridiculous attention to detail"
-            description="Every project is a playground for advanced TypeScript patterns, resilient architectures, and bold UX moments."
+            label="Work"
+            title="Projects I&apos;ve built"
+            description="A few things I shipped recently."
           />
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {projects.map((project) => (
@@ -546,8 +546,8 @@ export default function Home() {
         <section id="experience" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
           <SectionHeading
             label="Timeline"
-            title="Experience sharpening resilience and velocity"
-            description="I thrive in teams where experimentation, feedback loops, and developer empathy lead to shipping value faster."
+            title="Experience"
+            description="Places I&apos;ve worked and what I did there."
           />
           <ul className="timeline relative space-y-10">
             {experience.map((exp) => (
@@ -590,8 +590,8 @@ export default function Home() {
         <section id="skills" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
           <SectionHeading
             label="Stack"
-            title="Skills, tools, and tech that keep the ship fast"
-            description="TypeScript anchors everything, with a supporting cast that scales from front-facing experiences to backend orchestration."
+            title="Skills and tools"
+            description="Languages and frameworks I use often."
           />
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {skillCategories.map((category) => (
@@ -621,8 +621,8 @@ export default function Home() {
         <section id="interests" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-20 sm:px-6">
           <SectionHeading
             label="Beyond code"
-            title="Momentum from the mat to the trail"
-            description="Competition, resilience, and curiosity power how I build and how I recharge."
+            title="Outside of work"
+            description="How I recharge and stay curious."
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {interests.map((interest) => (
@@ -641,14 +641,14 @@ export default function Home() {
         <section id="contact" className="mx-auto w-[calc(100%-1.5rem)] max-w-6xl px-4 pb-24 sm:px-6">
           <SectionHeading
             label="Collab"
-            title="Pitch a project, invite me to a squad, or drop a hello"
-            description="I&apos;m game to iterate on ambitious ideas, join high-velocity teams, or collaborate on experimental prototypes."
+            title="Get in touch"
+            description="Have a project or opening? Let&apos;s talk."
           />
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1fr]">
             <div className="glass-panel rounded-[2.5rem] border border-white/10 px-8 py-10 text-sm leading-relaxed text-white/65">
-              <h3 className="text-2xl font-semibold text-white">Let&apos;s build something unignorable.</h3>
+              <h3 className="text-2xl font-semibold text-white">Let&apos;s build something steady.</h3>
               <p className="mt-6">
-                Whether you need TypeScript leadership, a UI that slaps, or backend systems that don&apos;t crumble under load, I&apos;m down to collaborate. Send a note—I reply fast.
+                If you need help shipping a clear feature set or keeping a product stable, I&apos;m happy to help.
               </p>
               <div className="mt-8 grid gap-4 text-white/70">
                 <a

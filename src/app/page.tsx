@@ -397,7 +397,7 @@ export default function Home() {
       <main className="relative z-10">
         {/* HERO */}
         <header
-          className="relative mx-auto grid w-[calc(100%-1.5rem)] max-w-6xl grid-cols-1 gap-12 px-4 pt-24 pb-16 sm:px-6 md:grid-cols-[1.2fr_0.9fr]"
+          className="relative mx-auto flex w-[calc(100%-1.5rem)] max-w-4xl flex-col items-center px-4 pt-24 pb-16 text-center sm:px-6"
           onMouseMove={(event) => {
             const rect = event.currentTarget.getBoundingClientRect();
             setSpotlightPos({

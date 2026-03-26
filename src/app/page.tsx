@@ -761,13 +761,13 @@ export default function Home() {
         >
           <div className="absolute inset-0 overflow-hidden rounded-[2.5rem]" style={{ zIndex: 0 }}>
             <Image
-              src="/wrestling.png"
+              src="/projects/wrestling.png"
               alt=""
               fill
-              className="object-cover opacity-[0.14] scale-110"
+              className="object-cover opacity-30"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05070f] via-[#05070f]/40 to-[#05070f]/70" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#05070f] via-transparent to-transparent" />
           </div>
           <div className="spotlight" style={{ ...spotlightStyle, zIndex: 1 } as CSSProperties} />
 

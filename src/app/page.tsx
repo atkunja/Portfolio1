@@ -6,7 +6,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 
 // --- Typewriter effect ---
-const WORDS = ["Software Engineer", "Full-stack developer", "Team collaborator"];
+const WORDS = ["Software Engineer", "Problem solver", "Team collaborator"];
 
 function Typewriter({
   words,
@@ -509,9 +509,9 @@ const interests = [
 
 const heroHighlights = [
   "Building tools people actually use",
-  "Comfortable across frontend and backend",
-  "Enjoy pairing with teammates and shipping often",
-  "Happy to keep things simple and readable",
+  "Ship often, keep it simple",
+  "Enjoy working with teammates",
+  "Former all-state wrestler",
 ];
 
 type OrbConfig = {
@@ -760,18 +760,28 @@ export default function Home() {
           }}
         >
           <div className="absolute inset-0 -z-[1] rounded-[2.5rem] bg-white/3 blur-3xl" />
+          <div className="absolute inset-0 -z-[1] overflow-hidden rounded-[2.5rem]">
+            <Image
+              src="/wrestling.png"
+              alt=""
+              fill
+              className="object-cover opacity-[0.07] blur-[1px] scale-110"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#05070f] via-transparent to-[#05070f]/80" />
+          </div>
           <div className="spotlight" style={spotlightStyle} />
 
           <div className="flex flex-col items-center text-center">
             <span className="accent-gradient">Software engineer</span>
             <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_0_48px_rgba(6,182,212,0.2)] sm:text-5xl">
-              I build reliable software for the web and backend.
+              I build reliable software that works.
             </h1>
             <div className="mt-6 text-lg text-white/75 sm:text-xl">
               <Typewriter words={WORDS} />
             </div>
             <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/60 sm:text-base sm:leading-relaxed">
-              I like working with teams, shipping clear features, and keeping things easy to use. If you need someone who can move between frontend and backend, I can help.
+              I like working with teams, shipping clear features, and keeping things easy to use.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <a

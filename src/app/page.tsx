@@ -747,7 +747,7 @@ export default function Home() {
       <main className="relative z-10">
         {/* HERO */}
         <header
-          className="relative mx-auto flex w-[calc(100%-1.5rem)] max-w-4xl flex-col items-center px-4 pt-24 pb-16 text-center sm:px-6"
+          className="relative w-full overflow-hidden pt-20 pb-20"
           onMouseMove={(event) => {
             const rect = event.currentTarget.getBoundingClientRect();
             setSpotlightPos({
@@ -759,19 +759,21 @@ export default function Home() {
             setSpotlightPos({ x: 50, y: 50 });
           }}
         >
-          <div className="absolute inset-0 overflow-hidden rounded-[2.5rem]" style={{ zIndex: 0 }}>
+          {/* Full-width wrestling background */}
+          <div className="absolute inset-0">
             <Image
               src="/projects/wrestling.png"
               alt=""
               fill
-              className="object-cover opacity-30"
+              className="object-cover opacity-25"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05070f] via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#05070f] via-[#05070f]/50 to-[#05070f]/30" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#05070f]/60 via-transparent to-[#05070f]" />
           </div>
-          <div className="spotlight" style={{ ...spotlightStyle, zIndex: 1 } as CSSProperties} />
+          <div className="spotlight" style={spotlightStyle} />
 
-          <div className="relative z-10 flex flex-col items-center text-center">
+          <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-4 text-center sm:px-6">
             <span className="accent-gradient">Software engineer</span>
             <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_0_48px_rgba(6,182,212,0.2)] sm:text-5xl">
               I build reliable software that works.

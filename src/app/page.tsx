@@ -759,20 +759,19 @@ export default function Home() {
             setSpotlightPos({ x: 50, y: 50 });
           }}
         >
-          <div className="absolute inset-0 -z-[1] rounded-[2.5rem] bg-white/3 blur-3xl" />
-          <div className="absolute inset-0 -z-[1] overflow-hidden rounded-[2.5rem]">
+          <div className="absolute inset-0 overflow-hidden rounded-[2.5rem]" style={{ zIndex: 0 }}>
             <Image
               src="/wrestling.png"
               alt=""
               fill
-              className="object-cover opacity-[0.07] blur-[1px] scale-110"
+              className="object-cover opacity-[0.14] scale-110"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05070f] via-transparent to-[#05070f]/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#05070f] via-[#05070f]/40 to-[#05070f]/70" />
           </div>
-          <div className="spotlight" style={spotlightStyle} />
+          <div className="spotlight" style={{ ...spotlightStyle, zIndex: 1 } as CSSProperties} />
 
-          <div className="flex flex-col items-center text-center">
+          <div className="relative z-10 flex flex-col items-center text-center">
             <span className="accent-gradient">Software engineer</span>
             <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_0_48px_rgba(6,182,212,0.2)] sm:text-5xl">
               I build reliable software that works.

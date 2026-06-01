@@ -114,15 +114,17 @@ export default function BlogPage() {
     });
 
   return (
-    <div className="relative min-h-screen bg-[#0A0C12] text-white">
+    <div className="relative min-h-screen overflow-x-hidden bg-bg-base text-ink">
+      <div className="warm-glow" aria-hidden />
+      <div className="paper-grain" aria-hidden />
 
       {/* NAVIGATION BACK TO HOME */}
       <nav className="absolute top-4 right-4 z-50">
         <Link
           href="/"
-          className="bg-gray-800 hover:bg-cyan-600 text-white px-3 py-1 rounded text-sm shadow transition"
+          className="rounded-full border border-border bg-surface px-4 py-1.5 text-sm text-ink-muted shadow transition hover:border-honey/60 hover:text-honey"
         >
-          ← Back to Home
+          ← back home
         </Link>
       </nav>
 
@@ -130,14 +132,14 @@ export default function BlogPage() {
       {isAdmin ? (
         <button
           onClick={() => setIsAdmin(false)}
-          className="absolute top-4 left-4 bg-red-600 px-3 py-1 rounded text-sm"
+          className="absolute top-4 left-4 rounded-full bg-rust px-3 py-1.5 text-sm text-bg-base"
         >
           Logout
         </button>
       ) : (
         <button
           onClick={() => setShowLogin(true)}
-          className="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded text-sm"
+          className="absolute top-4 left-4 rounded-full border border-border bg-surface px-3 py-1.5 text-sm text-honey transition hover:text-honey-soft"
         >
           Admin Login
         </button>
@@ -149,14 +151,14 @@ export default function BlogPage() {
           onClose={() => setShowLogin(false)}
           className="fixed inset-0 z-40 flex items-center justify-center p-4"
         >
-          <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
-          <div className="relative bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-sm">
-            <Dialog.Title className="mb-4 text-xl font-semibold">
+          <div className="fixed inset-0 bg-bg-base/70" aria-hidden="true" />
+          <div className="warm-card relative w-full max-w-sm p-6">
+            <Dialog.Title className="mb-4 font-display text-xl font-semibold text-ink">
               Enter Admin Password
             </Dialog.Title>
             <button
               onClick={() => setShowLogin(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-white"
+              className="absolute top-2 right-3 text-2xl text-ink-faint hover:text-ink"
             >
               &times;
             </button>
@@ -165,11 +167,11 @@ export default function BlogPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full mb-4 px-3 py-2 bg-gray-800 rounded outline-none"
+              className="mb-4 w-full rounded-lg border border-border bg-surface-2 px-3 py-2 text-ink outline-none transition focus:border-honey"
             />
             <button
               onClick={handleLogin}
-              className="w-full bg-green-600 py-2 rounded"
+              className="warm-button w-full py-2"
             >
               Login
             </button>
@@ -178,21 +180,21 @@ export default function BlogPage() {
       </Transition>
 
       <section className="mx-auto max-w-3xl px-4 pt-24 pb-10">
-        {/* Animated Title */}
-        <h1 className="text-5xl font-extrabold text-cyan-400 text-center mb-10 animate-fade-in">
-          My Blog
+        {/* Title */}
+        <h1 className="mb-10 text-center font-display text-5xl font-semibold text-ink">
+          my blog
         </h1>
 
         {/* Post Form (admin only) */}
         {isAdmin && (
-          <div className="mb-10 bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
+          <div className="warm-card mb-10 p-6">
             <input
               type="file"
               accept="image/*,video/*"
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setMedia(e.target.files?.[0] || null)
               }
-              className="mb-3 block w-full text-sm text-white"
+              className="mb-3 block w-full text-sm text-ink-muted"
             />
 
             {/* Show current media when editing */}
@@ -205,7 +207,7 @@ export default function BlogPage() {
                 ) : null}
                 <button
                   onClick={() => { setEditMediaUrl(null); setEditMediaType("text"); }}
-                  className="ml-2 text-red-400 underline text-xs"
+                  className="ml-2 text-xs text-rust underline"
                   type="button"
                 >
                   Remove Media
@@ -217,11 +219,11 @@ export default function BlogPage() {
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Write your post here..."
-              className="w-full mb-4 h-24 p-2 bg-gray-800 rounded resize-none outline-none"
+              className="mb-4 h-24 w-full resize-none rounded-lg border border-border bg-surface-2 p-2 text-ink outline-none transition focus:border-honey"
             />
             <button
               onClick={handleSubmit}
-              className="bg-cyan-600 hover:bg-cyan-700 px-5 py-2 rounded"
+              className="warm-button px-5 py-2"
             >
               {editId != null ? "Update Post" : "Post"}
             </button>
@@ -233,10 +235,10 @@ export default function BlogPage() {
           {posts.map((p) => (
             <article
               key={p.id}
-              className="bg-gray-900 p-4 rounded-lg shadow border border-gray-800"
+              className="warm-card p-4"
             >
-              <div className="flex justify-between items-center mb-2 text-gray-400 text-sm">
-                <span>🗓️ {formatDate(p.inserted_at)}</span>
+              <div className="mb-2 flex items-center justify-between text-sm text-ink-faint">
+                <span className="font-hand text-base">🗓️ {formatDate(p.inserted_at)}</span>
                 {isAdmin && (
                   <span>
                     <button
@@ -246,13 +248,13 @@ export default function BlogPage() {
                         setEditMediaUrl(p.media_url);
                         setEditMediaType(p.type);
                       }}
-                      className="text-yellow-400 hover:underline mr-2 text-sm"
+                      className="mr-2 text-sm text-honey hover:text-honey-soft"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(p.id)}
-                      className="text-red-400 hover:underline text-sm"
+                      className="text-sm text-rust hover:underline"
                     >
                       Delete
                     </button>
@@ -266,7 +268,7 @@ export default function BlogPage() {
                   alt={p.caption || ""}
                   width={800}
                   height={600}
-                  className="mb-3 w-full max-h-64 object-cover rounded cursor-pointer"
+                  className="mb-3 w-full max-h-64 object-cover rounded-md cursor-pointer"
                   onClick={() => setLightbox(p)}
                 />
               )}
@@ -275,12 +277,12 @@ export default function BlogPage() {
                 <video
                   src={p.media_url}
                   controls
-                  className="mb-3 w-full max-h-64 rounded cursor-pointer"
+                  className="mb-3 w-full max-h-64 rounded-md cursor-pointer"
                   onClick={() => setLightbox(p)}
                 />
               )}
 
-              {p.type === "text" && <p className="text-gray-300">{p.caption}</p>}
+              {p.type === "text" && <p className="leading-relaxed text-ink-muted">{p.caption}</p>}
             </article>
           ))}
         </div>
@@ -292,11 +294,11 @@ export default function BlogPage() {
           onClose={() => setLightbox(null)}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
-          <div className="fixed inset-0 bg-black/80" aria-hidden="true" />
+          <div className="fixed inset-0 bg-bg-base/85" aria-hidden="true" />
           <div className="relative max-w-full max-h-full">
             <button
               onClick={() => setLightbox(null)}
-              className="absolute top-2 right-2 text-white text-2xl"
+              className="absolute top-2 right-2 text-2xl text-ink"
             >
               &times;
             </button>

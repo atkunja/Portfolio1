@@ -2,6 +2,7 @@
 // Presentational scrapbook primitives (server-renderable, no client JS).
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
+import { AutoplayVideo } from "./autoplay-video";
 
 type AccentColor = "honey" | "rust" | "sage";
 
@@ -68,16 +69,10 @@ export function PolaroidFrame({
         style={{ aspectRatio: aspect }}
       >
         {media === "video" ? (
-          <video
+          <AutoplayVideo
             src={src}
             poster={poster}
-            autoPlay
-            loop
-            muted
-            playsInline
-            disablePictureInPicture
-            preload="metadata"
-            aria-label={alt}
+            ariaLabel={alt}
             className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (

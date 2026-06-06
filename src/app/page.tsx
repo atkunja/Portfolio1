@@ -83,9 +83,9 @@ export default function Home() {
               </span>
             </h1>
             <p className="mt-5 max-w-prose text-lg leading-relaxed text-ink-muted">
-              i build software with care — i&apos;ve worked on production inference,
-              research tooling, and consumer apps. i like small teams, clear
-              features, and making things people actually enjoy using.
+              i&apos;ve worked on production inference, and i love digging into new
+              tooling. when i&apos;m not building, i&apos;m usually in the gym,
+              playing sports, or grinding on anything that feels interesting.
             </p>
             <p className="mt-4 text-ink-muted">
               you can reach me on linkedin —{" "}
@@ -146,8 +146,8 @@ export default function Home() {
             <RevealSection delay={140}>
               <PolaroidFrame
                 src="/projects/wrestling.png"
-                alt="On the wrestling mat"
-                caption="on the mat"
+                alt="2x all-state wrestler"
+                caption="2x all-state"
                 tilt={1.5}
                 aspect="4/3"
                 className="w-[min(16rem,72vw)] sm:w-72"

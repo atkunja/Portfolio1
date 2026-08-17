@@ -27,31 +27,29 @@ const experience: Experience[] = [
     link: "https://www.barracuda.com",
     period: "June 2026 – August 2026",
     tech: [],
-    description:
-      "Joining Barracuda's engineering team for Summer 2026 to build and ship production features alongside experienced engineers.",
+    description: "Saved $12K a month on infrastructure costs.",
   },
   {
     company: "Ether Autonomy, Inc.",
-    title: "Builder",
+    title: "Co-Founder",
     period: "May 2026 – Present",
     tech: [],
-    description: "Coming soon 😉",
+    description: "Infrastructure for drones.",
   },
   {
     company: "Taurine Innovations, LLC",
-    title: "Founder",
+    title: "Operator",
     period: "April 2026 – Present",
     tech: [],
-    description: "Paying my rent.",
+    description: "Bootstrapping my run.",
   },
   {
     company: "Loshi Technologies, LLC",
     title: "Software Engineer Intern",
     link: "https://loshitech.com",
     period: "June 2025 – August 2025",
-    tech: ["React", "Node.js", "PostgreSQL", "Supabase"],
-    description:
-      "Shipped features in React and Node, improved Postgres queries, and worked with design to refine UX.",
+    tech: [],
+    description: "Learn how to code.",
   },
   {
     company: "Five Guys",

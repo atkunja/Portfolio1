@@ -10,7 +10,6 @@ export const NAV_LINKS = [
   { label: "Projects", href: "/projects" },
   { label: "Experience", href: "/#experience" },
   { label: "Contact", href: "/#contact" },
-  { label: "Blog", href: "/blog" },
 ];
 
 export const SOCIAL_LINKS = [
@@ -193,9 +192,6 @@ export function SiteFooter() {
             {item.label}
           </a>
         ))}
-        <Link href="/blog" className="transition hover:text-honey">
-          Blog
-        </Link>
       </div>
       <p className="mt-4 font-hand text-xl text-ink-faint">
         thanks for stopping by · © {new Date().getFullYear()} Ayush

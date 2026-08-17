@@ -41,7 +41,7 @@ const experience: Experience[] = [
     title: "Operator",
     period: "April 2026 – Present",
     tech: [],
-    description: "Bootstrapping my run.",
+    description: "Bootstrapping my rent.",
   },
   {
     company: "Loshi Technologies, LLC",

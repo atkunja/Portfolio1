@@ -114,7 +114,7 @@ const projects = [
   {
     title: "Verde Luxe Cleaning",
     link: "https://github.com/atkunja/cleaning",
-    live: "https://verdeluxefinal-production.up.railway.app/",
+    live: "https://verdeluxecleaning.com/",
     image: "/projects/cleaning.png",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Railway"],
     description:

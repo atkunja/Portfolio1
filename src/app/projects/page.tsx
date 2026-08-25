@@ -8,6 +8,46 @@ import { RevealSection, SectionHeading, SiteShell } from "../_components/site";
 import { StickerBadge, Tape, TechSticker } from "../_components/scrapbook";
 
 // --- DATA ---
+const featured = [
+  {
+    title: "CudaForge",
+    tagline: "GPU-native LLM runtime",
+    link: "https://github.com/atkunja/cuda_force",
+    badge: "CUDA C++",
+    tech: [
+      "CUDA C++",
+      "C++20",
+      "PyTorch",
+      "Python",
+      "CMake",
+      "Docker",
+    ],
+    description:
+      "An LLM fine-tuning and concurrent inference runtime written from the kernels up — custom CUDA ops plus the systems layer that keeps them fed.",
+    highlights: [
+      "Hand-written kernels (reduction, softmax, RMSNorm, fused LoRA, INT8 quantise) in naive and optimised forms, exposed to PyTorch through the dispatcher.",
+      "A concurrent serving stack: bounded MPMC queue, thread pool, deadline-aware batcher, CUDA stream scheduler, and a caching device allocator.",
+      "Continuous batching cuts decode steps by 70% for a 1.44x wall-clock win at batch 32; speculative decoding stays lossless against the target distribution.",
+      "Verified on a rented RTX 3090 — 19,511 assertions across 69 test cases, clean under TSan, ASan, and UBSan.",
+    ],
+  },
+  {
+    title: "Duet",
+    tagline: "Codex thinks, Claude builds",
+    link: "https://github.com/atkunja/duet",
+    badge: "Rust",
+    tech: ["Rust", "Tauri", "Tokio", "TypeScript", "React", "SQLite", "Vite"],
+    description:
+      "A local-first desktop orchestrator that pairs the Claude Code and Codex CLIs — one architects and reviews, the other implements and repairs, and the test suite settles the argument.",
+    highlights: [
+      "Every run lands in its own managed Git worktree; nothing touches your branch until you explicitly apply the patch.",
+      "Cancellable, timeout-bounded Tokio subprocesses stream typed lifecycle events straight into the UI.",
+      "Required tests and benchmarks run independently of model opinion — a glowing review never overrides a failing check.",
+      "Runs, stages, diffs, and raw logs persist in SQLite, so history survives a restart instead of silently going stale.",
+    ],
+  },
+];
+
 const projects = [
   {
     title: "Clinic Finder",
@@ -87,9 +127,9 @@ export default function ProjectsPage() {
     <SiteShell>
       <main className="mx-auto w-full max-w-5xl px-5 pb-16 pt-14 sm:px-6">
         <SectionHeading
-          label="where it started"
-          title="Starter projects that helped me learn how to code"
-          description="The early builds where I figured things out — shipping, breaking, and fixing until each one stuck."
+          label="what i'm building now"
+          title="Systems work"
+          description="The two projects I've spent the most time inside — one down at the GPU, one wrangling coding agents."
         />
 
         <div className="mb-10">
@@ -100,6 +140,74 @@ export default function ProjectsPage() {
             ← back home
           </Link>
         </div>
+
+        <div className="mb-20 flex flex-col gap-8">
+          {featured.map((project, idx) => {
+            const tilt = idx % 2 === 0 ? -0.6 : 0.6;
+            return (
+              <RevealSection key={project.title} delay={idx * 120}>
+                <article
+                  data-tilt
+                  style={{ "--tilt": `${tilt}deg` } as CSSProperties}
+                  className="warm-card relative px-6 py-7 [transform:rotate(var(--tilt))] transition-[transform,box-shadow] duration-300 ease-out hover:shadow-[0_18px_40px_rgba(20,12,8,0.55)] motion-safe:hover:[transform:rotate(0deg)_translateY(-4px)] sm:px-8"
+                >
+                  <Tape className="absolute -top-2 left-8 z-10 h-5 w-20" rotate={-7} />
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <h3 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
+                        {project.title}
+                      </h3>
+                      <p className="mt-1 font-hand text-xl text-ink-faint">
+                        {project.tagline}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-3">
+                      <StickerBadge color="rust" tilt={-2}>
+                        {project.badge}
+                      </StickerBadge>
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-hand text-lg text-ink-faint transition hover:text-honey"
+                      >
+                        repo →
+                      </a>
+                    </div>
+                  </div>
+
+                  <p className="mt-4 max-w-prose leading-relaxed text-ink-muted">
+                    {project.description}
+                  </p>
+
+                  <ul className="mt-5 flex flex-col gap-3">
+                    {project.highlights.map((point) => (
+                      <li
+                        key={point}
+                        className="flex gap-3 text-sm leading-relaxed text-ink-muted"
+                      >
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-honey" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <TechSticker key={`${project.title}-${tech}`}>{tech}</TechSticker>
+                    ))}
+                  </div>
+                </article>
+              </RevealSection>
+            );
+          })}
+        </div>
+
+        <SectionHeading
+          label="where it started"
+          title="Starter projects that helped me learn how to code"
+          description="The early builds where I figured things out — shipping, breaking, and fixing until each one stuck."
+        />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {projects.map((project, idx) => {

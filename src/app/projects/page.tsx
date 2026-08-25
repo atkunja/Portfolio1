@@ -8,11 +8,27 @@ import { RevealSection, SectionHeading, SiteShell } from "../_components/site";
 import { StickerBadge, Tape, TechSticker } from "../_components/scrapbook";
 
 // --- DATA ---
+// --- GitHub mark ---
+function GitHubMark() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 16 16"
+      width="16"
+      height="16"
+      className="h-4 w-4 shrink-0 fill-current"
+    >
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  );
+}
+
 const featured = [
   {
     title: "CudaForge",
     tagline: "GPU-native LLM runtime",
     link: "https://github.com/atkunja/cuda_force",
+    image: "/projects/cudaforge.png",
     badge: "CUDA C++",
     tech: [
       "CUDA C++",
@@ -35,6 +51,7 @@ const featured = [
     title: "Duet",
     tagline: "Codex thinks, Claude builds",
     link: "https://github.com/atkunja/duet",
+    image: "/projects/duet.png",
     badge: "Rust",
     tech: ["Rust", "Tauri", "Tokio", "TypeScript", "React", "SQLite", "Vite"],
     description:
@@ -149,7 +166,7 @@ export default function ProjectsPage() {
                 <article
                   data-tilt
                   style={{ "--tilt": `${tilt}deg` } as CSSProperties}
-                  className="warm-card relative px-6 py-7 [transform:rotate(var(--tilt))] transition-[transform,box-shadow] duration-300 ease-out hover:shadow-[0_18px_40px_rgba(20,12,8,0.55)] motion-safe:hover:[transform:rotate(0deg)_translateY(-4px)] sm:px-8"
+                  className="warm-card group relative px-6 py-7 [transform:rotate(var(--tilt))] transition-[transform,box-shadow] duration-300 ease-out hover:shadow-[0_18px_40px_rgba(20,12,8,0.55)] motion-safe:hover:[transform:rotate(0deg)_translateY(-4px)] sm:px-8"
                 >
                   <Tape className="absolute -top-2 left-8 z-10 h-5 w-20" rotate={-7} />
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -169,12 +186,30 @@ export default function ProjectsPage() {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-hand text-lg text-ink-faint transition hover:text-honey"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3.5 py-1.5 text-sm text-ink-muted transition hover:border-honey/60 hover:text-honey"
                       >
-                        repo →
+                        <GitHubMark />
+                        GitHub
                       </a>
                     </div>
                   </div>
+
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 block overflow-hidden rounded-[10px] border border-border/80"
+                  >
+                    <div className="relative aspect-[16/9] bg-bg-base">
+                      <Image
+                        src={project.image}
+                        alt={`${project.title} — project screenshot`}
+                        fill
+                        sizes="(min-width: 768px) 900px, 100vw"
+                        className="object-cover object-top transition duration-500 ease-out group-hover:scale-[1.01]"
+                      />
+                    </div>
+                  </a>
 
                   <p className="mt-4 max-w-prose leading-relaxed text-ink-muted">
                     {project.description}

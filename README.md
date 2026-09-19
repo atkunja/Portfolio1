@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ayush Kunjadia — The Fieldhouse
 
-## Getting Started
+Ayush's portfolio has two entrances:
 
-First, run the development server:
+- **The lame side** preserves the original, conventional portfolio at `/classic/`.
+- **The cool side** is a custom wrestling arena. The athlete in the opening exchange remains the player throughout the experience. There is no vehicle or driving-world handoff.
+
+The scene, articulated characters, choreography, navigation, exhibits, and interface live in `sources/arena/`. The previous driving implementation is recoverable in Git history; it is no longer part of the active source tree or application bundle.
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:5173](http://localhost:5173).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run preview
+```
 
-## Learn More
+The generated site is written to `dist/`.
 
-To learn more about Next.js, take a look at the following resources:
+## Play
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Click **Enter the fieldhouse** for the opening shot, go-behind, and suplex.
+- Move with **WASD** or **arrow keys**, or click/tap the mat to walk there.
+- Choose a numbered exhibit or the navigation bar to walk to work, experience, personal photos, or contact links.
+- Press **E** near an exhibit to open it. **Escape** closes the panel.
+- Press **Space** or **Hit the mat** to return to the center and practice the exchange again.
+- Use **Closer look**, **C**, or the mouse wheel to change the camera distance.
+- Sound can be toggled in the header. Reduced-motion preferences skip the entrance.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Verify
 
-## Deploy on Vercel
+```bash
+npm test
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The motion checks verify continuity across each animation phase, a chest-up landing, matching poses at the gameplay handoff, reachable exhibits, and project assets. Browser QA covers desktop and phone layouts, the entrance, walking, exhibit navigation, project links, audio controls, and the preserved classic site.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Credits and license
+
+The current fieldhouse and interface are a fresh implementation using Three.js. The retained soundtrack and sound effects, along with archived reference code and assets, originate from [Bruno Simon's folio-2025](https://github.com/brunosimon/folio-2025). The original MIT notice is preserved in [license.md](./license.md).
+
+Barlow Condensed and DM Sans are self-hosted under their SIL Open Font Licenses in `static/arena/fonts/`. Personal photography and project imagery are Ayush's existing portfolio assets.
+
+Portfolio content and the classic/game entry experience are customized for Ayush Kunjadia.

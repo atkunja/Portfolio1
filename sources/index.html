@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#12232c" />
+    <meta
+      name="description"
+      content="Ayush Kunjadia. Engineer, founder, and two-time All-State wrestler. Explore the work, or step onto the mat."
+    />
+    <meta property="og:title" content="Ayush Kunjadia — The Fieldhouse" />
+    <meta
+      property="og:description"
+      content="Engineer by trade. Competitor by nature. A portfolio you can step inside."
+    />
+    <meta property="og:image" content="/projects/wrestling.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link
+      rel="preload"
+      href="/arena/fonts/barlow-condensed-bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/arena/fonts/dm-sans.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <title>Ayush Kunjadia — The Fieldhouse</title>
+  </head>
+  <body>
+    <main id="app">
+      <div id="arena-view" aria-label="Kunjadia Fieldhouse"></div>
+      <div class="screen-grain" aria-hidden="true"></div>
+
+      <header class="masthead">
+        <button
+          class="identity"
+          id="home-button"
+          aria-label="Return to the experience chooser"
+        >
+          <span class="monogram">AK<span>✳</span></span
+          ><span class="identity-name">AYUSH<br />KUNJADIA</span>
+        </button>
+        <span class="masthead-note"
+          >ENGINEER BY TRADE. <span>COMPETITOR BY NATURE.</span></span
+        >
+        <div class="header-actions">
+          <button
+            id="sound-button"
+            class="sound-button"
+            aria-label="Turn sound off"
+            aria-pressed="true"
+          >
+            <span class="sound-bars" aria-hidden="true"
+              ><i></i><i></i><i></i><i></i></span
+            ><span id="sound-label">SOUND ON</span></button
+          ><a class="classic-link" href="/classic/"
+            >Classic portfolio <span>↗</span></a
+          >
+        </div>
+      </header>
+
+      <section
+        id="chooser"
+        class="chooser"
+        aria-label="Choose your portfolio experience"
+      >
+        <div class="classic-side">
+          <div class="side-index">
+            <span>01 / THE LAME SIDE</span><span>SCROLL. READ. REPEAT.</span>
+          </div>
+          <h1>JUST<br />THE WORK<span class="period">.</span></h1>
+          <div
+            class="photo-stack"
+            aria-label="A few snapshots from Ayush's life"
+          >
+            <figure class="snapshot snapshot-main">
+              <img
+                src="/MEandMom.jpg"
+                alt="Ayush and his mom"
+                fetchpriority="high"
+              />
+              <figcaption>me & mom <span>↗</span></figcaption>
+            </figure>
+            <figure class="snapshot snapshot-small">
+              <img
+                src="/315bench-poster.jpg"
+                alt="Ayush bench pressing 315 pounds"
+              />
+              <figcaption>315 club.</figcaption>
+            </figure>
+            <span class="photo-stamp">BUILT WITH<br />A LITTLE GRIT.</span>
+          </div>
+          <div class="side-bottom">
+            <p>
+              Projects, experience, and the person behind them.<br />
+              The original portfolio, exactly where you left it.
+            </p>
+            <a class="cta cta-dark" href="/classic/"
+              >Keep it classic <span>↗</span></a
+            >
+          </div>
+        </div>
+        <div class="arena-side">
+          <div class="side-index">
+            <span>02 / THE COOL SIDE</span
+            ><span class="live-label"><i></i> LIVE FROM THE FIELDHOUSE</span>
+          </div>
+          <div class="arena-side-copy">
+            <span class="eyebrow">TWO-TIME ALL-STATE. ALWAYS BUILDING.</span>
+            <h2>STEP ON<br />THE MAT<span class="period">.</span></h2>
+            <p>
+              A little more personal. A lot more playable.<br />Welcome to my
+              corner of the internet.
+            </p>
+            <button id="enter-button" class="cta cta-light" disabled>
+              <span id="load-label">Opening the doors…</span
+              ><span>↗</span></button
+            ><span class="entry-footnote"
+              >WASD / ARROWS TO MOVE · OR CLICK TO WALK</span
+            >
+          </div>
+        </div>
+        <div class="split-badge" aria-hidden="true">YOUR<br />CALL</div>
+        <footer class="chooser-footer">
+          <span>© AYUSH KUNJADIA / 2026</span
+          ><span>TWO SIDES. SAME PERSON.</span>
+        </footer>
+      </section>
+
+      <section id="game-ui" class="game-ui" hidden aria-label="Arena controls">
+        <div class="arena-title">
+          <div class="eyebrow"><i></i> MAT 01 / OPEN PRACTICE</div>
+          <h1>THE<br />FIELDHOUSE<span>.</span></h1>
+          <p>Stay curious. Leave it all on the mat.</p>
+        </div>
+        <div class="score-chip">
+          <span>TECHNICAL POINTS</span><strong id="score">00</strong
+          ><span>AYUSH KUNJADIA</span>
+        </div>
+        <div id="hotspots" class="hotspots"></div>
+        <div class="controls-note">
+          <div>
+            <kbd>W</kbd
+            ><span class="key-row"><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span>
+          </div>
+          <span
+            >Walk the floor<br /><small
+              >or click anywhere on the mat</small
+            ></span
+          >
+        </div>
+        <div class="arena-dock">
+          <div class="dock-caption">
+            <span>EXPLORE THE FIELDHOUSE</span
+            ><span id="visit-count">0 / 4 VISITED</span>
+          </div>
+          <nav aria-label="Portfolio exhibits">
+            <button data-visit="work">
+              <span>01</span>The work<span class="dock-arrow">↗</span></button
+            ><button data-visit="story">
+              <span>02</span>The story<span class="dock-arrow">↗</span></button
+            ><button data-visit="life">
+              <span>03</span>Off the mat<span class="dock-arrow"
+                >↗</span
+              ></button
+            ><button data-visit="contact">
+              <span>04</span>Say hello<span class="dock-arrow">↗</span>
+            </button>
+          </nav>
+        </div>
+        <button id="practice-button" class="practice-button">
+          <span class="practice-symbol">↺</span
+          ><span
+            >Hit the mat<small
+              >Practice the suplex <kbd>SPACE</kbd></small
+            ></span
+          >
+        </button>
+        <button id="camera-button" class="camera-button" aria-pressed="false">
+          <span>⊕</span><span id="camera-label">Closer look</span><kbd>C</kbd>
+        </button>
+        <button id="interact-button" class="interact-button" hidden>
+          Explore <kbd>E</kbd>
+        </button>
+        <div id="route-status" class="route-status" role="status" hidden></div>
+      </section>
+
+      <div id="cinematic-ui" class="cinematic-ui" hidden>
+        <div class="cinematic-copy">
+          <span class="eyebrow">THE OPENING EXCHANGE</span>
+          <h2>COMMIT<br />TO THE SHOT.</h2>
+          <span>LEVEL CHANGE. GO BEHIND. FINISH.</span>
+        </div>
+        <button id="skip-button">Skip entrance <span>↗</span></button>
+        <div class="cinematic-progress"><i></i></div>
+      </div>
+      <div id="score-pop" class="score-pop" aria-live="polite"></div>
+      <div id="toast" class="toast" role="status" hidden></div>
+
+      <dialog
+        id="exhibit-dialog"
+        class="exhibit-dialog"
+        aria-labelledby="exhibit-title"
+      >
+        <div class="exhibit-topline">
+          <span id="exhibit-index"></span
+          ><button id="close-exhibit" aria-label="Close exhibit">
+            Close <span>×</span>
+          </button>
+        </div>
+        <div id="exhibit-content"></div>
+        <div class="exhibit-footer">
+          <span>THERE'S MORE AROUND THE CORNER.</span
+          ><button id="next-exhibit">Next exhibit ↗</button>
+        </div>
+      </dialog>
+      <div id="webgl-fallback" class="webgl-fallback" hidden>
+        <h2>The arena couldn’t open.</h2>
+        <p>Your full portfolio is still one click away.</p>
+        <a class="cta cta-light" href="/classic/"
+          >Open the classic portfolio ↗</a
+        ><button id="retry-button">Try again</button>
+      </div>
+    </main>
+    <script type="module" src="/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Ayush's Portfolio",
+  "short_name": "Ayush's",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#071a33",
+  "background_color": "#071a33",
+  "display": "standalone"
+}

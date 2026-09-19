@@ -22,7 +22,7 @@ npm run build
 
 ## Customize
 
-Portfolio copy, project links, and image paths live in `src/content.js`. Replace the placeholder artwork in `public/images/` with your real images while preserving the filenames, or update the paths in that content file.
+Portfolio copy, project links, and image paths live in `src/content.js`. The three current destinations use the project artwork recovered from the earlier `Portfolio1` repository. Add or replace files in `public/images/`, then update their paths in the content file.
 
 Each project has a world position and accent color, so adding or moving destinations does not require editing the 3D engine. The main pieces are:
 
@@ -32,7 +32,7 @@ Each project has a world position and accent color, so adding or moving destinat
 - `src/UI.js` — intro, HUD, map, controls, and project modals
 - `src/content.js` — personal copy, projects, links, and image paths
 
-Before publishing, replace all placeholder project titles, descriptions, image files, and `#` project URLs in `src/content.js`.
+The current content features Duet, CudaForge, and Clinic Finder. Review their copy and destination links in `src/content.js` before publishing.
 
 ## Inspiration and attribution
 

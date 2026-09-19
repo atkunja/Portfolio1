@@ -1,4 +1,4 @@
-import { profile } from './content.js'
+import { profile, socials } from './content.js'
 
 export class UI {
   constructor({ projects, onStart, onRespawn, onToggleAudio, onResetProgress }) {
@@ -53,7 +53,7 @@ export class UI {
         <header class="topbar">
           <a class="brand" href="#" aria-label="Return to the start">
             <span class="brand-mark">K</span>
-            <span class="brand-copy"><span>${profile.name}</span><span>Creative developer</span></span>
+            <span class="brand-copy"><span>${profile.shortName}</span><span>${profile.role}</span></span>
           </a>
           <nav class="icon-row" aria-label="Experience controls">
             <button class="icon-button" data-action="about">About</button>
@@ -75,11 +75,11 @@ export class UI {
         <div class="scrim"></div>
         <section class="panel" id="project-panel" aria-modal="true" role="dialog">
           <button class="icon-button panel-close" aria-label="Close project">×</button>
-          <div class="project-layout"><div class="project-art"></div><div class="project-copy"><span class="eyebrow"></span><h2></h2><p></p><div class="tags"></div><a class="cta" target="_blank" rel="noreferrer">View project <span>↗</span></a></div></div>
+          <div class="project-layout"><div class="project-art"></div><div class="project-copy"><span class="eyebrow"></span><h2></h2><p></p><div class="tags"></div><div class="project-actions"><a class="cta" data-project-link target="_blank" rel="noreferrer">View project <span>↗</span></a><a class="cta secondary" data-source-link target="_blank" rel="noreferrer">Source <span>↗</span></a></div></div></div>
         </section>
         <section class="panel" id="about-panel" aria-modal="true" role="dialog">
           <button class="icon-button panel-close" aria-label="Close about">×</button>
-          <div class="text-panel"><span class="eyebrow">Driver profile</span><h2>Hi, I’m ${profile.name}.</h2><p>${profile.intro}</p><p>I’m based in ${profile.location}. This portfolio is built as a small world because the best way to understand someone’s work is to explore it.</p><a class="cta" href="mailto:${profile.email}">Start a conversation <span>↗</span></a></div>
+          <div class="text-panel"><span class="eyebrow">Driver profile</span><h2>Hi, I’m ${profile.name}.</h2><p>${profile.intro}</p><p>I’m based in ${profile.location}. This portfolio is built as a small world because the best way to understand someone’s work is to explore it.</p><div class="project-actions"><a class="cta" href="mailto:${profile.email}">Start a conversation <span>↗</span></a>${socials.filter(({ label }) => label !== 'Email').map(({ label, href }) => `<a class="cta secondary" href="${href}" target="_blank" rel="noreferrer">${label} ↗</a>`).join('')}</div></div>
         </section>
         <section class="panel" id="help-panel" aria-modal="true" role="dialog">
           <button class="icon-button panel-close" aria-label="Close controls">×</button>
@@ -112,9 +112,12 @@ export class UI {
     panel.querySelector('h2').textContent = project.title
     panel.querySelector('p').textContent = project.description
     panel.querySelector('.tags').innerHTML = project.tags.map((tag) => `<span class="tag">${tag}</span>`).join('')
-    const link = panel.querySelector('.cta')
+    const link = panel.querySelector('[data-project-link]')
     link.href = project.href
     link.setAttribute('aria-disabled', project.href === '#' ? 'true' : 'false')
+    const source = panel.querySelector('[data-source-link]')
+    source.hidden = !project.source
+    if (project.source) source.href = project.source
     this.openPanel('project-panel')
   }
 
@@ -143,17 +146,24 @@ export class UI {
     this.app.querySelector('.progress-button').textContent = `${state.visited.size}/${this.projects.length} found`
     const cards = [
       ...this.projects.map((project) => ({
+        id: project.id,
         label: project.title,
         detail: state.visited.has(project.id) ? 'Discovered' : 'Still out there',
         complete: state.visited.has(project.id),
       })),
-      { label: 'Road sparks', detail: `${state.collected.size}/8 collected`, complete: state.collected.size === 8 },
+      { id: null, label: 'Road sparks', detail: `${state.collected.size}/8 collected`, complete: state.collected.size === 8 },
     ]
     this.app.querySelector('.progress-cards').innerHTML = cards.map((card) => `
-      <div class="progress-card ${card.complete ? 'complete' : ''}">
+      <${card.id ? 'button' : 'div'} class="progress-card ${card.complete ? 'complete' : ''}" ${card.id ? `data-project-id="${card.id}"` : ''}>
         <span class="progress-check">${card.complete ? '✓' : '○'}</span>
         <span><b>${card.label}</b><small>${card.detail}</small></span>
-      </div>`).join('')
+      </${card.id ? 'button' : 'div'}>`).join('')
+    this.app.querySelectorAll('[data-project-id]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const project = this.projects.find(({ id }) => id === button.dataset.projectId)
+        if (project) this.openProject(project)
+      })
+    })
   }
 
   toggleMap() { this.map.classList.toggle('expanded') }

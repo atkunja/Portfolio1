@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760">
-  <defs><linearGradient id="g" x1="0" x2="1" y2="1"><stop stop-color="#73efd0"/><stop offset="1" stop-color="#3496e5"/></linearGradient></defs>
-  <rect width="1200" height="760" rx="44" fill="#101a2a"/><g fill="none" stroke="url(#g)" stroke-width="28" opacity=".9"><circle cx="600" cy="380" r="265"/><circle cx="600" cy="380" r="170"/><path d="M110 380h980M600 60v640"/></g>
-  <rect x="380" y="310" width="440" height="140" rx="70" fill="#f4efe5"/><text x="600" y="408" text-anchor="middle" fill="#101a2a" font-family="system-ui,sans-serif" font-size="72" font-weight="800">PROJECT 02</text>
-</svg>

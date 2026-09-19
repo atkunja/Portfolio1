@@ -69,7 +69,7 @@ button { color: inherit; }
 .panel-close { position: sticky; top: 18px; float: right; z-index: 3; margin: 18px 18px -61px; }
 
 .project-layout { display: grid; grid-template-columns: 1.1fr .9fr; min-height: 490px; }
-.project-art { min-height: 360px; background: #0b1422 center / cover no-repeat; }
+.project-art { min-height: 360px; background: #0b1422 center / contain no-repeat; }
 .project-copy { padding: clamp(32px,5vw,62px); align-self: center; }
 .eyebrow { color: var(--accent); font: 700 11px 'Space Grotesk'; text-transform: uppercase; letter-spacing: .15em; }
 h1, h2 { font-family: 'Space Grotesk'; letter-spacing: -.05em; margin: 0; }

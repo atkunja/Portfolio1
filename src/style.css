@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+  --ink: #f4efe5;
+  --muted: #a9b4c5;
+  --panel: rgba(12, 20, 33, .82);
+  --line: rgba(255, 255, 255, .14);
+  --accent: #ffb84d;
+  font-family: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app, #experience { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+body { background: #0d1726; color: var(--ink); }
+button, a { font: inherit; }
+button { color: inherit; }
+
+#experience { position: fixed; inset: 0; display: block; outline: none; touch-action: none; }
+
+.ui { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+.ui button, .ui a, .ui [tabindex] { pointer-events: auto; }
+
+.topbar {
+  position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: flex-start;
+  justify-content: space-between; padding: clamp(18px, 3vw, 36px); gap: 20px;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
+.brand-mark { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: #101a29; font: 700 17px 'Space Grotesk'; }
+.brand-copy { display: grid; line-height: 1.05; font: 700 14px 'Space Grotesk'; letter-spacing: -.02em; }
+.brand-copy span:last-child { color: var(--muted); font-weight: 500; }
+
+.icon-row { display: flex; gap: 8px; }
+.icon-button {
+  min-width: 43px; height: 43px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); background: var(--panel); backdrop-filter: blur(14px); cursor: pointer;
+  transition: transform .2s, background .2s, border-color .2s;
+}
+.icon-button:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.32); background: rgba(21,32,49,.94); }
+
+.hint {
+  position: absolute; left: 50%; bottom: 26px; translate: -50% 0; display: flex; align-items: center; gap: 11px;
+  padding: 10px 14px 10px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel);
+  backdrop-filter: blur(14px); opacity: 0; transform: translateY(18px); transition: .3s ease;
+}
+.hint.visible { opacity: 1; transform: translateY(0); }
+.key { min-width: 32px; height: 32px; display: grid; place-items: center; border-radius: 9px; background: var(--ink); color: #101a29; font: 700 12px 'Space Grotesk'; }
+.hint-copy { white-space: nowrap; font-weight: 600; font-size: 14px; }
+
+.speed { position: absolute; left: clamp(18px,3vw,36px); bottom: clamp(18px,3vw,36px); display: grid; gap: 2px; }
+.speed-value { font: 700 clamp(28px,4vw,44px) 'Space Grotesk'; letter-spacing: -.08em; }
+.speed-label { color: var(--muted); text-transform: uppercase; letter-spacing: .14em; font-size: 10px; }
+
+.mini-map { position: absolute; right: clamp(18px,3vw,36px); bottom: clamp(18px,3vw,36px); width: 144px; height: 144px; border-radius: 50%; border: 1px solid var(--line); background: rgba(12,20,33,.7); backdrop-filter: blur(14px); overflow: hidden; transition: .35s ease; }
+.mini-map.expanded { width: min(76vw, 620px); height: min(70vh, 620px); border-radius: 28px; right: 50%; bottom: 50%; translate: 50% 50%; background: rgba(12,20,33,.95); }
+.mini-map canvas { width: 100%; height: 100%; }
+.map-label { position: absolute; top: 11px; left: 50%; translate: -50%; font: 600 10px 'Space Grotesk'; text-transform: uppercase; letter-spacing: .14em; opacity: .7; }
+
+.scrim { position: absolute; inset: 0; background: rgba(6,11,18,.58); backdrop-filter: blur(10px); opacity: 0; visibility: hidden; transition: .35s; pointer-events: auto; }
+.scrim.open { opacity: 1; visibility: visible; }
+.panel {
+  position: absolute; top: 50%; left: 50%; translate: -50% -46%; width: min(92vw, 860px); max-height: 86vh; overflow: auto;
+  border: 1px solid var(--line); border-radius: 28px; background: #111d2d; box-shadow: 0 30px 100px rgba(0,0,0,.38);
+  opacity: 0; visibility: hidden; transition: .35s ease; pointer-events: auto;
+}
+.panel.open { opacity: 1; visibility: visible; translate: -50% -50%; }
+.panel-close { position: sticky; top: 18px; float: right; z-index: 3; margin: 18px 18px -61px; }
+
+.project-layout { display: grid; grid-template-columns: 1.1fr .9fr; min-height: 490px; }
+.project-art { min-height: 360px; background: #0b1422 center / cover no-repeat; }
+.project-copy { padding: clamp(32px,5vw,62px); align-self: center; }
+.eyebrow { color: var(--accent); font: 700 11px 'Space Grotesk'; text-transform: uppercase; letter-spacing: .15em; }
+h1, h2 { font-family: 'Space Grotesk'; letter-spacing: -.05em; margin: 0; }
+.project-copy h2 { font-size: clamp(38px,6vw,66px); line-height: .94; margin: 14px 0 22px; }
+.project-copy p { color: var(--muted); line-height: 1.65; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 24px 0 30px; }
+.tag { border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; font-size: 11px; }
+.cta { display: inline-flex; align-items: center; gap: 9px; color: #101a29; background: var(--ink); border-radius: 999px; padding: 12px 17px; text-decoration: none; font-weight: 700; }
+.cta[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+
+.text-panel { padding: clamp(34px,6vw,72px); }
+.text-panel h2 { font-size: clamp(40px,6vw,68px); margin: 10px 0 20px; }
+.text-panel p { color: var(--muted); line-height: 1.7; max-width: 650px; }
+.controls-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 28px; }
+.control-row { display: flex; justify-content: space-between; gap: 20px; padding: 13px 15px; background: rgba(255,255,255,.045); border-radius: 12px; color: var(--muted); }
+.control-row b { color: var(--ink); }
+
+.intro { position: absolute; inset: 0; display: grid; place-items: center; padding: 22px; background: #0f1928; pointer-events: auto; z-index: 5; transition: opacity .7s, visibility .7s; }
+.intro.hidden { opacity: 0; visibility: hidden; }
+.intro-inner { width: min(760px, 100%); text-align: center; }
+.intro-kicker { color: var(--accent); text-transform: uppercase; letter-spacing: .22em; font: 700 11px 'Space Grotesk'; }
+.intro h1 { font-size: clamp(50px,10vw,104px); line-height: .88; margin: 18px 0 24px; }
+.intro p { color: var(--muted); max-width: 520px; margin: 0 auto 32px; line-height: 1.6; }
+.start { border: 0; padding: 15px 22px; border-radius: 999px; background: var(--ink); color: #101a29; font-weight: 800; cursor: pointer; transition: transform .2s; }
+.start:hover { transform: scale(1.04); }
+.intro-help { margin-top: 18px; font-size: 12px; color: #77849a; }
+
+.toast { position: absolute; top: 90px; left: 50%; translate: -50% -12px; padding: 10px 15px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); opacity: 0; transition: .25s; font-size: 13px; }
+.toast.visible { opacity: 1; translate: -50% 0; }
+
+.touch-controls { display: none; position: absolute; inset: auto 0 max(18px, env(safe-area-inset-bottom)) 0; padding: 0 18px; justify-content: space-between; align-items: end; }
+.touch-pad { width: 112px; height: 112px; border-radius: 50%; border: 1px solid var(--line); background: rgba(12,20,33,.45); position: relative; pointer-events: auto; touch-action: none; }
+.touch-knob { width: 46px; height: 46px; border-radius: 50%; background: rgba(244,239,229,.88); position: absolute; left: 33px; top: 33px; }
+.touch-actions { display: flex; gap: 10px; pointer-events: auto; }
+.touch-action { width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); font-weight: 800; }
+
+@media (max-width: 700px), (pointer: coarse) {
+  .project-layout { grid-template-columns: 1fr; }
+  .project-art { min-height: 260px; }
+  .project-copy { padding: 30px; }
+  .controls-grid { grid-template-columns: 1fr; }
+  .touch-controls { display: flex; }
+  .speed { bottom: 150px; }
+  .mini-map { bottom: 154px; width: 108px; height: 108px; }
+  .hint { bottom: 162px; }
+  .brand-copy { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }

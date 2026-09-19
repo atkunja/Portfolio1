@@ -15,6 +15,16 @@ Open `http://localhost:5173`. Use WASD or arrow keys to drive, Shift to boost, S
 
 Portfolio copy, project links, and image paths live in `src/content.js`. Replace the placeholder artwork in `public/images/` with your real images while preserving the filenames, or update the paths in that content file.
 
+Each project has a world position and accent color, so adding or moving destinations does not require editing the 3D engine. The main pieces are:
+
+- `src/World.js` — roads, project stops, scenery, and interaction zones
+- `src/Vehicle.js` — arcade driving, jumping, and the low-poly car
+- `src/Input.js` — keyboard, touch, and gamepad input
+- `src/UI.js` — intro, HUD, map, controls, and project modals
+- `src/content.js` — personal copy, projects, links, and image paths
+
+Before publishing, replace all placeholder project titles, descriptions, image files, and `#` project URLs in `src/content.js`.
+
 ## Inspiration and attribution
 
 The driveable-portfolio interaction is inspired by [Bruno Simon's portfolio](https://bruno-simon.com/) and its [MIT-licensed source](https://github.com/brunosimon/folio-2025). This project is an original, smaller implementation built for this portfolio rather than a redistribution of Bruno's personal world and assets.

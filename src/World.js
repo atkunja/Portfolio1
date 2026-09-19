@@ -69,6 +69,7 @@ export class World {
     this.projects.forEach((project, index) => {
       const group = new THREE.Group()
       group.position.set(...project.position)
+      group.lookAt(0, 0, 0)
       this.scene.add(group)
 
       const platform = new THREE.Mesh(

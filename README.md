@@ -1,8 +1,8 @@
 # Kunja Drive Portfolio
 
-An interactive Three.js portfolio where visitors drive a tiny car through projects, skills, and contact points.
+An interactive portfolio with two entrances: the preserved warm scrapbook site for traditional browsing and a Three.js world where visitors drive a tiny car through projects, skills, and contact points.
 
-Current game features include arcade driving, jumping and boost, collisions, eight collectible sparks, persistent discovery progress, a live map, synthesized vehicle audio, a draggable chase camera, project interactions, and a dynamic day/night sky.
+The opening split labels the original site as “the lame side” and the playable world as “the cool side.” Both experiences include a visible switch back to the other. Game features include arcade driving, jumping and boost, collisions, eight collectible sparks, persistent discovery progress, a live map, synthesized vehicle audio, a draggable chase camera, project interactions, and a dynamic day/night sky.
 
 ## Run locally
 
@@ -30,6 +30,7 @@ Each project has a world position and accent color, so adding or moving destinat
 - `src/Vehicle.js` — arcade driving, jumping, and the low-poly car
 - `src/Input.js` — keyboard, touch, and gamepad input
 - `src/UI.js` — intro, HUD, map, controls, and project modals
+- `src/ClassicSite.js` — preserved scrapbook portfolio and the switch back to the game
 - `src/content.js` — personal copy, projects, links, and image paths
 
 The current content features Duet, CudaForge, and Clinic Finder. Review their copy and destination links in `src/content.js` before publishing.

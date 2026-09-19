@@ -26,3 +26,8 @@ test('every project image resolves to a shipped public asset', async () => {
   const root = fileURLToPath(new URL('../public/', import.meta.url))
   await Promise.all(projects.map(({ image }) => access(`${root}${image.replace(/^\//, '')}`)))
 })
+
+test('the preserved classic portfolio ships its original personal media', async () => {
+  const root = fileURLToPath(new URL('../public/classic/', import.meta.url))
+  await Promise.all(['MEandMom.jpg', '315bench-poster.jpg', 'wrestling.png'].map((file) => access(`${root}${file}`)))
+})

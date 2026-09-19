@@ -1,9 +1,10 @@
 import { profile, socials } from './content.js'
 
 export class UI {
-  constructor({ projects, onStart, onRespawn, onToggleAudio, onResetProgress }) {
+  constructor({ projects, onStart, onChooseClassic, onRespawn, onToggleAudio, onResetProgress }) {
     this.projects = projects
     this.onStart = onStart
+    this.onChooseClassic = onChooseClassic
     this.onRespawn = onRespawn
     this.onToggleAudio = onToggleAudio
     this.onResetProgress = onResetProgress
@@ -27,8 +28,13 @@ export class UI {
       this.intro.classList.add('hidden')
       this.onStart?.()
     })
+    this.app.querySelector('.classic-start').addEventListener('click', () => {
+      this.intro.classList.add('hidden')
+      this.onChooseClassic?.()
+    })
     this.app.querySelector('[data-action="help"]').addEventListener('click', () => this.openPanel('help-panel'))
     this.app.querySelector('[data-action="about"]').addEventListener('click', () => this.openPanel('about-panel'))
+    this.app.querySelector('[data-action="classic"]').addEventListener('click', () => this.onChooseClassic?.())
     this.app.querySelector('[data-action="respawn"]').addEventListener('click', () => this.onRespawn?.())
     this.app.querySelector('[data-action="map"]').addEventListener('click', () => this.toggleMap())
     this.app.querySelector('[data-action="progress"]').addEventListener('click', () => this.openPanel('progress-panel'))
@@ -53,9 +59,10 @@ export class UI {
         <header class="topbar">
           <a class="brand" href="#" aria-label="Return to the start">
             <span class="brand-mark">K</span>
-            <span class="brand-copy"><span>${profile.shortName}</span><span>${profile.role}</span></span>
+            <span class="brand-copy"><span>${profile.shortName}</span><span>Systems + creative dev</span></span>
           </a>
           <nav class="icon-row" aria-label="Experience controls">
+            <button class="icon-button" data-action="classic">Lame side</button>
             <button class="icon-button" data-action="about">About</button>
             <button class="icon-button progress-button" data-action="progress">0/3 found</button>
             <button class="icon-button audio-button" data-action="audio" aria-pressed="true">Sound on</button>
@@ -99,7 +106,10 @@ export class UI {
           </div>
         </section>
         <section class="intro">
-          <div class="intro-inner"><span class="intro-kicker">Interactive portfolio</span><h1>Drive through<br>my work.</h1><p>${profile.intro} Grab the wheel, explore the world, and pull up at a project that catches your eye.</p><button class="start">Start exploring →</button><div class="intro-help">Keyboard, touch, and gamepad-friendly</div></div>
+          <div class="choice-inner"><span class="intro-kicker">Choose your experience</span><h1>One portfolio.<br>Two timelines.</h1><p>Play it safe with the original site, or grab the wheel and explore the world.</p><div class="choice-grid">
+            <button class="choice-card classic-start"><span class="choice-number">01</span><span class="choice-art classic-art"><i></i><i></i><i></i></span><span class="choice-copy"><b>The lame side</b><small>Warm, readable, responsible. The original portfolio.</small></span><span class="choice-arrow">Enter normally →</span></button>
+            <button class="choice-card cool-card start"><span class="choice-number">02</span><span class="choice-art cool-art"><i></i><i></i><i></i></span><span class="choice-copy"><b>The cool side</b><small>A tiny car, a whole world, and several bad driving decisions.</small></span><span class="choice-arrow">Start the engine →</span></button>
+          </div><div class="intro-help">You can switch sides whenever you want</div></div>
         </section>
       </div>`
   }

@@ -9,6 +9,7 @@ import { GameState } from './GameState.js'
 import { AudioSystem } from './Audio.js'
 import { Environment } from './Environment.js'
 import { ViewControls } from './ViewControls.js'
+import { ClassicSite } from './ClassicSite.js'
 
 const canvas = document.querySelector('#experience')
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' })
@@ -48,6 +49,7 @@ const vehicle = new Vehicle(scene)
 const viewControls = new ViewControls(canvas)
 let started = false
 let target = null
+let classicSite
 
 const ui = new UI({
   projects,
@@ -56,6 +58,11 @@ const ui = new UI({
     audio.start()
     ui.showToast('Follow the roads to find all three projects')
   },
+  onChooseClassic: () => {
+    started = false
+    ui.closePanels()
+    classicSite?.show()
+  },
   onRespawn: () => { vehicle.respawn(); viewControls.reset(); ui.showToast('Back on track') },
   onToggleAudio: (enabled) => audio.setEnabled(enabled),
   onResetProgress: () => {
@@ -63,6 +70,13 @@ const ui = new UI({
     world.collectibles.forEach((item) => { item.mesh.visible = true })
     ui.setProgress(gameState)
     ui.showToast('Progress reset — the world is fresh again')
+  },
+})
+classicSite = new ClassicSite(document.querySelector('#app'), {
+  onChooseGame: () => {
+    started = true
+    audio.start()
+    ui.showToast('Welcome back to the cool side')
   },
 })
 const input = new Input(document)

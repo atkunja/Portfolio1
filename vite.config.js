@@ -1,7 +1,63 @@
-import { defineConfig } from 'vite'
+import 'dotenv/config'
+import restart from 'vite-plugin-restart'
+import wasm from 'vite-plugin-wasm'
+import topLevelAwait from 'vite-plugin-top-level-await'
+import basicSsl from '@vitejs/plugin-basic-ssl'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
-export default defineConfig({
-  server: { port: 5173 },
-  preview: { port: 4173 },
-  build: { sourcemap: true },
+const classicSiteRoutes = () =>
+({
+    name: 'classic-site-routes',
+    configureServer(server)
+    {
+        server.middlewares.use((request, response, next) =>
+        {
+            if(request.url === '/classic/' || request.url === '/classic')
+                request.url = '/classic/index.html'
+            else if(request.url === '/classic/projects/' || request.url === '/classic/projects')
+                request.url = '/classic/projects/index.html'
+
+            next()
+        })
+    },
+    configurePreviewServer(server)
+    {
+        server.middlewares.use((request, response, next) =>
+        {
+            if(request.url === '/classic/' || request.url === '/classic')
+                request.url = '/classic/index.html'
+            else if(request.url === '/classic/projects/' || request.url === '/classic/projects')
+                request.url = '/classic/projects/index.html'
+
+            next()
+        })
+    }
 })
+
+export default {
+    root: 'sources/', // Sources files (typically where index.html is)
+    envDir: '../',  // Directory where the env file is located
+    publicDir: '../static/', // Path from "root" to static assets (files that are served as they are)
+    base: './', // Public path (what's after the domain)
+    server:
+    {
+        // https: true,
+        host: true, // Open to local network and display URL
+        open: true // Open in browser
+    },
+    build:
+    {
+        outDir: '../dist', // Output in the dist/ folder
+        emptyOutDir: true, // Empty the folder first
+        sourcemap: false // Add sourcemap
+    },
+    plugins:
+    [
+        classicSiteRoutes(),
+        wasm(),
+        topLevelAwait(),
+        restart({ restart: [ '../static/**', ] }), // Restart server on static file change
+        nodePolyfills(),
+        // basicSsl()
+    ]
+}

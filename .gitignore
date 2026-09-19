@@ -1,6 +1,9 @@
-node_modules/
-dist/
 .DS_Store
-*.log
+node_modules
+dist
+.vercel
+.VSCodeCounter
 .env*
-!.env.example
+.autosave
+.wav
+!static/sounds/music/*.wav

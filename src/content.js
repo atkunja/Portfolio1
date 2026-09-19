@@ -9,13 +9,13 @@ export const profile = {
 
 export const projects = [
   {
-    id: 'project-one',
-    eyebrow: 'Featured build · 01',
-    title: 'Project One',
-    description: 'Replace this copy with the story of your first project: the problem, your role, and the result.',
+    id: 'duet',
+    eyebrow: 'Native desktop app · 01',
+    title: 'Duet',
+    description: 'A local-first native orchestrator where Codex architects and reviews, Claude implements and repairs, and deterministic tests have the final say.',
     image: '/images/project-1.svg',
-    tags: ['Product', 'Engineering', 'Design'],
-    href: '#',
+    tags: ['Tauri', 'Rust', 'React', 'AI tooling'],
+    href: 'https://github.com/atkunja/duet',
     position: [-16, 0, -12],
     accent: '#ffb84d',
   },

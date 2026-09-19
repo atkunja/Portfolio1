@@ -47,8 +47,8 @@
 }
 
 .experience-choice .game-choice::before {
-    background: #251333 url('/social/share-image.png') center / cover no-repeat;
-    filter: saturate(1.15) brightness(.78);
+    background: #071a33 url('/projects/wrestling.png') center 38% / cover no-repeat;
+    filter: saturate(.92) contrast(1.08) brightness(.66);
 }
 
 .experience-choice .choice:hover::before { transform: scale(1.045); filter: saturate(1.08) brightness(.9); }
@@ -60,6 +60,8 @@
 .experience-choice p { max-width: 430px; margin: 20px 0 28px; color: rgba(255,255,255,.78); font-size: clamp(14px,1.35vw,18px); line-height: 1.55; }
 .experience-choice .enter { display: inline-flex; align-items: center; gap: 12px; padding: 13px 18px; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; background: rgba(8,10,18,.45); font-weight: 900; backdrop-filter: blur(12px); }
 .experience-choice .enter span { transition: transform .25s ease; }.experience-choice .choice:hover .enter span { transform: translateX(5px); }
+.experience-choice .game-choice.is-loading { cursor: progress; }
+.experience-choice .game-choice.is-loading .enter { border-color: #f5662f; color: #ffd36b; }
 .experience-choice .or { position: absolute; z-index: 3; left: 50%; top: 50%; translate: -50% -50%; width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; background: #111528; font-size: 11px; font-weight: 900; letter-spacing: .08em; }
 
 .classic-switch {
@@ -77,6 +79,28 @@
     text-decoration: none;
     backdrop-filter: blur(10px);
 }
+
+.fieldhouse-preview-card {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 12px;
+    overflow: hidden;
+    color: #f4efe4;
+    background:
+        radial-gradient(circle at center, transparent 0 21%, #f5662f 21.5% 22.5%, transparent 23% 52%, #f5662f 52.5% 54%, transparent 54.5%),
+        linear-gradient(135deg, #123f78, #071a33 64%, #080d17);
+}
+.fieldhouse-preview-card::before {
+    content: 'AK';
+    position: absolute;
+    font: 900 clamp(130px, 18vw, 290px)/1 Arial Black, sans-serif;
+    color: rgba(244,239,228,.07);
+}
+.fieldhouse-preview-card strong { z-index: 1; font: 900 clamp(30px,4vw,68px)/.95 Arial Black, sans-serif; text-align: center; }
+.fieldhouse-preview-card span { z-index: 1; color: #ff946c; font-weight: 900; letter-spacing: .2em; text-transform: uppercase; }
 
 @media (max-width: 760px) {
     .experience-choice { grid-template-columns: 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); }

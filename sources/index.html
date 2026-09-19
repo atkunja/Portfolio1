@@ -9,18 +9,18 @@
 
     <meta itemprop="name" content="Ayush Kunjadia">
     <meta itemprop="description" content="Ayush Kunjadia's interactive developer portfolio">
-    <meta itemprop="image" content="/social/share-image.png">
+    <meta itemprop="image" content="/projects/wrestling.png">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ayush Kunjadia">
     <meta name="twitter:description" content="Ayush Kunjadia's interactive developer portfolio">
-    <meta name="twitter:image" content="/social/share-image.png">
+    <meta name="twitter:image" content="/projects/wrestling.png">
 
     <meta property="og:site_name" content="Ayush Kunjadia">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Ayush Kunjadia">
     <meta property="og:description" content="Ayush Kunjadia's interactive developer portfolio">
-    <meta property="og:image" content="/social/share-image.png">
+    <meta property="og:image" content="/projects/wrestling.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,10 +29,9 @@
     <link rel="stylesheet" href="./style/index.styl">
     <link rel="stylesheet" href="./choice.css">
 
-    <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" loading="lazy" />
-    <link rel="shortcut icon" href="/favicons/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="shortcut icon" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <meta name="apple-mobile-web-app-title" content="Ayush's" />
     <link rel="manifest" href="/favicons/site.webmanifest" />
 
@@ -51,7 +50,7 @@
         </a>
         <button class="js-choose-game choice game-choice" type="button">
             <span class="number">02 / PLAY MODE</span>
-            <span class="copy"><span class="kicker">The cool side</span><h1>Take the wheel.</h1><p>Bruno Simon's actual open-source game engine, adapted into Ayush's portfolio world.</p><span class="enter">Start the engine <span>→</span></span></span>
+            <span class="copy"><span class="kicker">The cool side</span><h1>Enter the fieldhouse.</h1><p>Drive onto Ayush's competition mat and explore a playable portfolio built like a wrestling venue.</p><span class="js-arena-status enter">Warming up the arena…</span></span>
         </button>
         <span class="or">OR</span>
     </div>
@@ -155,15 +154,6 @@
                         </div>
                     </button>
 
-                    <!-- Circuit -->
-                    <button class="js-navigation-item item" data-name="circuit">
-                        <div class="button-inner">
-                            <div class="icon-container">
-                                <img src="ui/wheel.svg" loading="lazy">
-                            </div>
-                        </div>
-                    </button>
-
                     <!-- Whispers -->
                     <button class="js-navigation-item item" data-name="whispers">
                         <div class="button-inner">
@@ -189,38 +179,33 @@
 
                         <!-- Intro -->
                         <div class="js-preview preview home-preview">
-                            <img class="background" src="ui/previews/home.webp" loading="lazy" draggable="false">
+                            <div class="fieldhouse-preview-card"><strong>KUNJADIA FIELDHOUSE</strong><span>Center mat</span></div>
                         </div>
 
                         <!-- Options -->
                         <div class="js-preview preview options-preview">
-                            <img class="background" src="ui/previews/options.webp" loading="lazy" draggable="false">
+                            <div class="fieldhouse-preview-card"><strong>LOCKER ROOM</strong><span>Game settings</span></div>
                         </div>
 
                         <!-- Controls -->
                         <div class="js-preview preview controls-preview">
-                            <img class="background" src="ui/previews/controls.webp" loading="lazy" draggable="false">
+                            <div class="fieldhouse-preview-card"><strong>PLAYBOOK</strong><span>Controls</span></div>
                         </div>
 
                         <!-- Achievements -->
                         <div class="js-preview preview achievements-preview">
-                            <img class="background" src="ui/previews/achievements.webp" loading="lazy" draggable="false">
-                        </div>
-
-                        <!-- Circuit -->
-                        <div class="js-preview preview circuit-preview">
-                            <img class="background" src="ui/previews/circuit.webp" loading="lazy" draggable="false">
+                            <div class="fieldhouse-preview-card"><strong>TROPHY WALL</strong><span>Earn your colors</span></div>
                         </div>
 
                         <!-- Whispers -->
                         <div class="js-preview preview whispers-preview">
-                            <img class="background" src="ui/previews/whispers.webp" loading="lazy" draggable="false">
+                            <div class="fieldhouse-preview-card"><strong>CROWD NOTES</strong><span>Leave your mark</span></div>
                             <div class="js-preview-message message title"> <span class="js-text text" contenteditable="">Your message here</span><div class="js-flag flag"></div> </div>
                         </div>
 
                         <!-- Behind the scene -->
                         <div class="js-preview preview behindTheScene-preview">
-                            <img class="background" src="ui/previews/behindTheScene.webp" loading="lazy" draggable="false">
+                            <div class="fieldhouse-preview-card"><strong>FILM ROOM</strong><span>How it was built</span></div>
                         </div>
 
                     </div>
@@ -229,11 +214,11 @@
                         <!-- Intro -->
                         <div class="js-content content home-content">
                             <div class="content-inner">
-                                <div class="title">Ayush's Home</div>
-                                <p class="text">Welcome!</p>
-                                <p class="text">My name is <strong>Ayush Kunjadia</strong>, and I'm a <strong>software engineer</strong> building ambitious products across AI, systems, and the web.</p>
-                                <p class="text">This is my portfolio. Drive around to explore my work, my story, and the many secrets hiding in this world.</p>
-                                <p class="text">And don't break anything!</p>
+                                <div class="title">Ayush's Fieldhouse</div>
+                                <p class="text">Welcome to the mat.</p>
+                                <p class="text">I'm <strong>Ayush Kunjadia</strong>: a <strong>software engineer</strong>, founder, and two-time All-State wrestler.</p>
+                                <p class="text">Drive station to station for production AI work, GPU systems, full-stack builds, career rounds, and a few competition-floor surprises.</p>
+                                <p class="text">Stay aggressive. Keep building.</p>
                             </div>
                         </div>
 
@@ -515,13 +500,13 @@
                         <!-- Achievements -->
                         <div class="js-content content achievements-content">
                             <div class="content-inner">
-                                <div class="title">Achievements</div>
+                                <div class="title">Trophy Wall</div>
                                 <div class="js-global-progress global-progress">
                                     <span class="ratio"><span class="js-current current"></span> / <span class="js-total total"></span></span>
                                     <span class="js-time time">2h 30min 15s</span>
                                 </div>
                                 <div class="rewards-container">
-                                    <div class="title">Rewards</div>
+                                    <div class="title">Singlet Colors</div>
                                     <div class="rewards">
                                         <button class="js-reward reward has-tooltip" data-name="red" data-default>
                                             <div class="js-tooltip tooltip">Unlock at <strong></strong></div>
@@ -572,7 +557,7 @@
                                 <div class="horizontal-group">
                                 
                                     <button class="js-button-reset button button-reset">
-                                        Reset achievements
+                                        Clear trophy wall
                                     </button>
                                     
                                 </div>
@@ -582,7 +567,7 @@
                         <!-- Circuit -->
                         <div class="js-content content circuit-content">
                             <div class="content-inner">
-                                <div class="title">Circuit</div>
+                                <div class="title">Sprint Track</div>
                                 
                                 <p class="offline-element text text-danger">
                                     <img src="ui/warning.svg" loading="lazy" alt="" class="icon"> Server currently offline. Scores can't be saved.
@@ -683,32 +668,29 @@
                             </div>
                         </div>
 
-                        <!-- Behind the scene -->
+                        <!-- Locker room -->
                         <div class="js-content content behindTheScene-content">
                             <div class="content-inner">
-                                <div class="title">Behind the scene</div>
+                                <div class="title">Inside the fieldhouse</div>
                                 <p class="text">
-                                    Thank you for visiting my portfolio. This interactive side is adapted from Bruno Simon's remarkable open-source portfolio engine.
-                                    <br />Here are the people and tools that made this world possible.
+                                    This is Ayush Kunjadia's playable portfolio: part wrestling venue, part engineering playground.
+                                    <br />Every stop on the map connects to a project, a chapter, or something worth trying.
                                 </p>
                                 
                                 <h2 class="title">Three.js</h2>
                                 <p class="text">
-                                    <a href="https://threejs.org" target="_blank" rel="noreferrer">Three.js</a> is the library I’m using to render this 3D world.
-                                    <br />It was created by <strong>mr.doob</strong> (<a href="https://x.com/mrdoob" target="_blank" rel="noreferrer">X</a>, <a href="http://github.com/mrdoob" target="_blank" rel="noreferrer">GitHub</a>), followed by hundreds of awesome developers, one of which being Sunag (<a href="https://x.com/sea3dformat" target="_blank" rel="noreferrer">X</a>, <a href="https://github.com/sunag" target="_blank" rel="noreferrer">GitHub</a>) who added <a href="https://github.com/mrdoob/three.js/wiki/Three.js-Shading-Language" target="_blank" rel="noreferrer">TSL</a>, enabling the use of both WebGL and WebGPU, making this portfolio possible.
+                                    <a href="https://threejs.org" target="_blank" rel="noreferrer">Three.js</a>, WebGPU, and Rapier power the rendering and physics.
                                 </p>
                                 
-                                <h2 class="title">Source code</h2>
+                                <h2 class="title">Built by Ayush</h2>
                                 <p class="text">
-                                    The original engine and assets were created by <a href="https://bruno-simon.com" target="_blank" rel="noreferrer">Bruno Simon</a>. His full source is available on <a href="https://github.com/brunosimon/folio-2025" target="_blank" rel="noreferrer">GitHub</a> under the <a href="https://choosealicense.com/licenses/mit/" target="_blank" rel="noreferrer">MIT license</a>.
-                                    <br />This adaptation replaces the portfolio content and adds Ayush's classic/game split while preserving that attribution.
+                                    The fieldhouse, match entrance, project lineup, career timeline, and portfolio split are designed around Ayush's story.
+                                    <br />Source-license notices live with the repository, where they belong.
                                 </p>
                                 
                                 <h2 class="title">Musics</h2>
                                 <p class="text">
-                                    The music you hear was made especially for this portfolio by the awesome Kounine (<a href="https://linktr.ee/Kounine" target="_blank" rel="noreferrer">Linktree</a>).
-                                    <br />They are now under <a href="https://choosealicense.com/licenses/cc0-1.0/" target="_blank" rel="noreferrer">CC0 license</a>, meaning you can do whatever you want with them!
-                                    <br />Download them <a href="https://github.com/brunosimon/folio-2025/tree/main/static/sounds/musics" target="_blank" rel="noreferrer">here</a>.
+                                    Original music by Kounine (<a href="https://linktr.ee/Kounine" target="_blank" rel="noreferrer">Linktree</a>), released under CC0.
                                 </p>
 
                                 <h2 class="title">Some more links</h2>

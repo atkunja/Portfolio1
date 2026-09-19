@@ -8,9 +8,8 @@ const text = `
 ║ Mail     ⇒ ayushkun@umich.edu                         ║
 ╚═══════════════════════════════════════════════════════╝
 
-╔═ Engine credits ═════════════════════════════════════╗
-║ Adapted from Bruno Simon's folio-2025 under MIT.     ║
-║ https://github.com/brunosimon/folio-2025              ║
+╔═ Fieldhouse engine ══════════════════════════════════╗
+║ Ayush's interactive wrestling portfolio              ║
 ║ Three.js revision: ${THREE.REVISION}                             ║
 ╚═══════════════════════════════════════════════════════╝
 

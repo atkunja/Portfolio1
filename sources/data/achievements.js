@@ -1,33 +1,25 @@
-import labData from './lab.js'
 import projectsData from './projects.js'
 
 export default
 [
     [
         'landingLeave',
-        'I’m going on an adventure!',
-        'Get out of the landing area.',
+        'First whistle',
+        'Drive off the center mat.',
         1
     ],
     [
         'areas',
-        'Traveler',
-        'Vist every area.',
-        13,
+        'Fieldhouse tour',
+        'Visit every active station.',
+        4,
         true // Unique
     ],
     [
         'projects',
-        'But can you fix the wifi?',
-        'Check every project in the <strong>projects</strong> area.',
+        'Film study complete',
+        'Check every build in the <strong>project showcase</strong>.',
         projectsData.length,
-        true // Unique
-    ],
-    [
-        'lab',
-        'I\'m a bit of a scientist myself',
-        'Check every project in the <strong>lab</strong> area.',
-        labData.length,
         true // Unique
     ],
     [
@@ -68,32 +60,32 @@ export default
     ],
     [
         'upsideDown',
-        'Turtle',
-        'Get upside down.',
+        'Bridged out',
+        'Flip the ride onto its back.',
         1
     ],
     [
         'frontFlip',
-        'Teeth first',
-        'Do a front flip and land on your 4 wheels.',
+        'Forward roll',
+        'Land a front flip on all four wheels.',
         1
     ],
     [
         'backFlip',
-        'Flip of faith',
-        'Do a back flip and land on your 4 wheels.',
+        'Granby roll',
+        'Land a back flip on all four wheels.',
         1
     ],
     [
         'suspensions',
-        'Lowrider',
-        'Use the vehicle suspensions.',
+        'Level change',
+        'Use every suspension height.',
         4
     ],
     [
         'honk',
-        'Honk',
-        'Honk me like one of your french driver.',
+        'Crowd noise',
+        'Honk ten times in the fieldhouse.',
         10
     ],
     [
@@ -123,14 +115,14 @@ export default
     ],
     [
         'circuitFinish',
-        'Participation medal',
-        'Finish a race.',
+        'Conditioning complete',
+        'Finish a sprint-track lap.',
         1
     ],
     [
         'circuitFinishFast',
-        'KA-CHOW!',
-        'Finish a race in less than <strong>30s</strong>.',
+        'Match pace',
+        'Finish a lap in less than <strong>30s</strong>.',
         1
     ],
     [

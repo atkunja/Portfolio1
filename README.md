@@ -2,6 +2,8 @@
 
 An interactive Three.js portfolio where visitors drive a tiny car through projects, skills, and contact points.
 
+Current game features include arcade driving, jumping and boost, collisions, eight collectible sparks, persistent discovery progress, a live map, synthesized vehicle audio, a draggable chase camera, project interactions, and a dynamic day/night sky.
+
 ## Run locally
 
 ```bash
@@ -10,6 +12,13 @@ npm run dev
 ```
 
 Open `http://localhost:5173`. Use WASD or arrow keys to drive, Shift to boost, Space to jump, `E`/Enter to interact, `M` for the map, and `R` to respawn.
+
+Run the verification suite with:
+
+```bash
+npm test
+npm run build
+```
 
 ## Customize
 
@@ -28,3 +37,5 @@ Before publishing, replace all placeholder project titles, descriptions, image f
 ## Inspiration and attribution
 
 The driveable-portfolio interaction is inspired by [Bruno Simon's portfolio](https://bruno-simon.com/) and its [MIT-licensed source](https://github.com/brunosimon/folio-2025). This project is an original, smaller implementation built for this portfolio rather than a redistribution of Bruno's personal world and assets.
+
+See `docs/REFERENCE_AUDIT.md` for a breakdown of the reference architecture and how this implementation maps to it.

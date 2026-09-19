@@ -1,10 +1,13 @@
 import { profile } from './content.js'
 
 export class UI {
-  constructor({ projects, onStart, onRespawn }) {
+  constructor({ projects, onStart, onRespawn, onToggleAudio, onResetProgress }) {
     this.projects = projects
     this.onStart = onStart
     this.onRespawn = onRespawn
+    this.onToggleAudio = onToggleAudio
+    this.onResetProgress = onResetProgress
+    this.audioEnabled = true
     this.currentTarget = null
     this.modalOpen = false
     this.app = document.querySelector('#app')
@@ -28,6 +31,14 @@ export class UI {
     this.app.querySelector('[data-action="about"]').addEventListener('click', () => this.openPanel('about-panel'))
     this.app.querySelector('[data-action="respawn"]').addEventListener('click', () => this.onRespawn?.())
     this.app.querySelector('[data-action="map"]').addEventListener('click', () => this.toggleMap())
+    this.app.querySelector('[data-action="progress"]').addEventListener('click', () => this.openPanel('progress-panel'))
+    this.app.querySelector('[data-action="audio"]').addEventListener('click', (event) => {
+      this.audioEnabled = !this.audioEnabled
+      event.currentTarget.textContent = this.audioEnabled ? 'Sound on' : 'Sound off'
+      event.currentTarget.setAttribute('aria-pressed', String(this.audioEnabled))
+      this.onToggleAudio?.(this.audioEnabled)
+    })
+    this.app.querySelector('[data-action="reset-progress"]').addEventListener('click', () => this.onResetProgress?.())
     this.app.querySelectorAll('.panel-close').forEach((button) => button.addEventListener('click', () => this.closePanels()))
     this.scrim.addEventListener('click', () => this.closePanels())
     window.addEventListener('keydown', (event) => {
@@ -46,6 +57,8 @@ export class UI {
           </a>
           <nav class="icon-row" aria-label="Experience controls">
             <button class="icon-button" data-action="about">About</button>
+            <button class="icon-button progress-button" data-action="progress">0/3 found</button>
+            <button class="icon-button audio-button" data-action="audio" aria-pressed="true">Sound on</button>
             <button class="icon-button" data-action="help" aria-label="Open controls">?</button>
             <button class="icon-button" data-action="respawn" aria-label="Respawn vehicle">↻</button>
             <button class="icon-button" data-action="map" aria-label="Toggle map">Map</button>
@@ -73,8 +86,16 @@ export class UI {
           <div class="text-panel"><span class="eyebrow">Controls</span><h2>Take it for a spin.</h2><p>Follow the roads, crash through the little markers, and stop inside a glowing project ring to explore.</p><div class="controls-grid">
             <div class="control-row"><b>WASD / Arrows</b><span>Drive</span></div><div class="control-row"><b>Shift</b><span>Boost</span></div>
             <div class="control-row"><b>Space</b><span>Jump</span></div><div class="control-row"><b>E / Enter</b><span>Interact</span></div>
-            <div class="control-row"><b>M</b><span>World map</span></div><div class="control-row"><b>R</b><span>Respawn</span></div>
+            <div class="control-row"><b>M</b><span>World map</span></div><div class="control-row"><b>H</b><span>Honk</span></div>
+            <div class="control-row"><b>R</b><span>Respawn</span></div><div class="control-row"><b>Esc</b><span>Close panels</span></div>
           </div></div>
+        </section>
+        <section class="panel" id="progress-panel" aria-modal="true" role="dialog">
+          <button class="icon-button panel-close" aria-label="Close progress">×</button>
+          <div class="text-panel"><span class="eyebrow">Trip log</span><h2>Your discoveries.</h2><p>Visit every project stop and collect the eight floating sparks hidden along the roads.</p>
+            <div class="progress-cards"></div>
+            <button class="reset-progress" data-action="reset-progress">Reset saved progress</button>
+          </div>
         </section>
         <section class="intro">
           <div class="intro-inner"><span class="intro-kicker">Interactive portfolio</span><h1>Drive through<br>my work.</h1><p>${profile.intro} Grab the wheel, explore the world, and pull up at a project that catches your eye.</p><button class="start">Start exploring →</button><div class="intro-help">Keyboard, touch, and gamepad-friendly</div></div>
@@ -116,6 +137,23 @@ export class UI {
   }
 
   setSpeed(speed) { this.speedValue.textContent = String(Math.round(Math.abs(speed) * 7)).padStart(2, '0') }
+
+  setProgress(state) {
+    this.app.querySelector('.progress-button').textContent = `${state.visited.size}/${this.projects.length} found`
+    const cards = [
+      ...this.projects.map((project) => ({
+        label: project.title,
+        detail: state.visited.has(project.id) ? 'Discovered' : 'Still out there',
+        complete: state.visited.has(project.id),
+      })),
+      { label: 'Road sparks', detail: `${state.collected.size}/8 collected`, complete: state.collected.size === 8 },
+    ]
+    this.app.querySelector('.progress-cards').innerHTML = cards.map((card) => `
+      <div class="progress-card ${card.complete ? 'complete' : ''}">
+        <span class="progress-check">${card.complete ? '✓' : '○'}</span>
+        <span><b>${card.label}</b><small>${card.detail}</small></span>
+      </div>`).join('')
+  }
 
   toggleMap() { this.map.classList.toggle('expanded') }
 

@@ -6,15 +6,19 @@ const rand = (seed) => {
 }
 
 export class World {
-  constructor(scene, projects) {
+  constructor(scene, projects, state) {
     this.scene = scene
     this.projects = projects
+    this.state = state
     this.projectPoints = []
+    this.obstacles = []
+    this.collectibles = []
     this.clock = 0
     this.buildGround()
     this.buildRoads()
     this.buildProjects()
     this.buildScenery()
+    this.buildCollectibles()
     this.buildStartArea()
   }
 
@@ -172,6 +176,7 @@ export class World {
         rock.scale.y = .55
         rock.castShadow = true
         this.scene.add(rock)
+        this.obstacles.push({ position: rock.position, radius: .42 + rock.geometry.parameters.radius * .48 })
       } else {
         const tree = new THREE.Group()
         const size = .7 + rand(i + 20) * .8
@@ -187,6 +192,7 @@ export class World {
         tree.position.set(x, 0, z)
         tree.rotation.y = rand(i + 200) * Math.PI
         this.scene.add(tree)
+        this.obstacles.push({ position: tree.position, radius: .28 * size })
       }
     }
 
@@ -203,6 +209,49 @@ export class World {
     }
   }
 
+  buildCollectibles() {
+    const positions = [
+      [-7, .85, -1], [-12, .85, -8], [-3, .85, -16], [7, .85, -17],
+      [16, .85, -8], [17, .85, 3], [11, .85, 10], [3, .85, 9],
+    ]
+    const material = new THREE.MeshStandardMaterial({
+      color: 0xffd35a,
+      emissive: 0xff9f2d,
+      emissiveIntensity: 1.45,
+      metalness: .35,
+      roughness: .25,
+    })
+    positions.forEach((position, index) => {
+      const id = `spark-${index + 1}`
+      const mesh = new THREE.Mesh(new THREE.OctahedronGeometry(.48, 0), material)
+      mesh.position.set(...position)
+      mesh.rotation.z = Math.PI / 4
+      mesh.castShadow = true
+      mesh.visible = !this.state?.collected.has(id)
+      this.scene.add(mesh)
+      this.collectibles.push({ id, mesh, baseY: position[1], phase: index * .8 })
+    })
+  }
+
+  resolveVehicleCollision(vehicle) {
+    const position = vehicle.group.position
+    for (const obstacle of this.obstacles) {
+      const dx = position.x - obstacle.position.x
+      const dz = position.z - obstacle.position.z
+      const minDistance = obstacle.radius + .72
+      const distanceSquared = dx * dx + dz * dz
+      if (distanceSquared >= minDistance * minDistance || distanceSquared < .0001) continue
+      const distance = Math.sqrt(distanceSquared)
+      position.x = obstacle.position.x + dx / distance * minDistance
+      position.z = obstacle.position.z + dz / distance * minDistance
+      if (Math.abs(vehicle.speed) > 1.4) {
+        vehicle.speed *= -.28
+        return true
+      }
+    }
+    return false
+  }
+
   update(delta, carPosition) {
     this.clock += delta
     let nearest = null
@@ -210,9 +259,23 @@ export class World {
     for (const point of this.projectPoints) {
       point.ring.rotation.z = this.clock * .22
       point.ring.material.emissiveIntensity = 1 + Math.sin(this.clock * 3 + point.group.position.x) * .35
+      if (this.state?.visited.has(point.project.id)) {
+        point.ring.material.color.set(0x70e1c1)
+        point.ring.material.emissive.set(0x70e1c1)
+      }
       const current = carPosition.distanceTo(point.group.position)
       if (current < distance) { nearest = point; distance = current }
     }
-    return distance < 4.25 ? nearest.project : null
+    let collected = null
+    for (const item of this.collectibles) {
+      if (!item.mesh.visible) continue
+      item.mesh.rotation.y += delta * 2.4
+      item.mesh.position.y = item.baseY + Math.sin(this.clock * 2.7 + item.phase) * .16
+      if (carPosition.distanceToSquared(item.mesh.position) < 2.1) {
+        item.mesh.visible = false
+        collected = item.id
+      }
+    }
+    return { target: distance < 4.25 ? nearest.project : null, collected }
   }
 }

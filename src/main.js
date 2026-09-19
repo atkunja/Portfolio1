@@ -5,6 +5,8 @@ import { Input } from './Input.js'
 import { UI } from './UI.js'
 import { Vehicle } from './Vehicle.js'
 import { World } from './World.js'
+import { GameState } from './GameState.js'
+import { AudioSystem } from './Audio.js'
 
 const canvas = document.querySelector('#experience')
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' })
@@ -36,17 +38,31 @@ sun.shadow.camera.bottom = -38
 sun.shadow.bias = -.0005
 scene.add(sun)
 
-const world = new World(scene, projects)
+const gameState = new GameState(projects)
+const audio = new AudioSystem()
+const world = new World(scene, projects, gameState)
 const vehicle = new Vehicle(scene)
 let started = false
 let target = null
 
 const ui = new UI({
   projects,
-  onStart: () => { started = true; ui.showToast('Follow the roads to find all three projects') },
+  onStart: () => {
+    started = true
+    audio.start()
+    ui.showToast('Follow the roads to find all three projects')
+  },
   onRespawn: () => { vehicle.respawn(); ui.showToast('Back on track') },
+  onToggleAudio: (enabled) => audio.setEnabled(enabled),
+  onResetProgress: () => {
+    gameState.reset()
+    world.collectibles.forEach((item) => { item.mesh.visible = true })
+    ui.setProgress(gameState)
+    ui.showToast('Progress reset — the world is fresh again')
+  },
 })
 const input = new Input(document)
+ui.setProgress(gameState)
 
 const cameraTarget = new THREE.Vector3()
 const cameraDesired = new THREE.Vector3()
@@ -89,7 +105,7 @@ function updateMap() {
   projects.forEach((project, index) => {
     context.fillStyle = project.accent
     context.beginPath(); context.arc(toMap(project.position[0]), toMap(project.position[2]), 14, 0, Math.PI * 2); context.fill()
-    context.fillStyle = '#101a29'; context.font = 'bold 16px sans-serif'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(String(index + 1), toMap(project.position[0]), toMap(project.position[2]) + 1)
+    context.fillStyle = '#101a29'; context.font = 'bold 16px sans-serif'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(gameState.visited.has(project.id) ? '✓' : String(index + 1), toMap(project.position[0]), toMap(project.position[2]) + 1)
   })
   const x = toMap(vehicle.group.position.x)
   const z = toMap(vehicle.group.position.z)
@@ -102,13 +118,22 @@ function updateMap() {
 }
 
 function interact() {
-  if (target) ui.openProject(target)
+  if (target) {
+    const isNew = gameState.visit(target.id)
+    ui.setProgress(gameState)
+    if (isNew) {
+      audio.collect()
+      ui.showToast(`Discovered ${target.title}`)
+    }
+    ui.openProject(target)
+  }
   else ui.showToast('Pull into a glowing project ring to explore')
 }
 
 window.addEventListener('keydown', (event) => {
   if (event.code === 'KeyE' || event.code === 'Enter') interact()
   if (event.code === 'KeyR') { vehicle.respawn(); ui.showToast('Back on track') }
+  if (event.code === 'KeyH') audio.honk()
 })
 
 window.addEventListener('resize', () => {
@@ -121,7 +146,17 @@ window.addEventListener('resize', () => {
 renderer.setAnimationLoop(() => {
   const delta = Math.min(clock.getDelta(), .05)
   vehicle.update(delta, input, !started || ui.modalOpen)
-  target = world.update(delta, vehicle.group.position)
+  const collision = started && !ui.modalOpen && world.resolveVehicleCollision(vehicle)
+  if (collision) audio.bump()
+  const worldUpdate = world.update(delta, vehicle.group.position)
+  target = worldUpdate.target
+  if (worldUpdate.collected && gameState.collect(worldUpdate.collected)) {
+    audio.collect()
+    ui.setProgress(gameState)
+    ui.showToast(`Spark collected · ${gameState.collected.size}/8`)
+  }
+  if (started && !ui.modalOpen) gameState.distance += Math.abs(vehicle.speed) * delta
+  audio.update(vehicle.speed, input.down('ShiftLeft', 'ShiftRight') || input.touch.boost)
   ui.setTarget(target)
   ui.setSpeed(vehicle.speed)
   updateCamera(delta)

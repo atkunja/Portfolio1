@@ -87,6 +87,15 @@ h1, h2 { font-family: 'Space Grotesk'; letter-spacing: -.05em; margin: 0; }
 .control-row { display: flex; justify-content: space-between; gap: 20px; padding: 13px 15px; background: rgba(255,255,255,.045); border-radius: 12px; color: var(--muted); }
 .control-row b { color: var(--ink); }
 
+.progress-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 28px 0; }
+.progress-card { display: flex; align-items: center; gap: 13px; min-height: 70px; padding: 14px; border: 1px solid var(--line); border-radius: 15px; color: var(--muted); background: rgba(255,255,255,.025); }
+.progress-card.complete { color: var(--ink); border-color: rgba(112,225,193,.45); background: rgba(112,225,193,.07); }
+.progress-check { width: 33px; height: 33px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.08); font-weight: 800; }
+.progress-card.complete .progress-check { background: #70e1c1; color: #112234; }
+.progress-card b, .progress-card small { display: block; }
+.progress-card small { margin-top: 3px; font-size: 11px; color: var(--muted); }
+.reset-progress { padding: 0; border: 0; border-bottom: 1px solid currentColor; color: #8b98aa; background: transparent; cursor: pointer; font-size: 12px; }
+
 .intro { position: absolute; inset: 0; display: grid; place-items: center; padding: 22px; background: #0f1928; pointer-events: auto; z-index: 5; transition: opacity .7s, visibility .7s; }
 .intro.hidden { opacity: 0; visibility: hidden; }
 .intro-inner { width: min(760px, 100%); text-align: center; }
@@ -116,6 +125,16 @@ h1, h2 { font-family: 'Space Grotesk'; letter-spacing: -.05em; margin: 0; }
   .mini-map { bottom: 154px; width: 108px; height: 108px; }
   .hint { bottom: 162px; }
   .brand-copy { display: none; }
+  .progress-cards { grid-template-columns: 1fr; }
+  .audio-button { display: none; }
+  .progress-button { padding-inline: 11px; }
+}
+
+@media (max-width: 430px) {
+  .topbar { padding-inline: 14px; }
+  .icon-row { gap: 5px; }
+  .icon-button { min-width: 39px; height: 39px; padding-inline: 11px; }
+  .topbar [data-action="about"] { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }

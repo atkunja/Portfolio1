@@ -41,24 +41,17 @@ export class Map
     {
         this.locations = {}
         this.locations.items = [
-            { name: 'Achievements', respawnName: 'achievements', offset: { x: 0, y: -0.01 } },
-            { name: 'Altar', respawnName: 'altar', offset: { x: 0, y: -0.05 } },
-            { name: 'Behind<br /> the scene', respawnName: 'behindTheScene', offset: { x: 0.01, y: 0 } },
-            { name: 'Bowling', respawnName: 'bowling', offset: { x: -0.08, y: 0.03 } },
-            { name: 'Career', respawnName: 'career', offset: { x: 0, y: -0.06 } },
-            { name: 'Circuit', respawnName: 'circuit', offset: { x: -0.08, y: -0.05 } },
-            { name: 'Cookie', respawnName: 'cookie', offset: { x: -0.02, y: -0.01 } },
-            { name: 'Lab', respawnName: 'lab', offset: { x: -0.03, y: 0 } },
-            { name: 'Landing', respawnName: 'landing', offset: { x: 0.02, y: 0 } },
-            { name: 'Projects', respawnName: 'projects', offset: { x: 0, y: -0.02 } },
-            { name: 'Social', respawnName: 'social', offset: { x: -0.01, y: -0.04 } },
-            { name: 'Time Machine', respawnName: 'timeMachine', offset: { x: 0, y: 0 } },
+            { name: 'Career Tunnel', respawnName: 'career', offset: { x: 0, y: -0.06 } },
+            { name: 'Center Mat', respawnName: 'landing', offset: { x: 0.02, y: 0 } },
+            { name: 'Project Showcase', respawnName: 'projects', offset: { x: 0, y: -0.02 } },
+            { name: 'Team Bench', respawnName: 'social', offset: { x: -0.01, y: -0.04 } },
         ]
 
         for(const item of this.locations.items)
         {
             const respawn = this.game.respawns.getByName(item.respawnName)
             const mapPosition = this.worldToMap(respawn.position)
+            item.mapPosition = mapPosition
 
             // HTML
             const html = /* html */`
@@ -99,7 +92,7 @@ export class Map
     {
         this.texture = {}
         this.texture.element = this.element.querySelector('.js-texture')
-        this.texture.previousUrl = null
+        this.texture.previousNight = null
 
         this.texture.element.addEventListener('load', () =>
         {
@@ -108,13 +101,72 @@ export class Map
         
         this.texture.update = () =>
         {
-            const url = this.game.dayCycles.intervalEvents.get('night').inInterval ? 'ui/map/map-night.webp' : 'ui/map/map-day.webp'
+            const isNight = this.game.dayCycles.intervalEvents.get('night').inInterval
 
-            if(url !== this.texture.previousUrl)
+            if(isNight !== this.texture.previousNight)
             {
                 this.texture.element.classList.remove('is-visible')
-                this.texture.previousUrl = url
-                this.texture.element.src = url
+                this.texture.previousNight = isNight
+
+                const canvas = document.createElement('canvas')
+                canvas.width = 1400
+                canvas.height = 1400
+                const context = canvas.getContext('2d')
+                context.fillStyle = isNight ? '#030b18' : '#071a33'
+                context.fillRect(0, 0, canvas.width, canvas.height)
+
+                context.strokeStyle = isNight ? '#13213a' : '#123f78'
+                context.lineWidth = 2
+                for(let i = 0; i <= 14; i++)
+                {
+                    const p = i * 100
+                    context.beginPath()
+                    context.moveTo(p, 0)
+                    context.lineTo(p, 1400)
+                    context.stroke()
+                    context.beginPath()
+                    context.moveTo(0, p)
+                    context.lineTo(1400, p)
+                    context.stroke()
+                }
+
+                context.strokeStyle = '#f5662f'
+                context.lineWidth = 22
+                context.lineJoin = 'round'
+                context.beginPath()
+                this.locations.items.forEach((item, index) =>
+                {
+                    const x = item.mapPosition.x * canvas.width
+                    const y = item.mapPosition.y * canvas.height
+                    if(index === 0)
+                        context.moveTo(x, y)
+                    else
+                        context.lineTo(x, y)
+                })
+                context.stroke()
+
+                for(const item of this.locations.items)
+                {
+                    const x = item.mapPosition.x * canvas.width
+                    const y = item.mapPosition.y * canvas.height
+                    context.fillStyle = '#123f78'
+                    context.strokeStyle = '#f4efe4'
+                    context.lineWidth = 10
+                    context.beginPath()
+                    context.arc(x, y, item.respawnName === 'landing' ? 92 : 58, 0, Math.PI * 2)
+                    context.fill()
+                    context.stroke()
+                }
+
+                context.fillStyle = '#f4efe4'
+                context.font = '900 68px Arial Black, sans-serif'
+                context.textAlign = 'center'
+                context.fillText('KUNJADIA FIELDHOUSE', 700, 125)
+                context.fillStyle = '#f5662f'
+                context.font = '700 30px Arial, sans-serif'
+                context.fillText('COMPETITION FLOOR • PROJECT CAMPUS', 700, 174)
+
+                this.texture.element.src = canvas.toDataURL('image/png')
             }
         }
     }

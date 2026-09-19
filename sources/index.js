@@ -7,7 +7,5 @@ if(import.meta.env.VITE_LOG)
         ...consoleLog
     )
 
-if(import.meta.env.VITE_GAME_PUBLIC)
-    window.game = new Game()
-else
-    new Game()
+// Keep a read-only-friendly handle available for diagnostics and portfolio demos.
+window.game = new Game()

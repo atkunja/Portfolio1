@@ -34,6 +34,19 @@ export class VisualVehicle
         this.game.ticker.events.on('tick', this.tickCallback, 8)
     }
 
+    setEntranceVisible(visible)
+    {
+        if(!this.entranceVisibility)
+        {
+            this.entranceVisibility = new Map()
+            for(const part of Object.values(this.parts))
+                this.entranceVisibility.set(part, part.visible)
+        }
+
+        for(const [ part, initialVisibility ] of this.entranceVisibility)
+            part.visible = visible ? initialVisibility : false
+    }
+
     destroy()
     {
         this.game.ticker.events.off('tick', this.tickCallback)
@@ -131,7 +144,7 @@ export class VisualVehicle
         this.paints = {}
 
         this.paints.choices = {}
-        this.paints.choices.red = this.game.materials.getFromName('redGradient')
+        this.paints.choices.red = this.game.materials.createGradient('fieldhouseGradient', '#f5662f', '#071a33', this.game.materials.debugPanel?.addFolder({ title: 'fieldhouseGradient' }))
         this.paints.choices.orange = this.game.materials.createGradient('orangeGradient', '#ff940d', '#af0071', this.game.materials.debugPanel?.addFolder({ title: 'orangeGradient' }))
         this.paints.choices.white = this.game.materials.createGradient('whiteGradient', '#ffffff', '#b5b5b5', this.game.materials.debugPanel?.addFolder({ title: 'whiteGradient' }))
         this.paints.choices.black = this.game.materials.createGradient('blackGradient', '#626262', '#262526', this.game.materials.debugPanel?.addFolder({ title: 'blackGradient' }))

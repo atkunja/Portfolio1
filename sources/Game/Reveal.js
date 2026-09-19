@@ -148,6 +148,15 @@ export class Reveal
         }
         else if(step === 1)
         {
+            // The mat is the portal: finish Ayush's signature wrestling
+            // entrance before handing control to the player.
+            if(!this.game.world.wrestlingVenue.entrancePlayed)
+            {
+                this.game.world.wrestlingVenue.playEntrance(() => this.updateStep(1))
+                this.step = step
+                return
+            }
+
             // Audio
             this.game.audio.init()
             this.sound.play()

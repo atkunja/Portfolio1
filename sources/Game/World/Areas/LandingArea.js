@@ -14,11 +14,26 @@ export class LandingArea extends Area
 
         this.localTime = uniform(0)
 
+        this.hideStarterSet()
         this.setLetters()
         this.setKiosk()
         this.setControls()
         this.setBonfire()
         this.setAchievement()
+    }
+
+    hideStarterSet()
+    {
+        // The center mat has its own arena, signs, and entrance sequence. Keep
+        // the starter area's interaction coordinates, but remove its visible
+        // set dressing and invisible collision clutter.
+        for(const object of this.objects.items)
+        {
+            if(object.visual?.object3D)
+                object.visual.object3D.visible = false
+            if(object.physical?.body)
+                object.physical.body.setEnabled(false)
+        }
     }
 
     setLetters()
@@ -27,6 +42,11 @@ export class LandingArea extends Area
 
         for(const reference of references)
         {
+            // The starter name is baked into the landing geometry. Keep the
+            // useful physics references, but replace the visible branding
+            // with the Ayush-specific fieldhouse signage.
+            reference.visible = false
+
             const physical = reference.userData.object.physical
             physical.colliders[0].setActiveEvents(this.game.RAPIER.ActiveEvents.CONTACT_FORCE_EVENTS)
             physical.colliders[0].setContactForceEventThreshold(5)

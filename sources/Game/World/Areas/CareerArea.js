@@ -26,6 +26,38 @@ export class CareerArea extends Area
         this.setAchievement()
     }
 
+    createCareerTexture(key)
+    {
+        const entries = {
+            careerHetic: [ 'FIVE GUYS', 'CREW MEMBER • 2023–2024' ],
+            careerUzik: [ '2× ALL-STATE', 'WRESTLER • MICHIGAN' ],
+            careerImmersiveGarden: [ 'LOSHI TECHNOLOGIES', 'SOFTWARE ENGINEER INTERN • 2025' ],
+            careerOnlineTeacher: [ 'TAURINE INNOVATIONS', 'OPERATOR • 2026–PRESENT' ],
+            careerFreelancer: [ 'ETHER AUTONOMY', 'CO-FOUNDER • 2026–PRESENT' ],
+            careerIRLTeacher: [ 'BARRACUDA NETWORKS', 'SOFTWARE ENGINEER INTERN • 2026' ],
+        }
+        const [ title, subtitle ] = entries[key] || [ 'AYUSH KUNJADIA', 'BUILDING WHAT COMES NEXT' ]
+        const canvas = document.createElement('canvas')
+        canvas.width = 1600
+        canvas.height = 360
+        const context = canvas.getContext('2d')
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.fillStyle = '#ffffff'
+        context.font = '900 128px Arial Black, sans-serif'
+        context.textBaseline = 'middle'
+        context.fillText(title, 34, 132)
+        context.font = '700 54px Arial, sans-serif'
+        context.fillText(subtitle, 38, 254)
+
+        const result = new THREE.CanvasTexture(canvas)
+        result.flipY = false
+        result.colorSpace = THREE.SRGBColorSpace
+        result.minFilter = THREE.LinearFilter
+        result.magFilter = THREE.LinearFilter
+        result.generateMipmaps = false
+        return result
+    }
+
     setSounds()
     {
         this.sounds = {}
@@ -83,7 +115,7 @@ export class CareerArea extends Area
             line.size = parseFloat(line.group.userData.size)
             line.hasEnd = line.group.userData.hasEnd
             line.color = line.group.userData.color
-            line.texture = this.game.resources[`${line.group.userData.texture}Texture`]
+            line.texture = this.createCareerTexture(line.group.userData.texture)
 
             line.stone = line.group.children.find(child => child.name.startsWith('stone'))
             line.stone.position.y = 0
@@ -155,7 +187,7 @@ export class CareerArea extends Area
         this.year.originZ = this.year.group.position.z
         this.year.size = 17
         this.year.offsetTarget = 0
-        this.year.start = 2008
+        this.year.start = 2023
         this.year.current = this.year.start
 
         //    Digit indexes
@@ -365,7 +397,7 @@ export class CareerArea extends Area
         const finalPositionZ = this.year.originZ - this.year.offsetTarget
         this.year.group.position.z += (finalPositionZ - this.year.group.position.z) * this.game.ticker.deltaScaled * 10
 
-        const yearCurrent = this.year.start + Math.floor(this.year.offsetTarget)
+        const yearCurrent = this.year.start + Math.floor(this.year.offsetTarget * 3 / this.year.size)
 
         if(yearCurrent !== this.year.current)
         {

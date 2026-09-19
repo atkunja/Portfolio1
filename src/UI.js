@@ -87,7 +87,8 @@ export class UI {
             <div class="control-row"><b>WASD / Arrows</b><span>Drive</span></div><div class="control-row"><b>Shift</b><span>Boost</span></div>
             <div class="control-row"><b>Space</b><span>Jump</span></div><div class="control-row"><b>E / Enter</b><span>Interact</span></div>
             <div class="control-row"><b>M</b><span>World map</span></div><div class="control-row"><b>H</b><span>Honk</span></div>
-            <div class="control-row"><b>R</b><span>Respawn</span></div><div class="control-row"><b>Esc</b><span>Close panels</span></div>
+            <div class="control-row"><b>Drag / Wheel</b><span>Move camera</span></div><div class="control-row"><b>R</b><span>Respawn</span></div>
+            <div class="control-row"><b>Esc</b><span>Close panels</span></div>
           </div></div>
         </section>
         <section class="panel" id="progress-panel" aria-modal="true" role="dialog">

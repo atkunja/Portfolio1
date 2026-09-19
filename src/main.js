@@ -7,6 +7,8 @@ import { Vehicle } from './Vehicle.js'
 import { World } from './World.js'
 import { GameState } from './GameState.js'
 import { AudioSystem } from './Audio.js'
+import { Environment } from './Environment.js'
+import { ViewControls } from './ViewControls.js'
 
 const canvas = document.querySelector('#experience')
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' })
@@ -37,11 +39,13 @@ sun.shadow.camera.top = 38
 sun.shadow.camera.bottom = -38
 sun.shadow.bias = -.0005
 scene.add(sun)
+const environment = new Environment(scene, sun, hemisphere)
 
 const gameState = new GameState(projects)
 const audio = new AudioSystem()
 const world = new World(scene, projects, gameState)
 const vehicle = new Vehicle(scene)
+const viewControls = new ViewControls(canvas)
 let started = false
 let target = null
 
@@ -52,7 +56,7 @@ const ui = new UI({
     audio.start()
     ui.showToast('Follow the roads to find all three projects')
   },
-  onRespawn: () => { vehicle.respawn(); ui.showToast('Back on track') },
+  onRespawn: () => { vehicle.respawn(); viewControls.reset(); ui.showToast('Back on track') },
   onToggleAudio: (enabled) => audio.setEnabled(enabled),
   onResetProgress: () => {
     gameState.reset()
@@ -71,13 +75,15 @@ const clock = new THREE.Clock()
 
 function updateCamera(delta) {
   const forward = new THREE.Vector3(Math.sin(vehicle.heading), 0, Math.cos(vehicle.heading))
+  const orbitAngle = vehicle.heading + Math.PI + viewControls.yaw
+  const orbit = new THREE.Vector3(Math.sin(orbitAngle), 0, Math.cos(orbitAngle))
   cameraTarget.copy(vehicle.group.position)
   cameraDesired.copy(vehicle.group.position)
-    .addScaledVector(forward, -7.8)
-    .add(new THREE.Vector3(0, 7.4, 0))
+    .addScaledVector(orbit, 7.8 * viewControls.zoom)
+    .add(new THREE.Vector3(0, (7.4 + viewControls.pitch * 8) * viewControls.zoom, 0))
   const smoothing = 1 - Math.pow(.0025, delta)
   camera.position.lerp(cameraDesired, smoothing)
-  cameraLook.lerp(cameraTarget.clone().addScaledVector(forward, 2.1).add(new THREE.Vector3(0, .7, 0)), smoothing)
+  cameraLook.lerp(cameraTarget.clone().addScaledVector(forward, 2.1).add(new THREE.Vector3(0, .7 - viewControls.pitch * 1.8, 0)), smoothing)
   camera.lookAt(cameraLook)
 }
 
@@ -132,7 +138,7 @@ function interact() {
 
 window.addEventListener('keydown', (event) => {
   if (event.code === 'KeyE' || event.code === 'Enter') interact()
-  if (event.code === 'KeyR') { vehicle.respawn(); ui.showToast('Back on track') }
+  if (event.code === 'KeyR') { vehicle.respawn(); viewControls.reset(); ui.showToast('Back on track') }
   if (event.code === 'KeyH') audio.honk()
 })
 
@@ -145,6 +151,7 @@ window.addEventListener('resize', () => {
 
 renderer.setAnimationLoop(() => {
   const delta = Math.min(clock.getDelta(), .05)
+  environment.update(delta)
   vehicle.update(delta, input, !started || ui.modalOpen)
   const collision = started && !ui.modalOpen && world.resolveVehicleCollision(vehicle)
   if (collision) audio.bump()

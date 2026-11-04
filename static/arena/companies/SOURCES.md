@@ -1,5 +1,7 @@
 # Employer logo sources
 
+`qahwah-house.png`: downloaded unchanged from https://qahwahhouse.com/images/logo_img.png, the official Qahwah House website, on November 4, 2026. Ayush supplied the combined Five Guys/Qahwah House dates and the 50-hour workweek detail.
+
 Education: `michigan.svg` is the University of Michigan Block M asset, downloaded unchanged from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Michigan_Wolverines_logo.svg) on November 4, 2026. Coursework is supplied by Ayush; the Computer Engineering degree comes from the existing résumé-backed profile.
 
 Retrieved 2026-09-20 for employer identification in Ayush Kunjadia's portfolio.

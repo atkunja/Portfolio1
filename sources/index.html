@@ -1,233 +1,201 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#12232c" />
-    <meta
-      name="description"
-      content="Ayush Kunjadia. Engineer, founder, and two-time All-State wrestler. Explore the work, or step onto the mat."
-    />
-    <meta property="og:title" content="Ayush Kunjadia — The Fieldhouse" />
-    <meta
-      property="og:description"
-      content="Engineer by trade. Competitor by nature. A portfolio you can step inside."
-    />
-    <meta property="og:image" content="/projects/wrestling.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link
-      rel="preload"
-      href="/arena/fonts/barlow-condensed-bold.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/arena/fonts/dm-sans.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin
-    />
-    <title>Ayush Kunjadia — The Fieldhouse</title>
-  </head>
-  <body>
-    <main id="app">
-      <div id="arena-view" aria-label="Kunjadia Fieldhouse"></div>
-      <div class="screen-grain" aria-hidden="true"></div>
-
-      <header class="masthead">
-        <button
-          class="identity"
-          id="home-button"
-          aria-label="Return to the experience chooser"
-        >
-          <span class="monogram">AK<span>✳</span></span
-          ><span class="identity-name">AYUSH<br />KUNJADIA</span>
-        </button>
-        <span class="masthead-note"
-          >ENGINEER BY TRADE. <span>COMPETITOR BY NATURE.</span></span
-        >
-        <div class="header-actions">
-          <button
-            id="sound-button"
-            class="sound-button"
-            aria-label="Turn sound off"
-            aria-pressed="true"
-          >
-            <span class="sound-bars" aria-hidden="true"
-              ><i></i><i></i><i></i><i></i></span
-            ><span id="sound-label">SOUND ON</span></button
-          ><a class="classic-link" href="/classic/"
-            >Classic portfolio <span>↗</span></a
-          >
-        </div>
-      </header>
-
-      <section
-        id="chooser"
-        class="chooser"
-        aria-label="Choose your portfolio experience"
-      >
-        <div class="classic-side">
-          <div class="side-index">
-            <span>01 / THE LAME SIDE</span><span>SCROLL. READ. REPEAT.</span>
-          </div>
-          <h1>JUST<br />THE WORK<span class="period">.</span></h1>
-          <div
-            class="photo-stack"
-            aria-label="A few snapshots from Ayush's life"
-          >
-            <figure class="snapshot snapshot-main">
-              <img
-                src="/MEandMom.jpg"
-                alt="Ayush and his mom"
-                fetchpriority="high"
-              />
-              <figcaption>me & mom <span>↗</span></figcaption>
-            </figure>
-            <figure class="snapshot snapshot-small">
-              <img
-                src="/315bench-poster.jpg"
-                alt="Ayush bench pressing 315 pounds"
-              />
-              <figcaption>315 club.</figcaption>
-            </figure>
-            <span class="photo-stamp">BUILT WITH<br />A LITTLE GRIT.</span>
-          </div>
-          <div class="side-bottom">
-            <p>
-              Projects, experience, and the person behind them.<br />
-              The original portfolio, exactly where you left it.
-            </p>
-            <a class="cta cta-dark" href="/classic/"
-              >Keep it classic <span>↗</span></a
-            >
-          </div>
-        </div>
-        <div class="arena-side">
-          <div class="side-index">
-            <span>02 / THE COOL SIDE</span
-            ><span class="live-label"><i></i> LIVE FROM THE FIELDHOUSE</span>
-          </div>
-          <div class="arena-side-copy">
-            <span class="eyebrow">TWO-TIME ALL-STATE. ALWAYS BUILDING.</span>
-            <h2>STEP ON<br />THE MAT<span class="period">.</span></h2>
-            <p>
-              A little more personal. A lot more playable.<br />Welcome to my
-              corner of the internet.
-            </p>
-            <button id="enter-button" class="cta cta-light" disabled>
-              <span id="load-label">Opening the doors…</span
-              ><span>↗</span></button
-            ><span class="entry-footnote"
-              >WASD / ARROWS TO MOVE · OR CLICK TO WALK</span
-            >
-          </div>
-        </div>
-        <div class="split-badge" aria-hidden="true">YOUR<br />CALL</div>
-        <footer class="chooser-footer">
-          <span>© AYUSH KUNJADIA / 2026</span
-          ><span>TWO SIDES. SAME PERSON.</span>
-        </footer>
-      </section>
-
-      <section id="game-ui" class="game-ui" hidden aria-label="Arena controls">
-        <div class="arena-title">
-          <div class="eyebrow"><i></i> MAT 01 / OPEN PRACTICE</div>
-          <h1>THE<br />FIELDHOUSE<span>.</span></h1>
-          <p>Stay curious. Leave it all on the mat.</p>
-        </div>
-        <div class="score-chip">
-          <span>TECHNICAL POINTS</span><strong id="score">00</strong
-          ><span>AYUSH KUNJADIA</span>
-        </div>
-        <div id="hotspots" class="hotspots"></div>
-        <div class="controls-note">
-          <div>
-            <kbd>W</kbd
-            ><span class="key-row"><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span>
-          </div>
-          <span
-            >Walk the floor<br /><small
-              >or click anywhere on the mat</small
-            ></span
-          >
-        </div>
-        <div class="arena-dock">
-          <div class="dock-caption">
-            <span>EXPLORE THE FIELDHOUSE</span
-            ><span id="visit-count">0 / 4 VISITED</span>
-          </div>
-          <nav aria-label="Portfolio exhibits">
-            <button data-visit="work">
-              <span>01</span>The work<span class="dock-arrow">↗</span></button
-            ><button data-visit="story">
-              <span>02</span>The story<span class="dock-arrow">↗</span></button
-            ><button data-visit="life">
-              <span>03</span>Off the mat<span class="dock-arrow"
-                >↗</span
-              ></button
-            ><button data-visit="contact">
-              <span>04</span>Say hello<span class="dock-arrow">↗</span>
-            </button>
-          </nav>
-        </div>
-        <button id="practice-button" class="practice-button">
-          <span class="practice-symbol">↺</span
-          ><span
-            >Hit the mat<small
-              >Practice the suplex <kbd>SPACE</kbd></small
-            ></span
-          >
-        </button>
-        <button id="camera-button" class="camera-button" aria-pressed="false">
-          <span>⊕</span><span id="camera-label">Closer look</span><kbd>C</kbd>
-        </button>
-        <button id="interact-button" class="interact-button" hidden>
-          Explore <kbd>E</kbd>
-        </button>
-        <div id="route-status" class="route-status" role="status" hidden></div>
-      </section>
-
-      <div id="cinematic-ui" class="cinematic-ui" hidden>
-        <div class="cinematic-copy">
-          <span class="eyebrow">THE OPENING EXCHANGE</span>
-          <h2>COMMIT<br />TO THE SHOT.</h2>
-          <span>LEVEL CHANGE. GO BEHIND. FINISH.</span>
-        </div>
-        <button id="skip-button">Skip entrance <span>↗</span></button>
-        <div class="cinematic-progress"><i></i></div>
-      </div>
-      <div id="score-pop" class="score-pop" aria-live="polite"></div>
-      <div id="toast" class="toast" role="status" hidden></div>
-
-      <dialog
-        id="exhibit-dialog"
-        class="exhibit-dialog"
-        aria-labelledby="exhibit-title"
-      >
-        <div class="exhibit-topline">
-          <span id="exhibit-index"></span
-          ><button id="close-exhibit" aria-label="Close exhibit">
-            Close <span>×</span>
-          </button>
-        </div>
-        <div id="exhibit-content"></div>
-        <div class="exhibit-footer">
-          <span>THERE'S MORE AROUND THE CORNER.</span
-          ><button id="next-exhibit">Next exhibit ↗</button>
-        </div>
-      </dialog>
-      <div id="webgl-fallback" class="webgl-fallback" hidden>
-        <h2>The arena couldn’t open.</h2>
-        <p>Your full portfolio is still one click away.</p>
-        <a class="cta cta-light" href="/classic/"
-          >Open the classic portfolio ↗</a
-        ><button id="retry-button">Try again</button>
-      </div>
-    </main>
-    <script type="module" src="/index.js"></script>
-  </body>
+<head>
+<meta charSet="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="preload" href="/classic/_next/static/media/46bdd75a3ff56824-s.p.woff2" as="font" crossorigin="" type="font/woff2"/>
+<link rel="preload" href="/classic/_next/static/media/4b9bb515ce6d026f-s.p.woff2" as="font" crossorigin="" type="font/woff2"/>
+<link rel="preload" href="/classic/_next/static/media/5611c55482296524-s.p.woff2" as="font" crossorigin="" type="font/woff2"/>
+<link rel="preload" href="/classic/_next/static/media/6ba5f591ae6c56f6-s.p.woff2" as="font" crossorigin="" type="font/woff2"/>
+<link rel="preload" href="/classic/_next/static/media/af4bf8399d1aacdf-s.p.woff2" as="font" crossorigin="" type="font/woff2"/>
+<link rel="preload" as="image" href="/MEandMom.jpg"/>
+<link rel="stylesheet" href="/classic/_next/static/css/c828f61a7746bd38.css" data-precedence="next"/>
+<meta name="next-size-adjust" content=""/>
+<meta name="theme-color" content="#101213"/>
+<title>Ayush Kunjadia</title>
+<meta name="description" content="Software engineer who builds cozy, collaborative, well-crafted web things."/>
+<link rel="shortcut icon" href="/logo.png"/>
+<link rel="icon" href="/logo.png"/>
+<link rel="apple-touch-icon" href="/logo.png"/>
+<link rel="stylesheet" href="/basic.css">
+</head>
+<body class="__variable_271724 __variable_043361 __variable_fa71a6 antialiased">
+<div hidden="">
+<!--$-->
+<!--/$-->
+</div>
+<div class="relative min-h-screen overflow-x-hidden bg-bg-base text-ink">
+<div class="warm-glow" aria-hidden="true">
+<span class="background-waves"></span>
+</div>
+<div class="paper-grain" aria-hidden="true">
+</div>
+<nav class="side-nav" aria-label="Main navigation">
+<a href="/#experience" aria-label="Experience">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12a23 23 0 0 0 18 0M12 11v4"/></svg>
+<span class="nav-label" aria-hidden="true">Experience</span>
+</a>
+<a href="/#education" aria-label="Education" class="education-nav">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 9 10-5 10 5-10 5-10-5Zm4 2v6c4 3 8 3 12 0v-6M22 9v7"/></svg>
+<span class="nav-label" aria-hidden="true">Education</span>
+</a>
+<a href="https://github.com/atkunja" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.09c-3.12.68-3.78-1.33-3.78-1.33-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.62 1.22 3.26.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.54 0-1.22.44-2.22 1.15-3-.12-.29-.5-1.42.11-2.96 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.14-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.67.11 2.96.72.78 1.15 1.78 1.15 3 0 4.3-2.62 5.26-5.12 5.53.4.35.76 1.03.76 2.08v3.08c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+<span class="nav-label" aria-hidden="true">GitHub</span>
+</a>
+<a href="https://www.linkedin.com/in/ayushkunjadia/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill="currentColor" stroke="none" d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.97V9.2h2.96ZM6.45 7.9a1.72 1.72 0 1 1 0-3.44 1.72 1.72 0 0 1 0 3.44ZM19.03 18.75h-2.96V14.1c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.73H9.77V9.2h2.84v1.31h.04c.4-.75 1.36-1.55 2.8-1.55 2.99 0 3.54 1.97 3.54 4.53Z"/></svg>
+<span class="nav-label" aria-hidden="true">LinkedIn</span>
+</a>
+</nav>
+<main class="mx-auto w-full max-w-5xl px-5 sm:px-6">
+<section class="grid items-center gap-10 pb-10 pt-12 md:grid-cols-[1.15fr_0.85fr] md:pt-16">
+<div>
+<p class="font-hand text-2xl text-honey">hey there —</p>
+<h1 class="mt-1 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">hi, i&#x27;m Ayush<!-- --> <span class="whitespace-nowrap font-hand text-3xl text-ink-faint">(ah-yoosh)</span>
+</h1>
+</div>
+<div class="flex justify-center md:justify-end">
+<figure data-tilt="true" style="--tilt:2.5deg" class="polaroid relative [transform:rotate(var(--tilt))] transition-transform duration-300 ease-out motion-safe:hover:[transform:rotate(0deg)_translateY(-6px)] w-[min(15rem,72vw)] sm:w-64">
+<span aria-hidden="true" class="tape block absolute -top-3 left-1/2 z-10 h-5 w-24 -translate-x-1/2" style="transform:rotate(-3deg)">
+</span>
+<div class="relative w-full overflow-hidden rounded-[6px] bg-black/10" style="aspect-ratio:4/5">
+<img alt="Ayush and his mom" decoding="async" data-nimg="fill" class="object-cover" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" src="/MEandMom.jpg"/>
+</div>
+<figcaption class="mt-2 px-1 text-center font-hand text-lg leading-none text-polaroid-ink">me &amp; mom</figcaption>
+</figure>
+</div>
+</section>
+<section id="snapshots" class="pb-16 pt-4">
+<p class="mb-8 text-center font-hand text-2xl text-ink-faint">a few snapshots ✿</p>
+<div class="flex flex-wrap items-start justify-center gap-x-10 gap-y-8">
+<div class="reveal-up  ">
+<figure data-tilt="true" style="--tilt:-2deg" class="polaroid relative [transform:rotate(var(--tilt))] transition-transform duration-300 ease-out motion-safe:hover:[transform:rotate(0deg)_translateY(-6px)] w-[min(13rem,72vw)] sm:w-56">
+<span aria-hidden="true" class="tape block absolute -left-3 -top-2 z-10 h-4 w-14" style="transform:rotate(-34deg)">
+</span>
+<span aria-hidden="true" class="tape block absolute -right-3 -top-2 z-10 h-4 w-14" style="transform:rotate(34deg)">
+</span>
+<div class="relative w-full overflow-hidden rounded-[6px] bg-black/10" style="aspect-ratio:4/5">
+<video src="/315bench.mp4" poster="/315bench-poster.jpg" loop="" muted="" playsInline="" disablePictureInPicture="" preload="metadata" aria-label="Bench pressing 315 pounds" class="absolute inset-0 h-full w-full object-cover">
+</video>
+</div>
+<figcaption class="mt-2 px-1 text-center font-hand text-lg leading-none text-polaroid-ink">315 bench</figcaption>
+</figure>
+</div>
+<div class="reveal-up  " style="transition-delay:140ms">
+<figure data-tilt="true" style="--tilt:1.5deg" class="polaroid relative [transform:rotate(var(--tilt))] transition-transform duration-300 ease-out motion-safe:hover:[transform:rotate(0deg)_translateY(-6px)] w-[min(16rem,72vw)] sm:w-72">
+<span aria-hidden="true" class="tape block absolute -left-3 -top-2 z-10 h-4 w-14" style="transform:rotate(-34deg)">
+</span>
+<span aria-hidden="true" class="tape block absolute -right-3 -top-2 z-10 h-4 w-14" style="transform:rotate(34deg)">
+</span>
+<div class="relative w-full overflow-hidden rounded-[6px] bg-black/10" style="aspect-ratio:4/3">
+<img alt="2x all-state wrestler" loading="lazy" decoding="async" data-nimg="fill" class="object-cover" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" src="/projects/wrestling.png"/>
+</div>
+<figcaption class="mt-2 px-1 text-center font-hand text-lg leading-none text-polaroid-ink">2x all-state</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="experience" class="pb-16">
+<h2 class="experience-title">my experiences</h2>
+<ul class="experience-list">
+<li class="experience-row">
+<div class="company-logo">
+<img src="/arena/companies/marshall-wace.png" alt="Marshall Wace logo" loading="lazy">
+</div>
+<div class="experience-detail">
+<h3><a href="https://www.mwam.com/" target="_blank" rel="noopener noreferrer">Marshall Wace</a></h3>
+<p class="experience-role">Quantitative Developer Intern</p>
+<p class="incoming-status">Incoming · June 2027</p>
+</div>
+</li>
+<li class="experience-row">
+<div class="company-logo">
+<img src="/arena/companies/oceanus.svg" alt="Oceanus Marine Technologies logo" loading="lazy">
+</div>
+<div class="experience-detail">
+<h3><a href="https://www.oceanustechnologies.com/" target="_blank" rel="noopener noreferrer">Oceanus Marine Technologies</a></h3>
+<p class="experience-role">Software Engineer Intern</p>
+<p class="incoming-status">Incoming · January 2027</p>
+</div>
+</li>
+<li class="experience-row">
+<div class="company-logo">
+<img src="/arena/companies/ether-autonomy.svg" alt="Ether Autonomy logo" loading="lazy">
+</div>
+<div class="experience-detail">
+<h3><a href="https://www.etherautonomy.com/" target="_blank" rel="noopener noreferrer">Ether Autonomy, Inc.</a></h3>
+<p class="experience-role">Co-Founder</p>
+<p class="experience-date">August 2026 – Present</p>
+<p class="experience-description">Infrastructure for drones.</p>
+</div>
+</li>
+<li class="experience-row">
+<div class="company-logo">
+<img src="/arena/companies/barracuda-mark.svg" alt="Barracuda Networks logo" loading="lazy">
+</div>
+<div class="experience-detail">
+<h3><a href="https://www.barracuda.com" target="_blank" rel="noopener noreferrer">Barracuda Networks</a></h3>
+<p class="experience-role">Software Engineer Intern</p>
+<p class="experience-date">June 2026 – August 2026</p>
+<p class="experience-description">Saved $12K a month on infrastructure costs.</p>
+</div>
+</li>
+<li class="experience-row">
+<div class="company-logo">
+<img src="/arena/companies/taurine-innovations.jpg" alt="Taurine Innovations logo" loading="lazy">
+</div>
+<div class="experience-detail">
+<h3><a href="https://profilebump.com/" target="_blank" rel="noopener noreferrer">Taurine Innovations, LLC</a></h3>
+<p class="experience-role">Operator</p>
+<p class="experience-date">April 2026 – Present</p>
+<p class="experience-description">Bootstrapping my rent.</p>
+</div>
+</li>
+<li class="experience-row">
+<div class="company-logo">
+<img src="/arena/companies/loshi-technologies.jpg" alt="Loshi Technologies logo" loading="lazy">
+</div>
+<div class="experience-detail">
+<h3><a href="https://loshitech.com" target="_blank" rel="noopener noreferrer">Loshi Technologies, LLC</a></h3>
+<p class="experience-role">Software Engineer Intern</p>
+<p class="experience-date">June 2025 – August 2025</p>
+<p class="experience-description">Learn how to code.</p>
+</div>
+</li>
+<li class="experience-row">
+<div class="company-logo">
+<img src="/arena/companies/five-guys.svg" alt="Five Guys logo" loading="lazy">
+</div>
+<div class="experience-detail">
+<h3><a href="https://www.fiveguys.com/" target="_blank" rel="noopener noreferrer">Five Guys</a></h3>
+<p class="experience-role">Crew Member</p>
+<p class="experience-date">September 2023 – June 2024</p>
+<p class="experience-description">Flipping burgers and collecting a few fryer-oil burns. 🍔</p>
+</div>
+</li>
+</ul>
+</section>
+<section id="education" class="education-section" aria-labelledby="education-title">
+<h2 id="education-title" class="experience-title">education</h2>
+<article class="education-row">
+<div class="education-logo">
+<img src="/arena/companies/michigan.svg" alt="University of Michigan Block M logo" width="140" height="140" loading="lazy">
+</div>
+<div class="education-heading">
+<h3><a href="https://umich.edu/" target="_blank" rel="noopener noreferrer">University of Michigan, Ann Arbor</a></h3>
+<p>Bachelor of Science in Engineering in Computer Engineering</p>
+</div>
+<div class="education-coursework">
+<p>Calculus I, Calculus II, Calculus III, Linear Algebra, Differential Equations, Data Structures and Algorithms, Circuits, Signals and Systems, Logic Design, Physics: Mechanics, Physics: Electricity and Magnetism, General Chemistry I, General Chemistry II, and Physical Chemistry.</p>
+</div>
+</article>
+</section>
+</main>
+</div>
+<!--$-->
+<!--/$-->
+<script src="/basic.js" defer>
+</script>
+</body>
 </html>

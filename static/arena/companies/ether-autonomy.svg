@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!--
+    Ether Autonomy monogram: a solid A with three bars cutting across its left
+    leg to read as an E. Redrawn as vector from the supplied mark, with the
+    proportions measured off it — if the original artwork turns up, replace this
+    file wholesale, nothing references its internals.
+
+    Geometry is duplicated in src/components/Logo.tsx; change both together.
+  -->
+  <rect
+    x="1.5"
+    y="1.5"
+    width="97"
+    height="97"
+    rx="12"
+    fill="#FFFFFF"
+    stroke="#0A0A0A"
+    stroke-width="3"
+  />
+
+  <!-- A -->
+  <path d="M43 14 L60 14 L85 79 L67 79 L51 38 L34 79 L17 79 Z" fill="#0A0A0A" />
+
+  <!-- E bars: filled with the tile colour and outlined, so they stay legible
+       where they run past the A into open space -->
+  <g fill="#FFFFFF" stroke="#0A0A0A" stroke-width="2.2">
+    <path d="M15 31.5 L45 31.5 L47 38 L17 38 Z" />
+    <path d="M15 47 L45 47 L47 53.5 L17 53.5 Z" />
+    <path d="M15 62.5 L45 62.5 L47 69 L17 69 Z" />
+  </g>
+</svg>

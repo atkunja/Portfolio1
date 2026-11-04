@@ -7,15 +7,14 @@ const projectRoot = dirname(fileURLToPath(import.meta.url));
 // only the classic portfolio and files used by the new fieldhouse.
 const publicAssets = [
   "classic",
-  "arena",
+  "arena/companies",
+  "basic.css",
+  "basic.js",
   "logo.png",
   "MEandMom.jpg",
   "315bench-poster.jpg",
   "315bench.mp4",
   "projects",
-  "sounds/musics/Sudo.mp3",
-  "sounds/mecanism/click.mp3",
-  "sounds/hits/defaults/Impact Soft 04.mp3",
 ];
 
 const fieldhouseAssets = () => ({

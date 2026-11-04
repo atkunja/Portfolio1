@@ -1,8 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
     const link = document.createElement('a')
     link.href = '/'
-    link.textContent = 'Cool side →'
-    link.setAttribute('aria-label', 'Switch to the interactive driving portfolio')
+    link.textContent = 'Home →'
+    link.setAttribute('aria-label', 'Return to Ayush’s portfolio')
     Object.assign(link.style, {
         position: 'fixed',
         zIndex: '9999',

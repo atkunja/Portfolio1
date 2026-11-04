@@ -7,7 +7,8 @@
     "dev": "vite --mode development",
     "build": "vite build --mode production && node scripts/verify-build.mjs",
     "preview": "vite preview",
-    "test": "node scripts/verify-arena.mjs"
+    "test": "npm run build",
+    "test:arena": "node scripts/verify-arena.mjs"
   },
   "author": "",
   "license": "MIT",
